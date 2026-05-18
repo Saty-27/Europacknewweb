@@ -359,7 +359,7 @@ export default function WelcomeManager() {
                           <option value="box">Box / Package</option>
                         </select>
                       </div>
-                      <FormInput label="Numeric Value (with symbol)" placeholder="e.g. 1000+" value={card.number} onChange={(e: any) => updateCard('counterCards', idx, 'number', e.target.value)} />
+                      <FormInput label="Numeric Value (with symbol)" placeholder="e.g. 3000+" value={card.number} onChange={(e: any) => updateCard('counterCards', idx, 'number', e.target.value)} />
                       <FormInput label="Subtitle Label" placeholder="e.g. Happy Customers" value={card.label} onChange={(e: any) => updateCard('counterCards', idx, 'label', e.target.value)} />
                     </div>
                   </div>
