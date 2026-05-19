@@ -1,4 +1,8 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+export const API_URL = typeof window === 'undefined'
+  ? (process.env.NODE_ENV === 'development' ? 'http://localhost:5002/api' : (process.env.NEXT_PUBLIC_API_URL || 'https://europackindia.com/api'))
+  : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:5002/api'
+      : (process.env.NEXT_PUBLIC_API_URL || '/api'));
 
 export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
   let token = '';
