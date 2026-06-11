@@ -179,8 +179,8 @@ export default function ProductsClient() {
                           <button onClick={openModal} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-[#FF6600] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#E65C00] transition-all shadow-lg shadow-orange-500/20">
                              Get Wholesale Pricing <ArrowRight size={16}/>
                           </button>
-                          <Link href={`/products#${category.id}`} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all no-underline">
-                             View Products <ChevronRight size={16}/>
+                          <Link href={`/${category.id}`} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all no-underline">
+                             View Details <ChevronRight size={16}/>
                           </Link>
                        </div>
                    </div>
@@ -249,7 +249,7 @@ export default function ProductsClient() {
                                   Request Engineering Specs
                                 </button>
                                 <Link 
-                                  href={`/products/${category.id}/${p.id}`}
+                                  href={`/${p.id}`}
                                   className="w-full py-4 rounded-2xl bg-white border border-slate-200 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all duration-300 flex items-center justify-center gap-2 no-underline"
                                 >
                                   View Detail <ChevronRight size={14} />

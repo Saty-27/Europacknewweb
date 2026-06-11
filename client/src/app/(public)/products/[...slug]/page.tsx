@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Package } from 'lucide-react';
 import { fetchAPI } from '../../../../lib/api';
@@ -69,7 +69,7 @@ export async function generateMetadata({
         type: 'website',
       },
       twitter: { card: 'summary_large_image', title: content.metaTitle, description: content.metaDescription },
-      alternates: { canonical: `/products/${category}/${productSlug}` },
+      alternates: { canonical: `/${productSlug}` },
     };
   }
 
@@ -97,35 +97,14 @@ export default async function ProductCatchAllPage({
 
   // ── TWO segments ─ catalog product ──────────────────
   if (slug.length === 2) {
-    const [category, productSlug] = slug;
-    const result = findProductBySlug(category, productSlug, productsData);
-
-    if (!result) notFound();
-
-    const { product, category: categoryData, subCategory } = result!;
-    const content = generateProductContent(product, categoryData);
-    const relatedProducts = categoryData.subCategories
-      .flatMap((sub) => sub.products)
-      .filter((p) => p.id !== product.id)
-      .slice(0, 6);
-
-    return (
-      <ProductSubDetailClient
-        product={product}
-        category={categoryData}
-        subCategory={subCategory}
-        content={content}
-        relatedProducts={relatedProducts}
-      />
-    );
+    const [_, productSlug] = slug;
+    permanentRedirect(`/${productSlug}`);
   }
 
   // ── ONE segment ─ CMS product ─────────────────────
   if (slug.length === 1) {
     const cmsSlug = slug[0];
-    const [product, allProducts] = await Promise.all([getCmsProduct(cmsSlug), getAllCmsProducts()]);
-    if (!product) return <ProductNotFound />;
-    return <ProductDetailClient product={product} allProducts={allProducts} />;
+    permanentRedirect(`/${cmsSlug}`);
   }
 
   // Fallback

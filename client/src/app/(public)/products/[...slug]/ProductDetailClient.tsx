@@ -1076,7 +1076,7 @@ export default function ProductDetailClient({
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
               >
-                <Link href={`/products/${p.slug}`} className="group block no-underline">
+                <Link href={`/${p.slug}`} className="group block no-underline">
                   <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-slate-50 mb-4 border border-slate-100 group-hover:shadow-xl group-hover:border-orange-100 transition-all">
                     <img src={getImageUrl(p.image)} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>

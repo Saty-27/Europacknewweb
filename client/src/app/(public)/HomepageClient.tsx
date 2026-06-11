@@ -308,44 +308,44 @@ function FeaturedProducts() {
     {
       title: "Wooden Pallets",
       description: "ISPM-15 certified pallets built to handle heavy-duty export loads with reliability.",
-      image: "/images/products/four-way-pallets.webp",
+      image: "/images/products/wooden-pallets.png",
       features: ["Heat-treated pine wood", "Export compliant (ISPM-15)", "High load capacity", "Custom sizes available"],
-      slug: "wooden-pallets/four-way-pallet"
+      slug: "wooden-pallets"
     },
     {
       title: "Corrugated Boxes",
       description: "3-ply to 9-ply custom-printed corrugated boxes for any weight requirement.",
       image: "/images/products/corrugatedBoxes.png",
       features: ["7-ply extreme strength", "Moisture resistant coating", "Custom brand printing", "Stackable rigidity"],
-      slug: "corrugated-cartons/9ply-heavy-duty"
+      slug: "corrugated-boxes"
     },
     {
       title: "Dunnage Bags",
       description: "AAR-certified inflatable void fill bags for zero cargo shift in transit.",
       image: "/images/products/user_dunnage_bag.webp",
       features: ["AAR certified materials", "Zero cargo shifting", "Reusable heavy-duty valve", "High burst pressure"],
-      slug: "dunnage-bag/air-dunnage-bags"
+      slug: "dunnage-bags"
     },
     {
       title: "Seaworthy Packing",
       description: "Multi-layered moisture barrier packing for long sea voyages.",
       image: "/images/products/user_seaworthy_laminates.jpg",
       features: ["VCI foil wrapping", "Desiccant insertion", "Rust & corrosion proof", "Vacuum internal seal"],
-      slug: "special-services/seaworthy-packing"
+      slug: "seaworthy-packing"
     },
     {
       title: "Lashing Materials",
       description: "Industrial grade heavy lashing straps and securing mechanisms.",
       image: "/images/products/user_lashing_materials.jpg",
       features: ["5 Ton load capacity", "Weather resistant poly", "Heavy duty ratchets", "Container compliant"],
-      slug: "lashing-materials/ratchet-belt"
+      slug: "lashing-materials"
     },
     {
       title: "Vacuum Packing",
       description: "Complete vacuum sealing for sensitive electronics and machinery.",
       image: "/images/products/user_vacuum_packing.png",
       features: ["100% moisture removal", "Dust and dirt proof", "Extends shelf life", "Anti-static options"],
-      slug: "vacuum-packaging/multilayer-laminated-vci"
+      slug: "vacuum-packing"
     }
   ];
 
@@ -362,7 +362,7 @@ function FeaturedProducts() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredProducts.map(p => (
-            <Link href={`/products/${p.slug}`} key={p.title} className="bg-white rounded-[24px] overflow-hidden border border-slate-200/50 transition-all duration-500 hover:-translate-y-3 hover:cursor-pointer group block no-underline" style={{ boxShadow: '0 12px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.02)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.05)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.02)'}>
+            <Link href={`/${p.slug}`} key={p.title} className="bg-white rounded-[24px] overflow-hidden border border-slate-200/50 transition-all duration-500 hover:-translate-y-3 hover:cursor-pointer group block no-underline" style={{ boxShadow: '0 12px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.02)' }} onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0 30px 60px rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.05)'} onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.02)'}>
               <div className="h-[220px] w-full overflow-hidden relative bg-slate-50 p-4">
                 <Image 
                   src={p.image} 
@@ -402,12 +402,12 @@ function FeaturedProducts() {
 function Services() {
   const items = [
     { name: 'Crate Packing', img: '/images/services/ai/crate_packing.png', href: '/services', desc: 'Custom ISPM-15 wooden crates for heavy machinery and export cargo.' },
-    { name: 'Stretch Wrapping', img: '/images/services/ai/stretch_wrapping.png', href: '/products/vacuum-wrapping/stretch-wrapping', desc: 'Automated pallet stretch wrapping for load stability and protection.' },
-    { name: 'Anti-Rust Coating', img: '/images/services/ai/anti_rust.png', href: '/products/protective-materials/rust-preventive-spray', desc: 'VCI film treatment and anti-rust oil for long-term metal protection.' },
-    { name: 'Export lashing', img: '/images/services/ai/export_lashing_clean.png', href: '/products/corrugated-cargo-securing/container-lashing', desc: 'High-tension lashing for ODC cargo, containers, and flatracks.' },
-    { name: 'Vacuum Packing', img: '/images/services/ai/vacuum_packing.png', href: '/products/vacuum-wrapping/vacuum-packaging', desc: 'Moisture-proof aluminum barrier foil packing for sensitive electronics.' },
-    { name: 'Wooden Pallets', img: '/images/services/ai/wooden_pallets.png', href: '/products/pallet-systems/wooden-pallets', desc: 'Custom 2-way and 4-way entry pallets for domestic and export use.' },
-    { name: 'Corrugated Boxes', img: '/images/services/ai/corrugated_boxes.png', href: '/products/corrugated-cargo-securing/corrugated-boxes', desc: 'Heavy-duty 9-ply boxes for automotive and retail logistics.' },
+    { name: 'Stretch Wrapping', img: '/images/services/ai/stretch_wrapping.png', href: '/stretch-wrapping', desc: 'Automated pallet stretch wrapping for load stability and protection.' },
+    { name: 'Anti-Rust Coating', img: '/images/services/ai/anti_rust.png', href: '/rust-preventive-spray', desc: 'VCI film treatment and anti-rust oil for long-term metal protection.' },
+    { name: 'Export lashing', img: '/images/services/ai/export_lashing_clean.png', href: '/container-lashing', desc: 'High-tension lashing for ODC cargo, containers, and flatracks.' },
+    { name: 'Vacuum Packing', img: '/images/services/ai/vacuum_packing.png', href: '/vacuum-packing', desc: 'Moisture-proof aluminum barrier foil packing for sensitive electronics.' },
+    { name: 'Wooden Pallets', img: '/images/services/ai/wooden_pallets.png', href: '/wooden-pallets', desc: 'Custom 2-way and 4-way entry pallets for domestic and export use.' },
+    { name: 'Corrugated Boxes', img: '/images/services/ai/corrugated_boxes.png', href: '/corrugated-boxes', desc: 'Heavy-duty 9-ply boxes for automotive and retail logistics.' },
     { name: 'On-Site Packing', img: '/images/services/ai/onsite_packing.png', href: '/services', desc: 'Our mobile teams pack your machinery at your factory or warehouse.' },
   ];
 

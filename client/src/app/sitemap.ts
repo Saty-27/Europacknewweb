@@ -1,12 +1,14 @@
 import { MetadataRoute } from 'next'
 import { fetchAPI } from '@/lib/api'
 import marketplaceData from '@/constants/marketplaceData.json'
+import { productsData } from '@/constants/productsData'
+import blogIndex from '@/constants/blogIndex.json'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://europackindia.com' // Should be your production URL
+  const baseUrl = 'https://europackindia.com' // Production canonical base URL
 
-  // Static routes
-  const staticRoutes = [
+  // 1. Static routes
+  const staticRoutesList = [
     '',
     '/about',
     '/services',
@@ -16,23 +18,52 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/contact',
     '/gallery',
     '/industries',
-    '/company-facts'
-  ].map((route) => ({
+    '/company-facts',
+    '/privacy',
+    '/terms',
+    '/case-studies',
+    '/clients',
+    '/resources',
+    '/quote',
+    '/videos'
+  ];
+
+  const staticRoutes = staticRoutesList.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: route === '' ? 1 : 0.8,
   }))
 
-  // Marketplace Products
+  // 2. Catalog Categories (from productsData.ts)
+  const catalogCategoryRoutes = productsData.map((cat) => ({
+    url: `${baseUrl}/${cat.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  }));
+
+  // 3. Catalog Products (from productsData.ts)
+  const catalogProductRoutes = productsData.flatMap((cat) =>
+    cat.subCategories.flatMap((sub) =>
+      sub.products.map((p) => ({
+        url: `${baseUrl}/${p.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      }))
+    )
+  );
+
+  // 4. Marketplace Products (from marketplaceData.json)
   const marketplaceProductRoutes = marketplaceData.products.map(p => ({
-    url: `${baseUrl}/products/${p.categoryId}/${p.id}`,
+    url: `${baseUrl}/${p.id}`,
     lastModified: new Date(marketplaceData.lastUpdated),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
   }));
 
-  // Marketplace Locations
+  // 5. Marketplace Locations
   const locationRoutes = marketplaceData.locations.map(l => ({
     url: `${baseUrl}/locations/${l.slug}`,
     lastModified: new Date(marketplaceData.lastUpdated),
@@ -40,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Marketplace Industries
+  // 6. Marketplace Industries
   const industryRoutes = marketplaceData.industries.map(i => ({
     url: `${baseUrl}/industries/${i.slug}`,
     lastModified: new Date(marketplaceData.lastUpdated),
@@ -48,13 +79,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Dynamic products (from CMS backend if any)
-  let productRoutes: any[] = []
+  // 7. Dynamic products (from CMS backend if any)
+  let cmsProductRoutes: any[] = []
   try {
     const productsRes = await fetchAPI('/products')
     if (productsRes.success) {
-      productRoutes = productsRes.data.map((p: any) => ({
-        url: `${baseUrl}/products/${p.slug}`,
+      cmsProductRoutes = productsRes.data.map((p: any) => ({
+        url: `${baseUrl}/${p.slug}`,
         lastModified: new Date(p.updatedAt || new Date()),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
@@ -64,12 +95,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap: Failed to fetch products', e)
   }
 
-  // Dynamic blogs
-  let blogRoutes: any[] = []
+  // 8. Statically Indexed Blogs (from blogIndex.json - ~5,360 items)
+  const blogIndexRoutes = blogIndex.map((b: any) => ({
+    url: `${baseUrl}/blog/${b.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  // 9. Dynamic blogs (from CMS backend if any)
+  let cmsBlogRoutes: any[] = []
   try {
     const blogsRes = await fetchAPI('/blogs?status=published')
     if (blogsRes.success) {
-      blogRoutes = blogsRes.blogs.map((b: any) => ({
+      cmsBlogRoutes = blogsRes.blogs.map((b: any) => ({
         url: `${baseUrl}/blog/${b.slug}`,
         lastModified: new Date(b.updatedAt || new Date()),
         changeFrequency: 'monthly' as const,
@@ -80,12 +119,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Sitemap: Failed to fetch blogs', e)
   }
 
-  return [
-    ...staticRoutes, 
+  // Combine all route lists
+  const allRoutes = [
+    ...staticRoutes,
+    ...catalogCategoryRoutes,
+    ...catalogProductRoutes,
     ...marketplaceProductRoutes,
     ...locationRoutes,
     ...industryRoutes,
-    ...productRoutes, 
-    ...blogRoutes
-  ]
+    ...cmsProductRoutes,
+    ...blogIndexRoutes,
+    ...cmsBlogRoutes
+  ];
+
+  // Deduplicate routes by case-insensitive URL to avoid duplicate entries in sitemap.xml
+  const uniqueRoutesMap = new Map<string, any>();
+  for (const route of allRoutes) {
+    const canonicalUrl = route.url.trim().toLowerCase();
+    if (!uniqueRoutesMap.has(canonicalUrl)) {
+      uniqueRoutesMap.set(canonicalUrl, route);
+    }
+  }
+
+  return Array.from(uniqueRoutesMap.values());
 }
+

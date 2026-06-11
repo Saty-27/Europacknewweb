@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         images: [seoContent.hero.image],
       },
       alternates: {
-        canonical: `https://europack.in/blog/${slug}`,
+        canonical: `https://europackindia.com/blog/${slug}`,
       }
     };
   }
