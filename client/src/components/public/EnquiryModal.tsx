@@ -55,6 +55,24 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
       
       const result = await response.json();
       if (result.success) {
+        // Save to database
+        try {
+          await fetchAPI('/enquiry', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              company: formData.company,
+              phone: formData.phone,
+              location: formData.location,
+              service: serviceName,
+              message: `Inquiry submitted via Product Detail page for ${serviceName}`
+            })
+          });
+        } catch (dbError) {
+          console.error('Failed to save enquiry to database:', dbError);
+        }
+
         setIsSuccess(true);
         toast.success('Enquiry submitted successfully');
       } else {
