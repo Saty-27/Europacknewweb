@@ -465,16 +465,6 @@ export function findProductBySlug(categoryId: string, productId: string, data: C
   return null;
 }
 
-export function findProductByOnlySlug(productId: string, data: Category[]) {
-  for (const category of data) {
-    for (const sub of category.subCategories) {
-      const product = sub.products.find(p => p.id === productId);
-      if (product) return { product, category, subCategory: sub };
-    }
-  }
-  return null;
-}
-
 export function getAllProductSlugs(data: Category[]) {
   const slugs: { category: string; productSlug: string }[] = [];
   for (const cat of data) {

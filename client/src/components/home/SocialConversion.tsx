@@ -186,7 +186,7 @@ export function ContactHub() {
                       </div>
                       <div>
                         <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Procurement Enquiries</p>
-                        <p className="text-sm font-bold">architect@europack.in</p>
+                        <p className="text-sm font-bold">architect@europackindia.in</p>
                       </div>
                    </div>
                 </div>

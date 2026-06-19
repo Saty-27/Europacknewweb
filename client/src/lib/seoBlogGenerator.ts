@@ -203,7 +203,7 @@ export function generateSeoBlogContent(slug: string): SeoBlogContent | null {
         "name": "Europack",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://europack.in/images/europack-logo.png"
+          "url": "https://europackindia.com/images/logo/EuropackLogo.png"
         }
       }
     }

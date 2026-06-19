@@ -14,10 +14,10 @@ export default function CompanyFactsPage() {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://www.europackindia.in/#organization",
+        "@id": "https://europackindia.com/#organization",
         "name": "Europack",
-        "url": "https://www.europackindia.in",
-        "logo": "https://www.europackindia.in/images/europack-logo.png",
+        "url": "https://europackindia.com",
+        "logo": "https://europackindia.com/images/logo/EuropackLogo.png",
         "description": "Europack is an industrial packaging company based in India with 33+ years of experience in industrial packaging.",
         "foundingDate": "1991",
         "numberOfEmployees": {
@@ -31,13 +31,13 @@ export default function CompanyFactsPage() {
       },
       {
         "@type": "WebPage",
-        "@id": "https://www.europackindia.in/company-facts/#webpage",
-        "url": "https://www.europackindia.in/company-facts",
+        "@id": "https://europackindia.com/company-facts/#webpage",
+        "url": "https://europackindia.com/company-facts",
         "name": "Europack Company Facts",
         "description": "Clear, factual statements about Europack's industrial packaging capabilities.",
         "inLanguage": "en-US",
         "isPartOf": {
-          "@id": "https://www.europackindia.in/#website"
+          "@id": "https://europackindia.com/#website"
         }
       }
     ]

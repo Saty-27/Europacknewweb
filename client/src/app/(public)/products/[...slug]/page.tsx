@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { notFound, permanentRedirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Package } from 'lucide-react';
 import { fetchAPI } from '../../../../lib/api';
@@ -56,7 +56,7 @@ export async function generateMetadata({
     // Catalog product: /products/[category]/[productSlug]
     const [category, productSlug] = slug;
     const result = findProductBySlug(category, productSlug, productsData);
-    if (!result) return { title: 'Product Not Found | Europack' };
+    if (!result) return { title: 'Product Not Found - Europack' };
     const content = generateProductContent(result.product, result.category);
     return {
       title: content.metaTitle,
@@ -69,16 +69,16 @@ export async function generateMetadata({
         type: 'website',
       },
       twitter: { card: 'summary_large_image', title: content.metaTitle, description: content.metaDescription },
-      alternates: { canonical: `/${productSlug}` },
+      alternates: { canonical: `/products/${category}/${productSlug}` },
     };
   }
 
   // CMS product: /products/[slug]
   const cmsSlug = slug[0];
   const product = await getCmsProduct(cmsSlug);
-  if (!product) return { title: 'Product Not Found | Europack' };
+  if (!product) return { title: 'Product Not Found - Europack' };
   return {
-    title: `${product.title} | Industrial Packaging | Europack`,
+    title: `${product.title} - Industrial Packaging - Europack`,
     description: product.description,
     keywords: product.features?.join(', '),
     openGraph: { title: product.title, description: product.description, images: [product.image].filter(Boolean) },
@@ -97,14 +97,35 @@ export default async function ProductCatchAllPage({
 
   // ── TWO segments ─ catalog product ──────────────────
   if (slug.length === 2) {
-    const [_, productSlug] = slug;
-    permanentRedirect(`/${productSlug}`);
+    const [category, productSlug] = slug;
+    const result = findProductBySlug(category, productSlug, productsData);
+
+    if (!result) notFound();
+
+    const { product, category: categoryData, subCategory } = result!;
+    const content = generateProductContent(product, categoryData);
+    const relatedProducts = categoryData.subCategories
+      .flatMap((sub) => sub.products)
+      .filter((p) => p.id !== product.id)
+      .slice(0, 6);
+
+    return (
+      <ProductSubDetailClient
+        product={product}
+        category={categoryData}
+        subCategory={subCategory}
+        content={content}
+        relatedProducts={relatedProducts}
+      />
+    );
   }
 
   // ── ONE segment ─ CMS product ─────────────────────
   if (slug.length === 1) {
     const cmsSlug = slug[0];
-    permanentRedirect(`/${cmsSlug}`);
+    const [product, allProducts] = await Promise.all([getCmsProduct(cmsSlug), getAllCmsProducts()]);
+    if (!product) return <ProductNotFound />;
+    return <ProductDetailClient product={product} allProducts={allProducts} />;
   }
 
   // Fallback

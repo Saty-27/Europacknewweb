@@ -225,10 +225,10 @@ export default function SeoArticleClient({ content, slug }: SeoArticleClientProp
               </div>
               <ul className="space-y-4">
                 {[
-                  { name: 'Wooden Pallets', href: '/wooden-pallets' },
-                  { name: 'Corrugated Boxes', href: '/corrugated-boxes' },
-                  { name: 'Vacuum Packaging', href: '/vacuum-packaging' },
-                  { name: 'Dunnage Bags', href: '/air-dunnage-bags' }
+                  { name: 'Wooden Pallets', href: '/products/pallet-systems/wooden-pallets' },
+                  { name: 'Corrugated Boxes', href: '/products/corrugated-cargo-securing/corrugated-boxes' },
+                  { name: 'Vacuum Packaging', href: '/products/vacuum-wrapping/vacuum-packaging' },
+                  { name: 'Dunnage Bags', href: '/products/dunnage-bag/air-dunnage-bags' }
                 ].map((prod, i) => (
                   <li key={i}>
                     <Link href={prod.href} className="flex items-center justify-between text-slate-600 font-medium hover:text-[#FF6600] transition-colors group">

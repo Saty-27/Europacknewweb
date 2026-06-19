@@ -104,7 +104,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
     "author": [{
        "@type": "Person",
        "name": blog.author,
-       "url": "https://europackindia.in"
+       "url": "https://europackindia.com"
     }],
     "description": blog.seo?.metaDescription || blog.subtitle,
     "publisher": {
@@ -112,7 +112,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
        "name": "Europack",
        "logo": {
          "@type": "ImageObject",
-         "url": "https://europackindia.in/logo.png"
+         "url": "https://europackindia.com/images/logo/EuropackLogo.png"
        }
     }
   };
@@ -268,10 +268,10 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
                   </h3>
                   <ul className="space-y-4">
                     {[
-                      { name: 'Wooden Pallets', href: '/wooden-pallets' },
-                      { name: 'Corrugated Boxes', href: '/corrugated-boxes' },
-                      { name: 'Vacuum Packaging', href: '/vacuum-packaging' },
-                      { name: 'Dunnage Bags', href: '/air-dunnage-bags' }
+                      { name: 'Wooden Pallets', href: '/products/pallet-systems/wooden-pallets' },
+                      { name: 'Corrugated Boxes', href: '/products/corrugated-cargo-securing/corrugated-boxes' },
+                      { name: 'Vacuum Packaging', href: '/products/vacuum-wrapping/vacuum-packaging' },
+                      { name: 'Dunnage Bags', href: '/products/dunnage-bag/air-dunnage-bags' }
                     ].map((prod, i) => (
                       <li key={i}>
                         <Link href={prod.href} className="flex items-center justify-between text-slate-600 font-medium hover:text-[#FF6600] transition-colors group no-underline">

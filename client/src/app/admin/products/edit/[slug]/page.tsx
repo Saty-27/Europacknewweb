@@ -111,7 +111,7 @@ export default function EditProductPage({ params }: { params: Promise<{ slug: st
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Link href={`/${data.slug}`} target="_blank" className="p-5 bg-white/5 text-slate-400 rounded-2xl hover:text-white transition-all border border-white/10">
+          <Link href={`/products/${data.slug}`} target="_blank" className="p-5 bg-white/5 text-slate-400 rounded-2xl hover:text-white transition-all border border-white/10">
              <ExternalLink size={20} />
           </Link>
           <button 

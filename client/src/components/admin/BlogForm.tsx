@@ -424,7 +424,7 @@ export default function BlogForm({ initialData, onSave, loading }: BlogFormProps
                             {block.type === 'cta' && (
                                <div className="grid grid-cols-2 gap-4">
                                   <input className="admin-input" placeholder="Button Text" value={block.content.text} onChange={e => updateBlock(idx, { content: { ...block.content, text: e.target.value } })} />
-                                  <input className="admin-input" placeholder="Target Link (/[product-slug])" value={block.content.link} onChange={e => updateBlock(idx, { content: { ...block.content, link: e.target.value } })} />
+                                  <input className="admin-input" placeholder="Target Link (/products/...)" value={block.content.link} onChange={e => updateBlock(idx, { content: { ...block.content, link: e.target.value } })} />
                                </div>
                             )}
 

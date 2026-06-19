@@ -49,23 +49,6 @@ export default function ContactForm() {
       const result = await response.json();
       
       if (result.success) {
-        // Save to database
-        try {
-          await fetchAPI('/contact', {
-            method: 'POST',
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              company: payload.company,
-              subject: payload.subject,
-              message: payload.message
-            })
-          });
-        } catch (dbError) {
-          console.error('Failed to save contact form to database:', dbError);
-        }
-
         toast.success('Technical Requirement Sent!', {
           style: { background: '#1A1F2C', color: '#fff' }
         });

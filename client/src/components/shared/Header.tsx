@@ -54,6 +54,7 @@ export default function Header() {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
 
   // Flatten products for search
   const allProducts = productsData.flatMap(cat => 
@@ -68,7 +69,11 @@ export default function Header() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const clickedDesktopSearch = searchRef.current?.contains(target);
+      const clickedMobileSearch = mobileSearchRef.current?.contains(target);
+      
+      if (!clickedDesktopSearch && !clickedMobileSearch) {
         setIsSearchOpen(false);
         setSearchQuery('');
         setSearchResults([]);
@@ -239,7 +244,7 @@ export default function Header() {
                               {searchResults.map((result) => (
                                 <Link 
                                   key={result.id} 
-                                  href={`/${result.id}`}
+                                  href={`/products/${result.categoryId}/${result.id}`}
                                   onClick={() => {
                                     setIsSearchOpen(false);
                                     setSearchQuery('');
@@ -315,7 +320,7 @@ export default function Header() {
               className="xl:hidden border-t border-slate-100 bg-white shadow-2xl absolute w-full left-0 z-[140] overflow-hidden"
             >
               <div className="px-6 py-8 flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
-                <div className="relative mb-4">
+                <div className="relative mb-4" ref={mobileSearchRef}>
                   <div className="flex items-center bg-slate-100 rounded-2xl px-4">
                      <Search size={20} className="text-[#FF6600] shrink-0"/>
                      <input 
@@ -331,7 +336,7 @@ export default function Header() {
                       {searchResults.map((result) => (
                         <Link 
                           key={result.id} 
-                          href={`/${result.id}`}
+                          href={`/products/${result.categoryId}/${result.id}`}
                           onClick={() => {
                             setMobileOpen(false);
                             setSearchQuery('');

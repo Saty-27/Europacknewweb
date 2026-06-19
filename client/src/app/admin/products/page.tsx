@@ -177,7 +177,7 @@ export default function ProductsPage() {
                       </td>
                       <td className="px-8 py-6">
                         <div className="flex justify-end gap-3">
-                          <Link href={`/${p.slug}`} target="_blank" className="p-3 bg-white/5 text-slate-500 hover:text-white rounded-xl transition-all">
+                          <Link href={`/products/${p.slug}`} target="_blank" className="p-3 bg-white/5 text-slate-500 hover:text-white rounded-xl transition-all">
                              <Eye size={16} />
                           </Link>
                           <Link href={`/admin/products/edit/${p.slug}`} className="p-3 bg-white/5 text-slate-500 hover:text-[#ff6a00] rounded-xl transition-all">
@@ -218,7 +218,7 @@ export default function ProductsPage() {
                             <Link href={`/admin/products/edit/${p.slug}`} className="p-2 text-slate-500 hover:text-white transition-colors"><Edit size={16}/></Link>
                             <button onClick={() => handleDelete(p._id)} className="p-2 text-slate-500 hover:text-red-500 transition-colors"><Trash2 size={16}/></button>
                          </div>
-                         <Link href={`/${p.slug}`} target="_blank" className="p-2 text-slate-500 hover:text-orange-500 transition-colors"><Eye size={16}/></Link>
+                         <Link href={`/products/${p.slug}`} target="_blank" className="p-2 text-slate-500 hover:text-orange-500 transition-colors"><Eye size={16}/></Link>
                       </div>
                    </div>
                  </motion.div>

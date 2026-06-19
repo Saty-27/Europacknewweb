@@ -551,7 +551,7 @@ export default function ProductSubDetailClient({
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07 }}
                 >
-                  <Link href={`/${p.id}`} className="group block no-underline bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-100 transition-all">
+                  <Link href={`/products/${category.id}/${p.id}`} className="group block no-underline bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-100 transition-all">
                     <div className="aspect-[16/9] bg-slate-50 relative overflow-hidden">
                       <img src={getImageUrl(p.img)} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>

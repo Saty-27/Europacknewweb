@@ -39,7 +39,7 @@ export default function ContactSupport() {
                 <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Strategic Partnerships</p>
                 <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-6">Become a B2B Partner.</h2>
                 <p className="text-slate-400 font-medium mb-10">Collaborate with India's most technically advanced packaging manufacturer for global EPC projects.</p>
-                <a href="mailto:partners@europack.in" className="inline-flex items-center gap-3 px-8 py-4 bg-white/5 text-white font-black uppercase text-xs tracking-widest rounded-xl hover:bg-blue-500 transition-colors shadow-xl group border border-white/10">
+                <a href="mailto:partners@europackindia.in" className="inline-flex items-center gap-3 px-8 py-4 bg-white/5 text-white font-black uppercase text-xs tracking-widest rounded-xl hover:bg-blue-500 transition-colors shadow-xl group border border-white/10">
                    Partner With Us <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>

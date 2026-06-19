@@ -293,7 +293,7 @@ export default function CaseStudyDetailClient({ item }: CaseStudyDetailClientPro
                      viewport={{ once: true }}
                      className="group bg-white p-8 rounded-[48px] border border-white shadow-xl hover:shadow-[0_40px_80px_-20px_rgba(255,102,0,0.1)] hover:-translate-y-4 transition-all duration-700 text-left"
                    >
-                      <Link href={`/${prod.core?.slug}`} className="absolute inset-0 z-10" />
+                      <Link href={`/products/${prod.core?.slug}`} className="absolute inset-0 z-10" />
                       <div className="aspect-square rounded-[32px] overflow-hidden mb-8 bg-slate-50">
                          <img src={getImageUrl(prod.core?.mainImage)} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-[2000ms]" />
                       </div>

@@ -35,35 +35,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const baseMetadata: Metadata = {
     metadataBase: new URL('https://europackindia.com'),
-    title: {
-      default: "Europack | India's Largest Industrial Packaging Experts",
-      template: '%s | Europack'
-    },
-    description: "Europack (also known as Europack India) is India's most trusted industrial packaging company. ISPM-15 certified wooden pallets, wooden crates, corrugated boxes, dunnage bags, vacuum packaging, and export packaging. 33+ years, 3000+ clients.",
-    keywords: "Europack, europack india, europack packaging, europack mumbai, wooden pallets manufacturer Mumbai, industrial packaging India, ISPM-15 certified packaging, export packaging company Mumbai, corrugated boxes manufacturer, packaging company India",
-    authors: [{ name: 'Europack', url: 'https://europackindia.com' }],
-    creator: 'Europack',
-    publisher: 'Europack',
-    alternates: {
-      canonical: 'https://europackindia.com',
-    },
+    title: "Europack - India’s Largest Industrial Packaging Experts",
+    description: "Europack is India's trusted leader in ISPM-15 certified wooden crates, wooden pallets, corrugated boxes, dunnage bags, and precision industrial packaging. 33+ years, 3000+ clients.",
+    keywords: "wooden pallets, corrugated boxes, industrial packaging, custom crates, Europack, Europack India, EuropackIndia, Euroapack, Euroapack India, export packaging, ISPM-15, dunnage bags, stretch wrap, anti-rust coating",
     openGraph: {
-      title: "Europack | India's Largest Industrial Packaging Experts",
-      description: "Europack India — trusted leader in ISPM-15 certified industrial packaging. 3000+ clients, 33+ years.",
+      title: "Europack - India’s Largest Industrial Packaging Experts",
+      description: "India's trusted leader in ISPM-15 certified industrial packaging. 3000+ clients, 33+ years.",
       siteName: "Europack",
-      type: "website",
-      url: 'https://europackindia.com',
-      images: [{
-        url: 'https://europackindia.com/images/logo/logo.png',
-        width: 500,
-        height: 150,
-        alt: 'Europack - Industrial Packaging Experts India'
-      }]
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: "Europack | India's Largest Industrial Packaging Experts",
-      description: "Europack India — ISPM-15 certified industrial packaging. 3000+ clients, 33+ years.",
+      type: "website"
     },
     icons: {
       icon: '/images/logo/favicon.png',
@@ -126,7 +105,6 @@ export default async function RootLayout({
                   "@id": "https://europackindia.com/#website",
                   "url": "https://europackindia.com/",
                   "name": "Europack",
-                  "alternateName": "Europack India",
                   "description": "India's trusted leader in ISPM-15 certified industrial packaging.",
                   "publisher": {
                     "@id": "https://europackindia.com/#organization"
@@ -145,7 +123,6 @@ export default async function RootLayout({
                   "@type": "Organization",
                   "@id": "https://europackindia.com/#organization",
                   "name": "Europack",
-                  "alternateName": ["Europack India", "Europack Industries", "europack", "europackindia"],
                   "url": "https://europackindia.com/",
                   "logo": {
                     "@type": "ImageObject",
@@ -160,41 +137,16 @@ export default async function RootLayout({
                   "image": {
                     "@id": "https://europackindia.com/#/schema/logo/image/"
                   },
-                  "description": "Europack is India's largest industrial packaging company, manufacturing wooden pallets, corrugated boxes, ISPM-15 export packaging, vacuum packaging, and seaworthy packing.",
-                  "foundingDate": "1993",
-                  "numberOfEmployees": {
-                    "@type": "QuantitativeValue",
-                    "value": 2500
-                  },
-                  "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "101, ML SPACES, Railway Station Rd, near Vile Parle, Vile Parle West",
-                    "addressLocality": "Mumbai",
-                    "addressRegion": "Maharashtra",
-                    "postalCode": "400056",
-                    "addressCountry": "IN"
-                  },
-                  "email": "sales@europackindia.in",
                   "sameAs": [
-                    "https://www.linkedin.com/company/europack/",
-                    "https://www.indiamart.com/europack/",
-                    "https://europackindia.com"
+                    "https://www.linkedin.com/company/europack/"
                   ],
-                  "contactPoint": [
-                    {
-                      "@type": "ContactPoint",
-                      "telephone": "+91-98337-76290",
-                      "contactType": "sales",
-                      "areaServed": "IN",
-                      "availableLanguage": ["English", "Hindi"]
-                    },
-                    {
-                      "@type": "ContactPoint",
-                      "telephone": "+91-98201-93702",
-                      "contactType": "customer service",
-                      "areaServed": "IN"
-                    }
-                  ]
+                  "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+91-9820090775",
+                    "contactType": "sales",
+                    "areaServed": "IN",
+                    "availableLanguage": ["English", "Hindi"]
+                  }
                 }
               ]
             })
