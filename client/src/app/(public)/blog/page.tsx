@@ -17,7 +17,7 @@ import BlogTrust from '@/components/blog/BlogTrust';
 import BlogFAQ from '@/components/blog/BlogFAQ';
 import BlogNewsletter from '@/components/blog/BlogNewsletter';
 import BlogFinalCTA from '@/components/blog/BlogFinalCTA';
-import blogIndex from '@/constants/blogIndex.json';
+import { getAllSeoBlogEntries } from '@/constants/generatedBlogIndex';
 
 const featuredPost = {
   title: 'Wooden Pallet Manufacturer in Mumbai – Types, Prices & Export Guide (2025)',
@@ -31,7 +31,7 @@ const featuredPost = {
 };
 
 // Generate allPosts from the SEO blog system
-const allPosts = blogIndex.map((blog: any) => {
+const allPosts = getAllSeoBlogEntries().map((blog: any) => {
   let img = '/images/blog/mumbai-packaging.png'; // Premium default
   if (blog.product === 'Wooden Pallets') img = '/images/blog/wooden-pallets.png';
   if (blog.product === 'Seaworthy Packing') img = '/images/blog/seaworthy-packing.png';

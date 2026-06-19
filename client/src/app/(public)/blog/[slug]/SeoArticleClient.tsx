@@ -182,7 +182,7 @@ export default function SeoArticleClient({ content, slug }: SeoArticleClientProp
               <PackageCheck size={48} className="text-[#FF6600] mb-8" />
               <h3 className="text-2xl font-black tracking-tighter uppercase mb-4">Need Urgent Packaging?</h3>
               <p className="text-slate-400 font-medium mb-8 leading-relaxed">
-                Our emergency dispatch team is available 24/7. Get industrial packaging delivered anywhere in Mumbai and surrounding areas.
+                Our emergency dispatch team is available 24/7. Get industrial packaging support across {content.tables.coverage.slice(0, 3).join(', ')} and nearby industrial areas.
               </p>
               <Link href="/contact" className="flex items-center justify-center w-full py-4 bg-[#FF6600] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white hover:text-[#FF6600] transition-colors">
                 Contact Operations
@@ -225,10 +225,10 @@ export default function SeoArticleClient({ content, slug }: SeoArticleClientProp
               </div>
               <ul className="space-y-4">
                 {[
-                  { name: 'Wooden Pallets', href: '/products/pallet-systems/wooden-pallets' },
-                  { name: 'Corrugated Boxes', href: '/products/corrugated-cargo-securing/corrugated-boxes' },
-                  { name: 'Vacuum Packaging', href: '/products/vacuum-wrapping/vacuum-packaging' },
-                  { name: 'Dunnage Bags', href: '/products/dunnage-bag/air-dunnage-bags' }
+                  { name: 'Wooden Pallets', href: '/wooden-pallets' },
+                  { name: 'Corrugated Boxes', href: '/corrugated-boxes' },
+                  { name: 'Vacuum Packaging', href: '/vacuum-packing' },
+                  { name: 'Dunnage Bags', href: '/dunnage-bags' }
                 ].map((prod, i) => (
                   <li key={i}>
                     <Link href={prod.href} className="flex items-center justify-between text-slate-600 font-medium hover:text-[#FF6600] transition-colors group">

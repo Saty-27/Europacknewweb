@@ -1,6 +1,6 @@
 export interface SeoLocation {
   name: string;
-  type: 'Mumbai Western' | 'Mumbai Central' | 'Navi Mumbai' | 'Industrial Area' | 'Port/Cargo' | 'Metro' | 'Harbour';
+  type: 'Mumbai Western' | 'Mumbai Central' | 'Navi Mumbai' | 'Industrial Area' | 'Port/Cargo' | 'Metro' | 'Harbour' | 'Vadodara Industrial' | 'Vadodara Commercial';
   nearbyAreas: string[];
 }
 
@@ -99,9 +99,62 @@ export const seoLocations: SeoLocation[] = [
   { name: 'Ghatkopar', type: 'Mumbai Central', nearbyAreas: ['Vikhroli', 'Vidyavihar', 'Asalpha', 'Saki Naka'] },
   { name: 'Vashi', type: 'Navi Mumbai', nearbyAreas: ['Sanpada', 'Koparkhairane', 'Turbhe', 'APMC Market'] },
   { name: 'Panvel', type: 'Navi Mumbai', nearbyAreas: ['Khandeshwar', 'Taloja MIDC', 'Kalamboli', 'JNPT'] },
+
+  // Vadodara & Gujarat industrial demand clusters
+  { name: 'Vadodara', type: 'Vadodara Industrial', nearbyAreas: ['Makarpura', 'Nandesari GIDC', 'Savli GIDC', 'Ranoli GIDC'] },
+  { name: 'Makarpura', type: 'Vadodara Industrial', nearbyAreas: ['GIDC Makarpura', 'Tarsali', 'Manjalpur', 'Vadodara'] },
+  { name: 'GIDC Makarpura', type: 'Vadodara Industrial', nearbyAreas: ['Makarpura Industrial Estate', 'Tarsali', 'Manjalpur', 'Vadodara'] },
+  { name: 'Makarpura Industrial Estate', type: 'Vadodara Industrial', nearbyAreas: ['GIDC Makarpura', 'Makarpura', 'Tarsali', 'Vadodara'] },
+  { name: 'Manjusar', type: 'Vadodara Industrial', nearbyAreas: ['Savli GIDC', 'Savli', 'Vadodara', 'Halol'] },
+  { name: 'Savli GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Savli', 'Manjusar', 'Sama-Savli Road', 'Vadodara'] },
+  { name: 'Savli', type: 'Vadodara Industrial', nearbyAreas: ['Savli GIDC', 'Manjusar', 'Sama-Savli Road', 'Vadodara'] },
+  { name: 'Por GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Por', 'Karjan', 'Vadodara', 'Padra'] },
+  { name: 'Por', type: 'Vadodara Industrial', nearbyAreas: ['Por GIDC', 'Karjan', 'Vadodara', 'Padra'] },
+  { name: 'Nandesari GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Nandesari', 'Ranoli GIDC', 'Ranoli', 'Vadodara'] },
+  { name: 'Nandesari', type: 'Vadodara Industrial', nearbyAreas: ['Nandesari GIDC', 'Ranoli', 'Chhani', 'Vadodara'] },
+  { name: 'Ranoli GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Ranoli', 'Nandesari GIDC', 'Chhani', 'Vadodara'] },
+  { name: 'Ranoli', type: 'Vadodara Industrial', nearbyAreas: ['Ranoli GIDC', 'Nandesari', 'Chhani', 'Vadodara'] },
+  { name: 'Waghodia GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Waghodia', 'Ajwa Road', 'Waghodia Road', 'Vadodara'] },
+  { name: 'Waghodia', type: 'Vadodara Industrial', nearbyAreas: ['Waghodia GIDC', 'Ajwa Road', 'Waghodia Road', 'Vadodara'] },
+  { name: 'Padra', type: 'Vadodara Industrial', nearbyAreas: ['Padra GIDC', 'Old Padra Road', 'Atladara', 'Vadodara'] },
+  { name: 'Padra GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Padra', 'Old Padra Road', 'Atladara', 'Vadodara'] },
+  { name: 'Karjan', type: 'Vadodara Industrial', nearbyAreas: ['Karjan GIDC', 'Por GIDC', 'Vadodara', 'Bharuch'] },
+  { name: 'Karjan GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Karjan', 'Por GIDC', 'Vadodara', 'Bharuch'] },
+  { name: 'Halol', type: 'Vadodara Industrial', nearbyAreas: ['Halol GIDC', 'Kalol', 'Savli', 'Vadodara'] },
+  { name: 'Halol GIDC', type: 'Vadodara Industrial', nearbyAreas: ['Halol', 'Kalol', 'Savli GIDC', 'Vadodara'] },
+  { name: 'Kalol', type: 'Vadodara Industrial', nearbyAreas: ['Halol', 'Halol GIDC', 'Vadodara', 'Panchmahal'] },
+  { name: 'Dabhoi', type: 'Vadodara Industrial', nearbyAreas: ['Waghodia', 'Ajwa Road', 'Vadodara', 'Karjan'] },
+  { name: 'Gotri', type: 'Vadodara Commercial', nearbyAreas: ['Vasna Road', 'Subhanpura', 'Akota', 'Vadodara'] },
+  { name: 'Alkapuri', type: 'Vadodara Commercial', nearbyAreas: ['Sayajigunj', 'Fatehgunj', 'Akota', 'Vadodara'] },
+  { name: 'Akota', type: 'Vadodara Commercial', nearbyAreas: ['Alkapuri', 'Old Padra Road', 'Vasna Road', 'Vadodara'] },
+  { name: 'Sayajigunj', type: 'Vadodara Commercial', nearbyAreas: ['Alkapuri', 'Fatehgunj', 'Karelibaug', 'Vadodara'] },
+  { name: 'Manjalpur', type: 'Vadodara Commercial', nearbyAreas: ['Tarsali', 'Makarpura', 'Pratapnagar', 'Vadodara'] },
+  { name: 'Tarsali', type: 'Vadodara Industrial', nearbyAreas: ['Makarpura', 'Manjalpur', 'GIDC Makarpura', 'Vadodara'] },
+  { name: 'Atladara', type: 'Vadodara Commercial', nearbyAreas: ['Padra', 'Old Padra Road', 'Vasna Road', 'Vadodara'] },
+  { name: 'Vasna Road', type: 'Vadodara Commercial', nearbyAreas: ['Gotri', 'Akota', 'Old Padra Road', 'Vadodara'] },
+  { name: 'Gorwa', type: 'Vadodara Industrial', nearbyAreas: ['Subhanpura', 'Chhani', 'Fatehgunj', 'Vadodara'] },
+  { name: 'Subhanpura', type: 'Vadodara Commercial', nearbyAreas: ['Gorwa', 'Gotri', 'Chhani', 'Vadodara'] },
+  { name: 'Chhani', type: 'Vadodara Industrial', nearbyAreas: ['Ranoli', 'Nandesari', 'Gorwa', 'Vadodara'] },
+  { name: 'Sama-Savli Road', type: 'Vadodara Industrial', nearbyAreas: ['Savli GIDC', 'Vemali', 'Harni', 'Vadodara'] },
+  { name: 'Ajwa Road', type: 'Vadodara Industrial', nearbyAreas: ['Waghodia Road', 'Waghodia GIDC', 'Harni', 'Vadodara'] },
+  { name: 'Waghodia Road', type: 'Vadodara Industrial', nearbyAreas: ['Waghodia', 'Ajwa Road', 'Karelibaug', 'Vadodara'] },
+  { name: 'Harni', type: 'Vadodara Commercial', nearbyAreas: ['New VIP Road', 'Vemali', 'Sama-Savli Road', 'Vadodara'] },
+  { name: 'Karelibaug', type: 'Vadodara Commercial', nearbyAreas: ['Fatehgunj', 'Sayajigunj', 'Waghodia Road', 'Vadodara'] },
+  { name: 'Fatehgunj', type: 'Vadodara Commercial', nearbyAreas: ['Alkapuri', 'Karelibaug', 'Sayajigunj', 'Vadodara'] },
+  { name: 'Pratapnagar', type: 'Vadodara Industrial', nearbyAreas: ['Manjalpur', 'Tarsali', 'Makarpura', 'Vadodara'] },
+  { name: 'Bhayli', type: 'Vadodara Commercial', nearbyAreas: ['Sevasi', 'Atladara', 'Old Padra Road', 'Vadodara'] },
+  { name: 'Sevasi', type: 'Vadodara Commercial', nearbyAreas: ['Bhayli', 'Gotri', 'Old Padra Road', 'Vadodara'] },
+  { name: 'Vemali', type: 'Vadodara Commercial', nearbyAreas: ['Harni', 'Sama-Savli Road', 'New VIP Road', 'Vadodara'] },
+  { name: 'New VIP Road', type: 'Vadodara Commercial', nearbyAreas: ['Harni', 'Vemali', 'Karelibaug', 'Vadodara'] },
+  { name: 'Old Padra Road', type: 'Vadodara Commercial', nearbyAreas: ['Akota', 'Atladara', 'Bhayli', 'Vadodara'] },
+  { name: 'GIDC Industrial Estate Vadodara', type: 'Vadodara Industrial', nearbyAreas: ['Makarpura', 'Nandesari GIDC', 'Ranoli GIDC', 'Savli GIDC'] },
 ];
 
 // Helper to get a rich localized context paragraph
 export const getLocalContext = (loc: SeoLocation) => {
-  return `Operating near ${loc.name}, businesses across ${loc.nearbyAreas.slice(0, 3).join(', ')}, and surrounding ${loc.type === 'Industrial Area' ? 'industrial belts' : 'commercial zones'} rely on robust packaging solutions to maintain their supply chain integrity.`;
+  const zoneLabel = loc.type === 'Industrial Area' || loc.type === 'Vadodara Industrial'
+    ? 'industrial belts'
+    : 'commercial zones';
+
+  return `Operating near ${loc.name}, businesses across ${loc.nearbyAreas.slice(0, 3).join(', ')}, and surrounding ${zoneLabel} rely on robust packaging solutions to maintain their supply chain integrity.`;
 };

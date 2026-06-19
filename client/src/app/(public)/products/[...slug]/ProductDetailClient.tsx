@@ -200,9 +200,11 @@ We specialize in custom corrugated boxes with brand printing, moisture-resistant
   },
 
   'seaworthy-packing': {
-    subtitle: 'Multi-Layer Barrier Packaging for Protection on Long Sea Voyages',
+    subtitle: 'Seaworthy Packing, Seaworthy Packaging and Export Packing for Ocean Freight',
     tagline: 'Zero Corrosion. Zero Moisture. Delivered Intact.',
-    overview: `As a leading manufacturer and exporter from India, Europack specializes in high-performance Seaworthy Packing and premium Pine Wood Box solutions. Our industrial-grade pinewood packaging is engineered for maximum durability, ensuring your heavy machinery and export cargo withstand the rigorous stresses of maritime transport. 
+    overview: `Europack provides seaworthy packing, seaworthy packaging and seaworthy export packing solutions for industrial exporters in Mumbai, Vadodara, Makarpura, Nandesari GIDC, Savli GIDC, Ranoli GIDC, Waghodia, Padra, Halol and nearby Gujarat industrial zones. The service is designed for companies shipping heavy machinery, fabricated equipment, electrical panels, automotive parts, steel components and precision metal cargo by ocean freight.
+
+As a leading manufacturer and exporter from India, Europack specializes in high-performance Seaworthy Packing and premium Pine Wood Box solutions. Our industrial-grade pinewood packaging is engineered for maximum durability, ensuring your heavy machinery and export cargo withstand the rigorous stresses of maritime transport. 
 
 From heat-treated ISPM-15 wooden boxes to multi-layer barrier protection, we provide end-to-end export packaging services. Our seaworthy systems combine structural integrity with advanced preservation techniques like VCI films and silica gel, maintaining a corrosion-free environment for up to 12 months in transit and 2 years of on-site storage.`,
     specs: [
@@ -229,7 +231,7 @@ From heat-treated ISPM-15 wooden boxes to multi-layer barrier protection, we pro
       { icon: Shield, title: 'ISPM-15 Standard', desc: 'Heat-treated and fumigated wooden packing compliant with international export norms.' },
       { icon: Zap, title: 'Electrical Panels', desc: 'Vacuum-sealed seaworthy packaging for sensitive instruments and power panels.' },
       { icon: Anchor, title: 'Seaworthy Export', desc: 'Comprehensive maritime protection for valves, pipes, and structural steel sections.' },
-      { icon: Factory, title: 'Industrial Logistics', desc: 'Mobile packing teams for on-site services in Pune, Mumbai, and industrial hubs.' },
+      { icon: Factory, title: 'Mumbai & Vadodara Industrial Logistics', desc: 'Mobile packing teams for on-site seaworthy packing in Mumbai, Vadodara, Makarpura, Nandesari, Savli GIDC and nearby industrial hubs.' },
     ],
     comparison: [
       { feature: 'Rust Prevention', thisProduct: 'VCI Molecular Layer', alternative: 'Surface Oil Coat', thisBetter: true },
@@ -261,6 +263,9 @@ From heat-treated ISPM-15 wooden boxes to multi-layer barrier protection, we pro
       { q: 'Can I get a packing certificate for customs?', a: 'Yes. We provide a full packing certificate documenting the VCI type, desiccant quantity, sealing method, and compliance standard used — accepted by most customs authorities and marine insurers.' },
       { q: 'How do I know if my cargo needs seaworthy packing?', a: 'Any metallic cargo shipped for more than 10 days by ocean freight is at significant corrosion risk. Contact our technical team for a free cargo assessment — we\'ll advise the right protection level.' },
       { q: 'What is the cost of seaworthy packing?', a: 'Cost depends on cargo dimensions, metal type, protection duration, and packing complexity. Contact us for a project-specific quote — we typically provide a full BOM costing within 24 hours.' },
+      { q: 'Do you provide seaworthy packing in Mumbai?', a: 'Yes. Europack provides seaworthy packing in Mumbai, Navi Mumbai, Bhiwandi, JNPT, Mumbai Port, Andheri, Thane, Vasai and surrounding industrial areas for export cargo and heavy machinery.' },
+      { q: 'Do you provide seaworthy packing in Vadodara?', a: 'Yes. We support seaworthy packing and export packaging requirements in Vadodara, Makarpura, GIDC Makarpura, Nandesari GIDC, Ranoli GIDC, Savli GIDC, Waghodia, Padra, Karjan, Halol and nearby Gujarat industrial locations.' },
+      { q: 'Is seaworthy packing the same as seaworthy packaging?', a: 'In industrial export usage, both terms refer to packaging designed for sea freight. Europack uses multi-layer moisture barriers, VCI, desiccants, ISPM-15 wooden boxes, skids, lashing and documentation to make cargo suitable for ocean transport.' },
     ],
     caseStudy: { client: 'Steel Component Exporter, Jamshedpur', result: 'Zero corrosion claims across 5 years', detail: 'Europack\'s seaworthy packing eliminated all rust-related insurance claims for a major steel components exporter, saving ₹25L+ annually in rejection/rework.' },
     images: ['/images/banners/3.png', '/images/banners/banner_main.png', '/images/banners/1.png'],
@@ -299,9 +304,11 @@ From heat-treated ISPM-15 wooden boxes to multi-layer barrier protection, we pro
         }
       ]
     },
-    seoContent: `Europack provides professional seaworthy packing services and VCI packaging solutions for metal cargo, heavy machinery, and precision components exported via ocean freight from India. Our seaworthy packaging systems are used by major exporters in Mumbai, Jamshedpur, Pune, Vadodara, and across India's industrial belts.
+    seoContent: `Europack provides professional seaworthy packing services, seaworthy packaging solutions and seaworthy export packing for metal cargo, heavy machinery, electrical panels and precision components exported via ocean freight from India. Our seaworthy packaging systems are used by exporters in Mumbai, JNPT, Navi Mumbai, Bhiwandi, Thane, Pune, Vadodara, Makarpura, Nandesari GIDC, Ranoli GIDC, Savli GIDC, Waghodia, Halol and across India's industrial belts.
 
-We specialize in VCI film packaging, silica gel desiccant systems, hermetic barrier foil sealing, and complete multi-layer protection for long-haul ocean shipments. Our seaworthy packing solutions comply with MIL-PRF-3150, ISO 9001:2015, and marine insurance requirements, ensuring your cargo arrives in perfect condition regardless of transit duration or destination climate.`,
+We specialize in VCI film packaging, silica gel desiccant systems, hermetic barrier foil sealing, ISPM-15 pinewood boxes, skids, lashing and complete multi-layer protection for long-haul ocean shipments. Our seaworthy packing solutions comply with MIL-PRF-3150, ISO 9001:2015, and marine insurance requirements, ensuring your cargo arrives in perfect condition regardless of transit duration or destination climate.
+
+For buyers searching for seaworthy packing in Mumbai, seaworthy packaging in Vadodara, seaworthy export packing near Makarpura, or export packaging solutions near Nandesari and Savli GIDC, Europack offers technical consultation, on-site packing teams, project documentation and rapid quotation support.`,
   },
 
   'vacuum-packing': {

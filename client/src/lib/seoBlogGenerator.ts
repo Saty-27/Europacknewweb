@@ -1,4 +1,4 @@
-import blogIndex from '../constants/blogIndex.json';
+import { findSeoBlogBySlug } from '../constants/generatedBlogIndex';
 import { seoProducts, seoLocations, getLocalContext } from '../constants/seoData';
 
 export interface SeoBlogContent {
@@ -79,6 +79,7 @@ const benefitDescPools = [
 // 3. DYNAMIC FAQ GENERATOR
 // ---------------------------------------------------------
 function generateDynamicFAQs(product: any, location: any, hash: number) {
+  const region = location.name === 'Vadodara' || location.nearbyAreas.includes('Vadodara') ? 'Vadodara' : 'Mumbai';
   const masterFaqs = [
     { q: `Where can I buy ${product.name.toLowerCase()} in ${location.name}?`, a: `Europack is the leading supplier of ${product.name.toLowerCase()} in ${location.name}. We actively serve businesses across ${location.nearbyAreas.join(', ')} with priority delivery.` },
     { q: `Are your ${product.name.toLowerCase()} suitable for export?`, a: `Yes, absolutely. Our ${product.name.toLowerCase()} are designed for international shipping, fully compliant with export standards including ISPM-15 certification for wooden products.` },
@@ -86,7 +87,7 @@ function generateDynamicFAQs(product: any, location: any, hash: number) {
     { q: `How do I get a price quote for ${product.name.toLowerCase()} near ${location.name}?`, a: `You can instantly request a quote by calling our ${location.name} dispatch team or filling out the inquiry form below. We provide wholesale rates for bulk industrial orders.` },
     { q: `What is the load capacity of your ${product.name.toLowerCase()}?`, a: `Our ${product.name.toLowerCase()} are built for heavy-duty industrial applications. We customize the structural integrity based on whether you are shipping light goods or heavy machinery.` },
     { q: `Do you deliver to ${location.nearbyAreas[0] || 'surrounding areas'}?`, a: `Yes, our logistics network covers ${location.name} completely, ensuring rapid delivery to industrial zones in ${location.nearbyAreas[0] || 'the region'} and beyond.` },
-    { q: `Why choose Europack for ${product.name.toLowerCase()} in Mumbai?`, a: `With over 33+ years of experience and 3000+ industrial clients, Europack guarantees zero-damage transit, ISO 9001:2015 quality, and rapid turnaround times for all packaging needs.` },
+    { q: `Why choose Europack for ${product.name.toLowerCase()} in ${region}?`, a: `With over 33+ years of experience and 3000+ industrial clients, Europack guarantees zero-damage transit, ISO 9001:2015 quality, and rapid turnaround times for all packaging needs.` },
     { q: `Can the ${product.name.toLowerCase()} be customized to our product size?`, a: `Yes, we manufacture bespoke packaging dimensions. Whether you are shipping oversized ODC cargo or precision electronics, we design the exact fit.` },
     { q: `Do you handle urgent bulk orders for ${product.name.toLowerCase()} in ${location.name}?`, a: `Yes, we have a rapid-response manufacturing facility that can fulfill urgent bulk orders to ${location.name} to ensure your supply chain never stops.` },
     { q: `How do you ensure the quality of your ${product.name.toLowerCase()}?`, a: `Every batch goes through stringent QA checks for structural strength, moisture content, and dimensional accuracy before being dispatched to ${location.name}.` },
@@ -114,7 +115,7 @@ function generateDynamicFAQs(product: any, location: any, hash: number) {
 // 4. MAIN GENERATOR LOGIC
 // ---------------------------------------------------------
 export function generateSeoBlogContent(slug: string): SeoBlogContent | null {
-  const blog = blogIndex.find((b: any) => b.slug === slug);
+  const blog = findSeoBlogBySlug(slug);
   if (!blog) return null;
 
   const product = seoProducts.find(p => p.name === blog.product);
@@ -134,6 +135,7 @@ export function generateSeoBlogContent(slug: string): SeoBlogContent | null {
   const hash = getHash(slug);
 
   const localContext = getLocalContext(location);
+  const regionKeyword = location.name === 'Vadodara' || location.nearbyAreas.includes('Vadodara') ? 'Vadodara' : 'Mumbai';
 
   const getHeroImage = () => {
     // Use deterministic image path based on slug hash to ensure uniqueness
@@ -163,7 +165,7 @@ export function generateSeoBlogContent(slug: string): SeoBlogContent | null {
     meta: {
       title: metaTitle,
       description: metaDescription,
-      keywords: `${product.coreKeyword} ${location.name}, ${blog.intent} ${product.name} Mumbai, industrial packaging ${location.name}`
+      keywords: `${product.coreKeyword} ${location.name}, ${blog.intent} ${product.name} ${regionKeyword}, industrial packaging ${location.name}`
     },
     bannerPrompt: getBannerPrompt(product, location, 'wide angle'),
     cardPrompt: getCardPrompt(product, location),

@@ -47,22 +47,62 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/products/wooden-pallets',
-        destination: '/products/wooden-pallets/euro-pallets',
+        destination: '/wooden-pallets',
+        permanent: true,
+      },
+      {
+        source: '/products/special-services/seaworthy-packing',
+        destination: '/seaworthy-packing',
+        permanent: true,
+      },
+      {
+        source: '/seaworthy-packaging',
+        destination: '/seaworthy-packing',
+        permanent: true,
+      },
+      {
+        source: '/seaworthy-export-packing',
+        destination: '/seaworthy-packing',
+        permanent: true,
+      },
+      {
+        source: '/seaworthy-packaging-solutions',
+        destination: '/seaworthy-packing',
+        permanent: true,
+      },
+      {
+        source: '/seaworthy-packaging-mumbai',
+        destination: '/seaworthy-packing',
+        permanent: true,
+      },
+      {
+        source: '/seaworthy-packaging-vadodara',
+        destination: '/seaworthy-packing',
+        permanent: true,
+      },
+      {
+        source: '/products/wooden-pallets/four-way-pallet',
+        destination: '/four-way-pallet',
+        permanent: true,
+      },
+      {
+        source: '/fourway-pallet',
+        destination: '/four-way-pallet',
         permanent: true,
       },
       {
         source: '/products/pallet-systems/wooden-pallets',
-        destination: '/products/wooden-pallets/euro-pallets',
+        destination: '/wooden-pallets',
         permanent: true,
       },
       {
         source: '/products/pallet-systems/cp1-pallets',
-        destination: '/products/wooden-pallets/cp1',
+        destination: '/cp1-pallets',
         permanent: true,
       },
       {
         source: '/products/pallet-systems/cp2-pallets',
-        destination: '/products/wooden-pallets/cp2',
+        destination: '/cp2-pallets',
         permanent: true,
       },
       {
@@ -127,27 +167,27 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/products/vacuum-wrapping/vacuum-packaging',
-        destination: '/products/vacuum-packaging/multilayer-laminated-vci',
+        destination: '/vacuum-packing',
         permanent: true,
       },
       {
         source: '/products/vacuum-wrapping/shrink-wrapping',
-        destination: '/products/special-services/shrink-wrapping-service',
+        destination: '/shrink-wrapping',
         permanent: true,
       },
       {
         source: '/products/vacuum-wrapping/stretch-wrapping',
-        destination: '/products/stretch-wrapping/pallet-wrapping',
+        destination: '/stretch-wrapping',
         permanent: true,
       },
       {
         source: '/products/corrugated-cargo-securing/corrugated-boxes',
-        destination: '/products/corrugated-cartons/printed-corrugated',
+        destination: '/corrugated-boxes',
         permanent: true,
       },
       {
         source: '/products/corrugated-cargo-securing/dunnage-bags',
-        destination: '/products/dunnage-bag/air-dunnage-bags',
+        destination: '/dunnage-bags',
         permanent: true,
       },
       {
@@ -157,7 +197,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/products/corrugated-cargo-securing/container-lashing',
-        destination: '/products/services/onsite-lashing',
+        destination: '/container-lashing',
         permanent: true,
       },
     ]
@@ -166,4 +206,3 @@ const nextConfig: NextConfig = {
 
 
 export default nextConfig;
-
