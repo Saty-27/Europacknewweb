@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { fetchAPI } from '@/lib/api'
-import marketplaceData from '@/constants/marketplaceData.json'
+import { productsData } from '@/constants/productsData'
+import { getAllProductSlugs } from '@/lib/productContentGenerator'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://europackindia.com' // Should be your production URL
@@ -24,28 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }))
 
-  // Marketplace Products
-  const marketplaceProductRoutes = marketplaceData.products.map(p => ({
-    url: `${baseUrl}/products/${p.categoryId}/${p.id}`,
-    lastModified: new Date(marketplaceData.lastUpdated),
+  // Static catalog products
+  const catalogProductRoutes = getAllProductSlugs(productsData).map(({ category, productSlug }) => ({
+    url: `${baseUrl}/products/${category}/${productSlug}`,
+    lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
-  }));
-
-  // Marketplace Locations
-  const locationRoutes = marketplaceData.locations.map(l => ({
-    url: `${baseUrl}/locations/${l.slug}`,
-    lastModified: new Date(marketplaceData.lastUpdated),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
-
-  // Marketplace Industries
-  const industryRoutes = marketplaceData.industries.map(i => ({
-    url: `${baseUrl}/industries/${i.slug}`,
-    lastModified: new Date(marketplaceData.lastUpdated),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
   }));
 
   // Dynamic products (from CMS backend if any)
@@ -82,9 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes, 
-    ...marketplaceProductRoutes,
-    ...locationRoutes,
-    ...industryRoutes,
+    ...catalogProductRoutes,
     ...productRoutes, 
     ...blogRoutes
   ]
