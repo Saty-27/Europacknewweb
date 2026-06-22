@@ -13,6 +13,7 @@ import type { Category, SubCategory } from '../../../../constants/productsData';
 import type { GeneratedProductContent } from '../../../../lib/productContentGenerator';
 import { useModal } from '../../../../context/ModalContext';
 import Counter from '../../../../components/common/Counter';
+import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
 
 // ──────────────────────────────────────────────
 // HELPERS
@@ -551,7 +552,7 @@ export default function ProductSubDetailClient({
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07 }}
                 >
-                  <Link href={`/products/${category.id}/${p.id}`} className="group block no-underline bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-100 transition-all">
+                  <Link href={getCatalogProductPath(category.id, p.id)} className="group block no-underline bg-white border border-slate-100 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-100 transition-all">
                     <div className="aspect-[16/9] bg-slate-50 relative overflow-hidden">
                       <img src={getImageUrl(p.img)} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>

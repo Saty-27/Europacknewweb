@@ -5,12 +5,10 @@ import { Package } from 'lucide-react';
 import { fetchAPI } from '../../../../lib/api';
 import { productsData } from '../../../../constants/productsData';
 import {
-  findProductBySlug,
-  generateProductContent,
   getAllProductSlugs,
 } from '../../../../lib/productContentGenerator';
+import CatalogProductRoutePage, { buildCatalogProductMetadata } from '@/components/products/CatalogProductRoutePage';
 import ProductDetailClient from './ProductDetailClient';
-import ProductSubDetailClient from './ProductSubDetailClient';
 
 // ────────────────────────────────────────────────────
 // CMS PRODUCT HELPERS (single-slug: /products/cms-slug)
@@ -55,22 +53,7 @@ export async function generateMetadata({
   if (slug.length === 2) {
     // Catalog product: /products/[category]/[productSlug]
     const [category, productSlug] = slug;
-    const result = findProductBySlug(category, productSlug, productsData);
-    if (!result) return { title: 'Product Not Found - Europack' };
-    const content = generateProductContent(result.product, result.category);
-    return {
-      title: content.metaTitle,
-      description: content.metaDescription,
-      keywords: content.keyFeatures.slice(0, 8).join(', '),
-      openGraph: {
-        title: content.metaTitle,
-        description: content.metaDescription,
-        images: [result.product.img].filter(Boolean),
-        type: 'website',
-      },
-      twitter: { card: 'summary_large_image', title: content.metaTitle, description: content.metaDescription },
-      alternates: { canonical: `/products/${category}/${productSlug}` },
-    };
+    return buildCatalogProductMetadata(category, productSlug);
   }
 
   // CMS product: /products/[slug]
@@ -98,26 +81,7 @@ export default async function ProductCatchAllPage({
   // ── TWO segments ─ catalog product ──────────────────
   if (slug.length === 2) {
     const [category, productSlug] = slug;
-    const result = findProductBySlug(category, productSlug, productsData);
-
-    if (!result) notFound();
-
-    const { product, category: categoryData, subCategory } = result!;
-    const content = generateProductContent(product, categoryData);
-    const relatedProducts = categoryData.subCategories
-      .flatMap((sub) => sub.products)
-      .filter((p) => p.id !== product.id)
-      .slice(0, 6);
-
-    return (
-      <ProductSubDetailClient
-        product={product}
-        category={categoryData}
-        subCategory={subCategory}
-        content={content}
-        relatedProducts={relatedProducts}
-      />
-    );
+    return <CatalogProductRoutePage categorySlug={category} productSlug={productSlug} />;
   }
 
   // ── ONE segment ─ CMS product ─────────────────────

@@ -4,6 +4,7 @@ import { productsData } from '@/constants/productsData'
 import { getAllProductSlugs } from '@/lib/productContentGenerator'
 import { getFlatSeoRoutes } from '@/lib/flatSeoRoutes'
 import { getAllSeoBlogEntries } from '@/constants/generatedBlogIndex'
+import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://europackindia.com' // Should be your production URL
@@ -62,14 +63,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }))
 
-  // Static catalog products
-  const catalogProductRoutes = getAllProductSlugs(productsData).map(({ category, productSlug }) => ({
-    url: `${baseUrl}/products/${category}/${productSlug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.9,
-  }));
-
   const flatSeoRoutes = getFlatSeoRoutes().map((route) => ({
     url: `${baseUrl}/${route.slug}`,
     lastModified: new Date(),
@@ -90,7 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const productsRes = await fetchAPI('/products')
     if (productsRes.success) {
       productRoutes = productsRes.data.map((p: any) => ({
-        url: `${baseUrl}/products/${p.slug}`,
+        url: `${baseUrl}/${p.slug}`,
         lastModified: new Date(p.updatedAt || new Date()),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
@@ -119,7 +112,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     ...staticRoutes, 
     ...flatSeoRoutes,
-    ...catalogProductRoutes,
     ...seoBlogRoutes,
     ...productRoutes, 
     ...blogRoutes

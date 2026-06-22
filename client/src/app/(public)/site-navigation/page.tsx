@@ -4,47 +4,81 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Map, ArrowRight, Globe, Box, Shield, Users, Mail, Phone, ChevronRight } from 'lucide-react';
+import { getFlatSeoRoutes } from '@/lib/flatSeoRoutes';
 
 export default function SitemapPage() {
+  const routes = getFlatSeoRoutes();
+
+  // Filter rich routes (categories)
+  const categoryRoutes = routes.filter((r) => r.type === 'rich').map((r) => ({
+    name: r.title,
+    href: `/${r.slug}`
+  }));
+
+  // Filter key pallet catalog products
+  const palletRoutes = routes
+    .filter((r) => r.type === 'catalog' && (r as any).categorySlug === 'wooden-pallets')
+    .slice(0, 8)
+    .map((r) => ({
+      name: (r as any).product.name,
+      href: `/${r.slug}`
+    }));
+
+  // Filter other packaging catalog products
+  const packingRoutes = routes
+    .filter((r) => r.type === 'catalog' && (r as any).categorySlug !== 'wooden-pallets')
+    .slice(0, 8)
+    .map((r) => ({
+      name: (r as any).product.name,
+      href: `/${r.slug}`
+    }));
+
   const sections = [
     {
       title: "Core Infrastructure",
       icon: <Globe className="text-[#FF6600]" size={24}/>,
       links: [
-        { name: "Home - Industrial Gateway", href: "/" },
+        { name: "Home - Gateway", href: "/" },
         { name: "About Europack India", href: "/about" },
         { name: "Industrial Services", href: "/services" },
-        { name: "Complete Product Catalog", href: "/products" },
-      ]
-    },
-    {
-      title: "Solutions Matrix",
-      icon: <Box className="text-[#FF6600]" size={24}/>,
-      links: [
-        { name: "Wooden Pallets", href: "/products?cat=Pallet%20Solutions" },
-        { name: "Corrugated Boxes", href: "/products?cat=Packaging%20Solutions" },
-        { name: "Industrial Engineering", href: "/services" },
-        { name: "ISPM-15 Compliance", href: "/about" },
-      ]
-    },
-    {
-      title: "Knowledge & Updates",
-      icon: <Shield className="text-[#FF6600]" size={24}/>,
-      links: [
-        { name: "Technical Blog", href: "/blog" },
+        { name: "Complete Catalog", href: "/products" },
+        { name: "Knowledge Blog", href: "/blog" },
         { name: "Project Gallery", href: "/gallery" },
-        { name: "Case Studies", href: "/case-studies" },
-        { name: "Industry FAQ", href: "/faq" },
-      ]
-    },
-    {
-      title: "Corporate & Support",
-      icon: <Users className="text-[#FF6600]" size={24}/>,
-      links: [
         { name: "Careers at Europack", href: "/careers" },
         { name: "Contact Our Engineers", href: "/contact" },
-        { name: "Privacy & Data Policy", href: "/privacy" },
-        { name: "Terms of Engagement", href: "/terms" },
+      ]
+    },
+    {
+      title: "Category Pages",
+      icon: <Box className="text-[#FF6600]" size={24}/>,
+      links: categoryRoutes.length > 0 ? categoryRoutes : [
+        { name: "Wooden Pallets", href: "/wooden-pallets" },
+        { name: "Corrugated Boxes", href: "/corrugated-boxes" },
+        { name: "Vacuum Packing Services", href: "/vacuum-packing" },
+        { name: "Cargo Lashing Materials", href: "/lashing-materials" },
+        { name: "Seaworthy Packing Solutions", href: "/seaworthy-packing" }
+      ]
+    },
+    {
+      title: "Pallet Solutions",
+      icon: <Shield className="text-[#FF6600]" size={24}/>,
+      links: palletRoutes.length > 0 ? palletRoutes : [
+        { name: "Euro Pallets", href: "/euro-pallets" },
+        { name: "Two Way Pallets", href: "/two-way-pallet" },
+        { name: "Four Way Pallets", href: "/four-way-pallet" },
+        { name: "CP1 Pallet", href: "/cp1-pallets" },
+        { name: "CP2 Pallet", href: "/cp2-pallets" }
+      ]
+    },
+    {
+      title: "Specialized Packaging",
+      icon: <Users className="text-[#FF6600]" size={24}/>,
+      links: packingRoutes.length > 0 ? packingRoutes : [
+        { name: "Dunnage Bags", href: "/dunnage-bags" },
+        { name: "Shrink Wrapping", href: "/shrink-wrapping" },
+        { name: "Stretch Wrapping", href: "/stretch-wrapping" },
+        { name: "Container Lashing", href: "/container-lashing" },
+        { name: "Export Packing", href: "/export-packing" }
       ]
     }
   ];

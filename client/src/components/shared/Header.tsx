@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useModal } from '../../context/ModalContext';
 import { productsData } from '../../constants/productsData';
+import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -244,7 +245,7 @@ export default function Header() {
                               {searchResults.map((result) => (
                                 <Link 
                                   key={result.id} 
-                                  href={`/products/${result.categoryId}/${result.id}`}
+                                  href={getCatalogProductPath(result.categoryId, result.id)}
                                   onClick={() => {
                                     setIsSearchOpen(false);
                                     setSearchQuery('');
@@ -336,7 +337,7 @@ export default function Header() {
                       {searchResults.map((result) => (
                         <Link 
                           key={result.id} 
-                          href={`/products/${result.categoryId}/${result.id}`}
+                          href={getCatalogProductPath(result.categoryId, result.id)}
                           onClick={() => {
                             setMobileOpen(false);
                             setSearchQuery('');

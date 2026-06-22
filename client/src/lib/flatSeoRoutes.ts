@@ -116,31 +116,44 @@ const catalogAliases = [
   { slug: 'export-packing', categorySlug: 'special-services', productSlug: 'export-packing' },
 ];
 
-function buildCatalogRoute(alias: (typeof catalogAliases)[number]): FlatSeoRoute | null {
-  const result = findProductBySlug(alias.categorySlug, alias.productSlug, productsData);
-  if (!result) return null;
+export function getProductFlatSlug(categorySlug: string, productSlug: string): string {
+  const alias = catalogAliases.find(
+    (a) => a.categorySlug === categorySlug && a.productSlug === productSlug
+  );
+  if (alias) return alias.slug;
 
-  const relatedProducts = result.category.subCategories
-    .flatMap((sub) => sub.products)
-    .filter((product) => product.id !== result.product.id)
-    .slice(0, 6);
-
-  return {
-    type: 'catalog',
-    slug: alias.slug,
-    categorySlug: alias.categorySlug,
-    productSlug: alias.productSlug,
-    product: result.product,
-    category: result.category,
-    subCategory: result.subCategory,
-    content: generateProductContent(result.product, result.category),
-    relatedProducts,
-  };
+  if (productSlug.match(/^cp\d+$/)) {
+    return `${productSlug}-pallets`;
+  }
+  return productSlug;
 }
 
-const catalogRoutes = catalogAliases
-  .map(buildCatalogRoute)
-  .filter((route): route is FlatSeoRoute => Boolean(route));
+const catalogRoutes: FlatSeoRoute[] = [];
+
+// Dynamically generate routes for all catalog products
+for (const category of productsData) {
+  for (const sub of category.subCategories) {
+    for (const product of sub.products) {
+      const slug = getProductFlatSlug(category.id, product.id);
+      const relatedProducts = category.subCategories
+        .flatMap((s) => s.products)
+        .filter((p) => p.id !== product.id)
+        .slice(0, 6);
+
+      catalogRoutes.push({
+        type: 'catalog',
+        slug,
+        categorySlug: category.id,
+        productSlug: product.id,
+        product,
+        category,
+        subCategory: sub,
+        content: generateProductContent(product, category),
+        relatedProducts,
+      });
+    }
+  }
+}
 
 const routes = [...richRoutes, ...catalogRoutes];
 const routeBySlug = new Map(routes.map((route) => [route.slug, route]));

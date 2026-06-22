@@ -187,8 +187,8 @@ export default function Footer() {
                  <div className="flex flex-wrap gap-2">
                    {[
                      { name: 'Export Packing', href: '/services' },
-                     { name: 'Vacuum Packing', href: '/products/vacuum-wrapping/vacuum-packaging' },
-                     { name: 'Lashing', href: '/products/corrugated-cargo-securing/container-lashing' },
+                     { name: 'Vacuum Packing', href: '/vacuum-packing' },
+                     { name: 'Lashing', href: '/container-lashing' },
                      { name: 'Container Stuffing', href: '/services' }
                    ].map(s => (
                      <Link key={s.name} href={s.href} className="px-3 py-1 bg-white/5 border border-white/5 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white hover:bg-[#FF6600]/20 transition-all">

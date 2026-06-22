@@ -6,9 +6,9 @@ import { ArrowRight, Package, Truck, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
 const productCTA = [
-  { title: "Wooden Pallets", desc: "Heavy-duty custom 4-way entry pallets.", icon: <Package/>, link: "/products/wooden-pallets" },
-  { title: "Industrial Crating", desc: "ISPM-15 certified export crates.", icon: <ShieldCheck/>, link: "/products/heavy-crating" },
-  { title: "Vacuum Packing", desc: "Military-grade barrier foil sealing.", icon: <Truck/>, link: "/products/vacuum-packing" }
+  { title: "Wooden Pallets", desc: "Heavy-duty custom 4-way entry pallets.", icon: <Package/>, link: "/wooden-pallets" },
+  { title: "Industrial Crating", desc: "ISPM-15 certified export crates.", icon: <ShieldCheck/>, link: "/wooden-boxes/wooden-crates" },
+  { title: "Vacuum Packing", desc: "Military-grade barrier foil sealing.", icon: <Truck/>, link: "/vacuum-packing" }
 ];
 
 export default function BlogProductLinks() {

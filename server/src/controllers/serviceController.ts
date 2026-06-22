@@ -4,7 +4,7 @@ import ServicePage from '../models/ServicePage';
 export const getServicePages = async (req: Request, res: Response) => {
   try {
     const isAdmin = req.query.admin === 'true';
-    const query = isAdmin ? {} : { visible: true, status: 'published' };
+    const query: any = isAdmin ? {} : { visible: true, status: 'published' };
     const pages = await ServicePage.find(query).sort({ createdAt: -1 }).lean();
     res.status(200).json({ success: true, data: pages });
   } catch (error: any) {

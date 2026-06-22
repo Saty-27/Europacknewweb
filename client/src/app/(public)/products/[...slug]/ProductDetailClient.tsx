@@ -10,6 +10,8 @@ import {
   Check, X, ChevronDown, FileText, Box, Anchor, Ship, Cpu, Monitor
 } from 'lucide-react';
 import EnquiryModal from '../../../../components/public/EnquiryModal';
+import { productsData } from '../../../../constants/productsData';
+import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
 
 // =====================================================
 // TYPES
@@ -584,6 +586,11 @@ export default function ProductDetailClient({
   allProducts: Product[];
 }) {
   const content = getContent(product.slug);
+  const matchedCategory = productsData.find(
+    (cat) => cat.title.toLowerCase() === product.category.toLowerCase() ||
+             cat.id.toLowerCase() === product.category.toLowerCase() ||
+             cat.id.toLowerCase() === product.slug.toLowerCase()
+  );
   const [activeImage, setActiveImage] = useState(getImageUrl(product.image));
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -623,8 +630,36 @@ export default function ProductDetailClient({
         {/* ═══════════════ SECTION 1: HERO ═══════════════ */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-24 lg:mb-32">
 
-          {/* LEFT: Content */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="lg:sticky lg:top-28">
+          {/* LEFT: Image Gallery */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+            {/* Main Image */}
+            <div className="aspect-[4/3] rounded-[40px] overflow-hidden bg-slate-50 border border-slate-100 relative group">
+              <img
+                src={activeImage}
+                alt={product.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              <div className="absolute top-6 left-6 bg-[#FF6600] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">
+                {product.category}
+              </div>
+            </div>
+
+            {/* Tagline card */}
+            <div className="bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-transparent" />
+              <div className="relative flex items-start gap-4">
+                <Award className="text-[#FF6600] shrink-0 mt-1" size={24} />
+                <div>
+                  <p className="font-black text-lg tracking-tight">{content.tagline}</p>
+                  <p className="text-slate-400 text-xs mt-1">Backed by Pan India presence across multiple locations</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT: Content */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="lg:sticky lg:top-28">
             <div className="inline-flex items-center gap-2 bg-orange-50 text-[#FF6600] text-[10px] font-black uppercase tracking-[0.25em] px-4 py-2 rounded-full mb-6">
               <Package size={12} /> {product.category}
             </div>
@@ -680,36 +715,79 @@ export default function ProductDetailClient({
               ))}
             </div>
           </motion.div>
-
-          {/* RIGHT: Image Gallery */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-            {/* Main Image */}
-            <div className="aspect-[4/3] rounded-[40px] overflow-hidden bg-slate-50 border border-slate-100 relative group">
-              <img
-                src={activeImage}
-                alt={product.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              <div className="absolute top-6 left-6 bg-[#FF6600] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">
-                {product.category}
-              </div>
-            </div>
-
-
-            {/* Tagline card */}
-            <div className="bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-transparent" />
-              <div className="relative flex items-start gap-4">
-                <Award className="text-[#FF6600] shrink-0 mt-1" size={24} />
-                <div>
-                  <p className="font-black text-lg tracking-tight">{content.tagline}</p>
-                  <p className="text-slate-400 text-xs mt-1">Backed by Pan India presence across multiple locations</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </section>
+
+        {/* ═══════════════ CATEGORY PRODUCT CARDS SECTION ═══════════════ */}
+        {matchedCategory && (
+          <section className="mb-24">
+            <SectionHeading label="Product Lineup" title={`Products in ${matchedCategory.title}`} />
+            
+            {/* Category Subcategories and product cards */}
+            <div className="space-y-20">
+              {matchedCategory.subCategories.map((sub, sIdx) => (
+                <div key={sIdx} className="space-y-10">
+                  <div className="flex items-center gap-4">
+                     <h3 className="text-[12px] font-black uppercase tracking-[0.4em] text-[#FF6600] whitespace-nowrap">{sub.title}</h3>
+                     <div className="h-px bg-slate-200 w-full" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     {sub.products.map((p) => (
+                       <motion.div 
+                         key={p.id}
+                         initial={{ opacity: 0, scale: 0.95 }}
+                         whileInView={{ opacity: 1, scale: 1 }}
+                         viewport={{ once: true }}
+                         className="group bg-white rounded-[40px] border border-slate-100 p-6 hover:shadow-2xl hover:shadow-orange-500/5 transition-all duration-500 flex flex-col"
+                       >
+                          <div className="relative h-60 rounded-[30px] overflow-hidden mb-8 bg-slate-50 border border-slate-100 flex items-center justify-center">
+                             <img 
+                               src={p.img} 
+                               alt={p.name} 
+                               className="w-full h-full object-contain p-10 group-hover:scale-110 transition-transform duration-700 mix-blend-multiply opacity-80"
+                               onError={(e: any) => {
+                                 e.target.src = '/images/product_icon_placeholder.png';
+                               }}
+                             />
+                             <div className="absolute top-4 right-4 text-[8px] font-black uppercase tracking-widest text-slate-300">EU-SPEC-ID: {p.id.slice(0,5).toUpperCase()}</div>
+                          </div>
+
+                          <div className="flex-grow flex flex-col px-2">
+                             <h4 className="text-xl font-black text-[#1A1F2C] tracking-tight mb-2 group-hover:text-[#FF6600] transition-colors">{p.name}</h4>
+                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">{p.subTitle}</p>
+                             
+                             <div className="space-y-4 mb-8">
+                                {p.specs.map((spec, idx) => (
+                                  <div key={idx} className="flex items-center gap-3 text-[11px] font-bold text-slate-500">
+                                     <div className="w-1.5 h-1.5 rounded-full bg-[#FF6600]" />
+                                     {spec}
+                                  </div>
+                                ))}
+                             </div>
+
+                            <div className="mt-auto space-y-3">
+                              <button 
+                                onClick={() => setIsQuoteOpen(true)}
+                                className="w-full py-4 rounded-2xl bg-[#F8FAFC] border border-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest hover:bg-[#FF6600] hover:text-white hover:border-transparent transition-all duration-300"
+                              >
+                                Request Engineering Specs
+                              </button>
+                              <Link 
+                                href={getCatalogProductPath(matchedCategory.id, p.id)}
+                                className="w-full py-4 rounded-2xl bg-white border border-slate-200 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all duration-300 flex items-center justify-center gap-2 no-underline"
+                              >
+                                View Detail <ChevronRight size={14} />
+                              </Link>
+                            </div>
+                          </div>
+                       </motion.div>
+                     ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* ═══════════════ SECTION 2: PRODUCT OVERVIEW ═══════════════ */}
         <section className="mb-24">
@@ -1083,7 +1161,7 @@ export default function ProductDetailClient({
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
               >
-                <Link href={`/products/${p.slug}`} className="group block no-underline">
+                <Link href={`/${p.slug}`} className="group block no-underline">
                   <div className="aspect-[4/3] rounded-3xl overflow-hidden bg-slate-50 mb-4 border border-slate-100 group-hover:shadow-xl group-hover:border-orange-100 transition-all">
                     <img src={getImageUrl(p.image)} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>

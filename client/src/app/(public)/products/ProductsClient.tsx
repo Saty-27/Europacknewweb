@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { productsData, Category } from '../../../constants/productsData';
 import InquiryModal from '@/components/layout/InquiryModal';
+import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
 
 const IconRenderer = ({ name, size = 20, className = "" }: { name: string, size?: number, className?: string }) => {
   const Icon = (LucideIcons as any)[name] || LucideIcons.Package;
@@ -249,7 +250,7 @@ export default function ProductsClient() {
                                   Request Engineering Specs
                                 </button>
                                 <Link 
-                                  href={`/products/${category.id}/${p.id}`}
+                                  href={getCatalogProductPath(category.id, p.id)}
                                   className="w-full py-4 rounded-2xl bg-white border border-slate-200 text-slate-400 text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all duration-300 flex items-center justify-center gap-2 no-underline"
                                 >
                                   View Detail <ChevronRight size={14} />
