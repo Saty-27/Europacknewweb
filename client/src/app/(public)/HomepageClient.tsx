@@ -486,7 +486,6 @@ function Services() {
                 <div className="absolute inset-0 border-[3px] border-[#FF6600]/0 group-hover:border-[#FF6600]/50 rounded-[32px] transition-all duration-500 pointer-events-none shadow-[inset_0_0_20px_rgba(255,102,0,0)] group-hover:shadow-[inset_0_0_20px_rgba(255,102,0,0.2)]"></div>
 
                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                  <p className="text-[#FF6600] text-[10px] font-black uppercase tracking-[0.2em] mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Service Excellence</p>
                   <h3 className="text-white text-2xl font-black mb-3 leading-tight">{s.name}</h3>
                   <p className="text-slate-300 text-[13px] font-medium leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 line-clamp-2">{s.desc}</p>
                 </div>
