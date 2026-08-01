@@ -310,21 +310,21 @@ function FeaturedProducts() {
       description: "ISPM-15 certified pallets built to handle heavy-duty export loads with reliability.",
       image: "/images/products/four-way-pallets.webp",
       features: ["Heat-treated pine wood", "Export compliant (ISPM-15)", "High load capacity", "Custom sizes available"],
-      href: "/wooden-pallets/four-way-pallet"
+      href: "/wooden-pallets"
     },
     {
       title: "Corrugated Boxes",
       description: "3-ply to 9-ply custom-printed corrugated boxes for any weight requirement.",
       image: "/images/products/corrugatedBoxes.png",
       features: ["7-ply extreme strength", "Moisture resistant coating", "Custom brand printing", "Stackable rigidity"],
-      href: "/corrugated-cartons/9ply-heavy-duty"
+      href: "/corrugated-boxes"
     },
     {
       title: "Dunnage Bags",
       description: "AAR-certified inflatable void fill bags for zero cargo shift in transit.",
       image: "/images/products/user_dunnage_bag.webp",
       features: ["AAR certified materials", "Zero cargo shifting", "Reusable heavy-duty valve", "High burst pressure"],
-      href: "/dunnage-bag/air-dunnage-bags"
+      href: "/dunnage-bags"
     },
     {
       title: "Seaworthy Packing",
@@ -338,14 +338,14 @@ function FeaturedProducts() {
       description: "Industrial grade heavy lashing straps and securing mechanisms.",
       image: "/images/products/user_lashing_materials.jpg",
       features: ["5 Ton load capacity", "Weather resistant poly", "Heavy duty ratchets", "Container compliant"],
-      href: "/lashing-materials/ratchet-belt"
+      href: "/lashing-materials"
     },
     {
       title: "Vacuum Packing",
       description: "Complete vacuum sealing for sensitive electronics and machinery.",
       image: "/images/products/user_vacuum_packing.png",
       features: ["100% moisture removal", "Dust and dirt proof", "Extends shelf life", "Anti-static options"],
-      href: "/vacuum-packaging/multilayer-laminated-vci"
+      href: "/vacuum-packing"
     }
   ];
 
