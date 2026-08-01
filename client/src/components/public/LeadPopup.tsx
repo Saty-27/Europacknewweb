@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, Phone, User, Mail, MessageSquare, Building2, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { fetchAPI } from '@/lib/api';
 
 interface LeadPopupProps {
   isOpen: boolean;
@@ -33,7 +34,35 @@ export default function LeadPopup({ isOpen, onClose, productName, config }: Lead
     setLoading(true);
     
     try {
-      // WhatsApp Redirection
+      // 1. Save to Database for Lead CRM and Submissions
+      await Promise.allSettled([
+        fetchAPI('/contact', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name || 'Anonymous',
+            email: formData.email || 'not-provided@europack.in',
+            phone: formData.phone,
+            company: formData.company,
+            subject: formData.subject,
+            message: formData.message
+          })
+        }),
+        fetchAPI('/enquiry', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name || 'Anonymous',
+            email: formData.email || 'not-provided@europack.in',
+            phone: formData.phone || '',
+            company: formData.company,
+            location: 'India',
+            service: productName || 'Product Lead',
+            message: formData.message,
+            status: 'New'
+          })
+        })
+      ]);
+
+      // 2. WhatsApp Redirection
       let waMessage = `Hello Europack! I am interested in *${productName}*.\n\n`;
       if (activeFields.includes('name')) waMessage += `*Name:* ${formData.name}\n`;
       if (activeFields.includes('company')) waMessage += `*Company:* ${formData.company}\n`;

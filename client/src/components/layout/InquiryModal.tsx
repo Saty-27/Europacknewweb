@@ -28,10 +28,25 @@ export default function InquiryModal({ isOpen, onClose }: InquiryModalProps) {
         message: formData.requirement
       };
 
-      const res = await fetchAPI('/contact', {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
+      const [res] = await Promise.all([
+        fetchAPI('/contact', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        }),
+        fetchAPI('/enquiry', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name,
+            company: formData.company,
+            email: formData.email,
+            phone: formData.phone,
+            location: 'India',
+            service: 'Modal Inquiry',
+            message: formData.requirement,
+            status: 'New'
+          })
+        })
+      ]);
 
       if (res.success) {
         setSuccess(true);

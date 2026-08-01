@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Send, MapPin, Phone, Mail, MessageSquare, Building, User, Target, ChevronRight } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
+import { fetchAPI } from '@/lib/api';
 
 interface ContactSectionProps {
   data: any;
@@ -35,20 +36,30 @@ export default function ContactSection({ data }: ContactSectionProps) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      await Promise.allSettled([
+        fetchAPI('/contact', {
+          method: 'POST',
+          body: JSON.stringify(formData)
+        }),
+        fetchAPI('/enquiry', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            location: 'India',
+            service: formData.subject || 'Homepage Contact',
+            message: formData.message,
+            status: 'New'
+          })
+        })
+      ]);
 
-      if (res.ok) {
-        toast.success('Message sent successfully!');
-        const whatsappMsg = `Hi Europack! I'm ${formData.name}. I'm interested in: ${formData.subject}. My message: ${formData.message}`;
-        window.open(`https://wa.me/919819030303?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
-        setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
-      } else {
-        toast.error('Failed to send message.');
-      }
+      toast.success('Message sent successfully!');
+      const whatsappMsg = `Hi Europack! I'm ${formData.name}. I'm interested in: ${formData.subject}. My message: ${formData.message}`;
+      window.open(`https://wa.me/919819030303?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
+      setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' });
     } catch (error) {
       toast.error('Network error.');
     } finally {

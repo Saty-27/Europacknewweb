@@ -25,38 +25,67 @@ export default function ContactForm() {
     setLoading(true);
     
     try {
-      // Map form fields to Web3Forms expectations
+      const selectedRequirement = formData.requirement === 'Others' ? formData.otherService : formData.requirement;
+      const subjectText = `New Contact Request: ${selectedRequirement}`;
+
+      // 1. Save to Database for Lead CRM (/api/enquiry) and Submissions (/api/contact)
+      await Promise.allSettled([
+        fetchAPI('/contact', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            subject: subjectText,
+            message: formData.message || selectedRequirement
+          })
+        }),
+        fetchAPI('/enquiry', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            location: 'India',
+            service: selectedRequirement || 'Contact Form',
+            message: formData.message,
+            status: 'New'
+          })
+        })
+      ]);
+
+      // 2. Also send via Web3Forms for email notifications
       const payload = {
         access_key: 'ab371d0f-9d36-494f-b6c3-b880f8cf5dca',
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         company: formData.company,
-        subject: `New Contact Request: ${formData.requirement === 'Others' ? formData.otherService : formData.requirement}`,
+        subject: subjectText,
         message: formData.message,
         from_name: 'Europack Website'
       };
 
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        toast.success('Technical Requirement Sent!', {
-          style: { background: '#1A1F2C', color: '#fff' }
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
         });
-        setSuccess(true);
-        setFormData({ name: '', email: '', phone: '', company: '', requirement: 'Export Crating', otherService: '', message: '' });
-      } else {
-        toast.error(result.message || 'Failed to submit requirement');
+      } catch (e) {
+        // Web3Forms optional notification failure shouldn't block user success
       }
+      
+      toast.success('Technical Requirement Sent!', {
+        style: { background: '#1A1F2C', color: '#fff' }
+      });
+      setSuccess(true);
+      setFormData({ name: '', email: '', phone: '', company: '', requirement: 'Export Crating', otherService: '', message: '' });
     } catch (err) {
       toast.error('Network error. Please try again later.');
     } finally {

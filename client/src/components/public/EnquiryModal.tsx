@@ -38,28 +38,56 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          access_key: 'ab371d0f-9d36-494f-b6c3-b880f8cf5dca',
-          ...formData,
-          service: serviceName,
-          from_name: 'Europack Inquiry',
-          subject: `New Quote Request: ${serviceName}`
+      // 1. Save to Database for Lead CRM and Submissions
+      await Promise.allSettled([
+        fetchAPI('/contact', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            subject: `New Quote Request: ${serviceName}`,
+            message: `Enquiry for ${serviceName}`
+          })
+        }),
+        fetchAPI('/enquiry', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            location: formData.location || 'India',
+            service: serviceName,
+            message: `Enquiry for ${serviceName}`,
+            status: 'New'
+          })
         })
-      });
-      
-      const result = await response.json();
-      if (result.success) {
-        setIsSuccess(true);
-        toast.success('Enquiry submitted successfully');
-      } else {
-        throw new Error(result.message || 'Failed to submit enquiry');
+      ]);
+
+      // 2. Also send via Web3Forms for email notification
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            access_key: 'ab371d0f-9d36-494f-b6c3-b880f8cf5dca',
+            ...formData,
+            service: serviceName,
+            from_name: 'Europack Inquiry',
+            subject: `New Quote Request: ${serviceName}`
+          })
+        });
+      } catch (e) {
+        // Optional email notification fail silently
       }
+
+      setIsSuccess(true);
+      toast.success('Enquiry submitted successfully');
     } catch (error: any) {
       toast.error(error.message || 'Failed to submit enquiry');
     } finally {
