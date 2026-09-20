@@ -14,6 +14,12 @@ export type FlatSeoRoute =
       metaTitle: string;
       description: string;
       category: string;
+      /**
+       * productsData category whose products make up this page's "Product Lineup".
+       * Stated explicitly because `category` above is display copy that doesn't
+       * always match a catalog id — when it didn't, the lineup silently vanished.
+       */
+      catalogCategoryId: string;
       image: string;
       features: string[];
     }
@@ -39,6 +45,7 @@ const richRoutes: FlatSeoRoute[] = [
     description:
       'Seaworthy packing and seaworthy packaging solutions for export cargo, heavy machinery, VCI protection, pinewood boxes, and ocean freight shipments in Mumbai, Vadodara, Makarpura, Nandesari, Savli GIDC and across India.',
     category: 'Export Packaging',
+    catalogCategoryId: 'special-services',
     image: '/images/products/user_seaworthy_laminates.jpg',
     features: [
       'Seaworthy export packing for ocean freight',
@@ -57,6 +64,7 @@ const richRoutes: FlatSeoRoute[] = [
     description:
       'ISPM-15 wooden pallets manufacturer and supplier for export cargo, warehouse storage, four-way pallets, two-way pallets, CP pallets and custom industrial pallets in Mumbai, Vadodara and across India.',
     category: 'Wooden Pallets',
+    catalogCategoryId: 'wooden-pallets',
     image: '/images/products/four-way-pallets.webp',
     features: [
       'ISPM-15 heat-treated export pallets',
@@ -74,6 +82,7 @@ const richRoutes: FlatSeoRoute[] = [
     description:
       '3-ply to 9-ply corrugated boxes, printed cartons and heavy-duty export cartons for industrial packaging, FMCG, pharma and automotive supply chains.',
     category: 'Corrugated Boxes',
+    catalogCategoryId: 'corrugated-cartons',
     image: '/images/products/corrugatedBoxes.png',
     features: ['3-ply to 9-ply construction', 'Printed and plain cartons', 'Bulk industrial supply', 'Custom sizes and high BCT strength'],
   },
@@ -86,6 +95,7 @@ const richRoutes: FlatSeoRoute[] = [
     description:
       'Industrial vacuum packing, aluminum barrier foil sealing, VCI vacuum packaging and moisture-proof export packing for machinery and electronics.',
     category: 'Vacuum Packing',
+    catalogCategoryId: 'vacuum-packaging',
     image: '/images/products/user_vacuum_packing.png',
     features: ['Hermetic vacuum sealing', 'Aluminum barrier foil', 'VCI and desiccant protection', 'On-site export packing'],
   },
@@ -98,6 +108,7 @@ const richRoutes: FlatSeoRoute[] = [
     description:
       'Container lashing, ratchet belts, steel wire rope, chain lashing and cargo securing systems for export shipments and heavy machinery.',
     category: 'Lashing Materials',
+    catalogCategoryId: 'lashing-materials',
     image: '/images/products/user_lashing_materials.jpg',
     features: ['Container lashing', 'Ratchet belts and chain lashing', 'ODC cargo securing', 'Port and factory deployment'],
   },
@@ -156,7 +167,16 @@ for (const category of productsData) {
 }
 
 const routes = [...richRoutes, ...catalogRoutes];
-const routeBySlug = new Map(routes.map((route) => [route.slug, route]));
+
+// A catalog product can generate the same flat slug as a rich landing page —
+// special-services/seaworthy-packing collides with /seaworthy-packing. The rich
+// page is the SEO landing page (and a redirect target), so it wins the slug.
+const routeBySlug = new Map<string, FlatSeoRoute>();
+for (const route of routes) {
+  const existing = routeBySlug.get(route.slug);
+  if (existing && existing.type === 'rich' && route.type === 'catalog') continue;
+  routeBySlug.set(route.slug, route);
+}
 
 export function getFlatSeoRoutes() {
   return routes;
