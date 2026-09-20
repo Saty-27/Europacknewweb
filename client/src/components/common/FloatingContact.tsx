@@ -9,7 +9,9 @@ export default function FloatingContact() {
   const whatsappNumber = '919820090775';
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9998] flex flex-col gap-3">
+    // z-2000 keeps these above all page content (header sits at 210) but below the
+    // modals, which start at 3000 — at 9998 they floated over every open dialog.
+    <div className="fixed bottom-6 right-6 z-[2000] flex flex-col gap-3">
       {/* WhatsApp Button */}
       <motion.a
         href={`https://wa.me/${whatsappNumber}`}

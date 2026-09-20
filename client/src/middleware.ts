@@ -1,8 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getDoorwayRedirect } from '@/lib/doorwayRedirects';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Retired programmatic doorway blog URLs -> the product page they stood in for.
+  // Permanent (301) so Google drops the old URL and the link equity moves across.
+  if (pathname.startsWith('/blog/')) {
+    const slug = pathname.slice('/blog/'.length);
+    const target = getDoorwayRedirect(slug);
+    if (target) {
+      return NextResponse.redirect(new URL(target, request.url), 301);
+    }
+  }
 
   // Intercept root-level .html files (e.g. Google / Bing verification files)
   if (pathname.toLowerCase().endsWith('.html') && pathname.split('/').length === 2) {

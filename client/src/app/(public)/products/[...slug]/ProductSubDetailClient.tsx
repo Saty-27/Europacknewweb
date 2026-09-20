@@ -9,7 +9,9 @@ import {
   ChevronDown, Package, Factory, Truck, Warehouse, HeartPulse,
   FlaskConical, HardHat, Settings
 } from 'lucide-react';
-import type { Category, SubCategory } from '../../../../constants/productsData';
+import type { Category, PalletSpec, SubCategory } from '../../../../constants/productsData';
+import SpecTable from '@/components/products/SpecTable';
+import ProductJsonLd from '@/components/products/ProductJsonLd';
 import type { GeneratedProductContent } from '../../../../lib/productContentGenerator';
 import { useModal } from '../../../../context/ModalContext';
 import Counter from '../../../../components/common/Counter';
@@ -51,12 +53,55 @@ function getImageUrl(path: string) {
 // PROPS
 // ──────────────────────────────────────────────
 interface Props {
-  product: { id: string; name: string; subTitle: string; specs: string[]; img: string };
+  product: {
+    id: string; name: string; subTitle: string; specs: string[]; img: string;
+    seoTitle?: string; h1?: string; spec?: PalletSpec;
+  };
   category: Category;
   subCategory: SubCategory;
   content: GeneratedProductContent;
   relatedProducts: { id: string; name: string; subTitle: string; specs: string[]; img: string }[];
 }
+
+/**
+ * Sub-type pages that belong under the /wooden-pallets hub, including the two
+ * timber pages that live in a different catalog category. The hub is the only
+ * page targeting "wooden pallet manufacturer"; these link up to it so it is
+ * unambiguous which page owns that term.
+ */
+const WOODEN_PALLET_HUB_PRODUCTS = new Set([
+  'euro-pallets', 'two-way-pallet', 'four-way-pallet', 'hardwood-pallet',
+  'cp1', 'cp2', 'cp3', 'cp4', 'cp5', 'cp6', 'cp7', 'cp8', 'cp9',
+  'plywood-pallet', 'reusable-collar', 'molded-pallets', 'collapsible-reusable',
+  'press-wood-pallet', 'nz-pine', 'jungle-wood',
+]);
+
+/**
+ * Pairs a buyer would genuinely put side by side. Anchor text is written per
+ * pair rather than reused, so the cross-links don't read as a template.
+ */
+const CROSS_LINKS: Record<string, { slug: string; label: string }[]> = {
+  'two-way-pallet': [{ slug: 'four-way-pallet', label: 'four-way entry pallets' }],
+  'four-way-pallet': [{ slug: 'two-way-pallet', label: 'two-way entry pallets' }],
+  'hardwood-pallet': [{ slug: 'nz-pine', label: 'NZ pine pallets' }],
+  'nz-pine': [{ slug: 'jungle-wood', label: 'jungle wood' }, { slug: 'hardwood-pallet', label: 'hardwood pallets' }],
+  'jungle-wood': [{ slug: 'nz-pine', label: 'New Zealand pine' }],
+  'molded-pallets': [{ slug: 'press-wood-pallet', label: 'press wood pallets' }],
+  'press-wood-pallet': [{ slug: 'molded-pallets', label: 'moulded pallets' }],
+  'reusable-collar': [{ slug: 'collapsible-reusable', label: 'collapsible pallet boxes' }],
+  'collapsible-reusable': [{ slug: 'reusable-collar', label: 'pallet collars' }],
+  'plywood-pallet': [{ slug: 'molded-pallets', label: 'moulded pallets' }],
+  'euro-pallets': [{ slug: 'cp2-pallets', label: 'the CP2 chemical pallet' }],
+  cp1: [{ slug: 'cp3-pallets', label: 'CP3' }],
+  cp2: [{ slug: 'euro-pallets', label: 'the standard euro pallet' }],
+  cp3: [{ slug: 'cp9-pallets', label: 'CP9' }],
+  cp4: [{ slug: 'cp1-pallets', label: 'CP1' }],
+  cp5: [{ slug: 'cp7-pallets', label: 'CP7' }],
+  cp6: [{ slug: 'cp1-pallets', label: 'CP1' }],
+  cp7: [{ slug: 'cp5-pallets', label: 'CP5' }],
+  cp8: [{ slug: 'cp3-pallets', label: 'CP3' }],
+  cp9: [{ slug: 'cp3-pallets', label: 'CP3' }],
+};
 
 // ──────────────────────────────────────────────
 // MAIN COMPONENT
@@ -75,8 +120,31 @@ export default function ProductSubDetailClient({
     .filter((v, i, a) => a.indexOf(v) === i)
     .slice(0, 5);
 
+  const canonicalPath = getCatalogProductPath(category.id, product.id);
+  const underWoodenPalletHub = WOODEN_PALLET_HUB_PRODUCTS.has(product.id);
+  const crossLinks = CROSS_LINKS[product.id] ?? [];
+  const breadcrumbs = [
+    { name: 'Home', path: '/' },
+    { name: 'Products', path: '/products' },
+    underWoodenPalletHub
+      ? { name: 'Wooden Pallets', path: '/wooden-pallets' }
+      : { name: category.title, path: `/products#${category.id}` },
+    { name: product.name, path: canonicalPath },
+  ];
+
   return (
     <div className="bg-white min-h-screen">
+
+      <ProductJsonLd
+        name={product.name}
+        description={content.metaDescription}
+        images={allImages}
+        category={category.title}
+        path={canonicalPath}
+        spec={product.spec}
+        faq={content.faq}
+        breadcrumbs={breadcrumbs}
+      />
 
       {/* ── MOBILE STICKY CTA ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex border-t border-slate-100 bg-white shadow-2xl">
@@ -101,7 +169,11 @@ export default function ProductSubDetailClient({
           <ChevronRight size={10} />
           <Link href="/products" className="hover:text-[#FF6600] transition-colors">Products</Link>
           <ChevronRight size={10} />
-          <Link href={`/products#${category.id}`} className="hover:text-[#FF6600] transition-colors">{category.title}</Link>
+          {underWoodenPalletHub ? (
+            <Link href="/wooden-pallets" className="hover:text-[#FF6600] transition-colors">Wooden Pallets</Link>
+          ) : (
+            <Link href={`/products#${category.id}`} className="hover:text-[#FF6600] transition-colors">{category.title}</Link>
+          )}
           <ChevronRight size={10} />
           <span className="text-slate-500">{subCategory.title}</span>
           <ChevronRight size={10} />
@@ -122,10 +194,16 @@ export default function ProductSubDetailClient({
 
             {/* H1 */}
             <div>
+              {/*
+                The descriptor sits outside the <h1>. Nested inside it, the
+                heading's extracted text ran the two together — "CP3 Pallet1140
+                × 1140 mm" — which is what Google, screen readers and the SERP
+                snippet read, even though it looked right on screen.
+              */}
               <h1 className="text-3xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tighter">
-                {product.name}
-                <span className="block text-[#FF6600] text-lg font-black mt-1 uppercase tracking-widest">{product.subTitle}</span>
+                {content.h1}
               </h1>
+              <p className="block text-[#FF6600] text-lg font-black mt-1 uppercase tracking-widest">{content.h1Sub}</p>
               <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-2">Manufacturer in Mumbai, India — Europack Industries</p>
             </div>
 
@@ -327,11 +405,56 @@ export default function ProductSubDetailClient({
         {/* ══════════════════════════════════════
             SECTION 11: DETAILED TECHNICAL SPECS
         ══════════════════════════════════════ */}
+        {product.spec && (
+          <section className="mb-16">
+            <SectionHeading label="Specification" title={`${product.name} — Specification`} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+              <SpecTable spec={product.spec} productName={product.name} />
+              <div className="bg-slate-50 rounded-2xl border border-slate-100 p-7 space-y-4">
+                <h3 className="text-sm font-black text-slate-900 uppercase tracking-wide">
+                  Europack manufactures {product.name.toLowerCase()} in Mumbai and Vadodara
+                </h3>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Every figure above is what we build to as standard. Sizes, deck
+                  layouts and load ratings outside this specification are made to
+                  order — send us the cargo weight, footprint and destination and we
+                  will confirm the build before you commit.
+                </p>
+                {underWoodenPalletHub && (
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    This is one of the sub-types in our{' '}
+                    <Link href="/wooden-pallets" className="text-[#FF6600] font-bold">wooden pallets</Link>{' '}
+                    range
+                    {crossLinks.length > 0 && (
+                      <>
+                        . Buyers comparing this page usually also look at{' '}
+                        {crossLinks.map((link, i) => (
+                          <span key={link.slug}>
+                            {i > 0 && ' and '}
+                            <Link href={`/${link.slug}`} className="text-[#FF6600] font-bold">{link.label}</Link>
+                          </span>
+                        ))}
+                      </>
+                    )}
+                    .
+                  </p>
+                )}
+                <button
+                  onClick={openEnquiryModal}
+                  className="bg-slate-900 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#FF6600] transition-colors"
+                >
+                  Confirm a Build Spec
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="mb-16">
           <SectionHeading label="Technical Data" title="Detailed Technical Specifications" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-              <table className="w-full">
+            <div className="overflow-x-auto rounded-2xl border border-slate-100 shadow-sm">
+              <table className="w-full min-w-[420px]">
                 <thead>
                   <tr className="bg-slate-900 text-white">
                     <th className="text-left px-6 py-3.5 text-[10px] font-black uppercase tracking-widest" colSpan={2}>Technical Parameters</th>
@@ -520,13 +643,21 @@ export default function ProductSubDetailClient({
                   <span className="font-black text-slate-900 text-sm pr-4">{item.q}</span>
                   <ChevronDown size={15} className={`text-[#FF6600] shrink-0 transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
                 </button>
-                {openFaq === i && (
-                  <div
-                    className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4"
-                  >
-                    {item.a}
+                {/*
+                  Answers stay in the DOM and are collapsed with CSS. Rendering
+                  only the open one meant eleven of the twelve answers were
+                  absent from the served HTML, so they were invisible to
+                  crawlers and could not be declared in FAQPage schema.
+                */}
+                <div
+                  className={`grid transition-all duration-300 ${openFaq === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                      {item.a}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>

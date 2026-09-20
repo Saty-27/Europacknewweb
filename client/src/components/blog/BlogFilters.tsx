@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const categories = [
+const defaultCategories = [
   "All Blogs",
   "Wooden Pallets",
   "Seaworthy Packing",
@@ -12,7 +12,17 @@ const categories = [
   "Corrugated Boxes"
 ];
 
-export default function BlogFilters({ activeCategory, setActiveCategory }: any) {
+// `categories` is passed in by the blog index so the filter bar reflects the
+// categories the published articles actually use.
+export default function BlogFilters({
+  categories = defaultCategories,
+  activeCategory,
+  setActiveCategory,
+}: {
+  categories?: string[];
+  activeCategory: string;
+  setActiveCategory: (category: string) => void;
+}) {
   return (
     <div className="sticky top-[80px] lg:top-[90px] z-[100] bg-white border-b border-slate-100">
       <div className="container max-w-7xl mx-auto px-6">

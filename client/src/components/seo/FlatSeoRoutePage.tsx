@@ -81,6 +81,7 @@ export default function FlatSeoRoutePage({ slug }: { slug: string }) {
           active: true,
         }}
         allProducts={allProducts}
+        catalogCategoryId={route.catalogCategoryId}
       />
     );
   }

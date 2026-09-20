@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowRight, Plus, Minus, MessagesSquare } from 'lucide-react';
 
 interface TechFAQProps {
@@ -103,22 +103,24 @@ export default function TechFAQ({ onOpenModal }: TechFAQProps) {
                     {open === i ? <Minus size={18} strokeWidth={3}/> : <Plus size={18} strokeWidth={3}/>}
                   </div>
                 </button>
-                <AnimatePresence>
-                  {open === i && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="px-8 pb-8"
-                    >
+                {/*
+                  Every answer is rendered and collapsed with CSS rather than
+                  mounted on open. Only the open answer used to exist in the
+                  DOM, so the rest never reached crawlers or FAQPage schema.
+                */}
+                <div
+                  className={`grid transition-all duration-500 ${open === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-8 pb-8">
                       <div className="pt-4 border-t border-slate-50">
                         <p className="text-slate-500 leading-relaxed font-medium">
                           {f.a}
                         </p>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>

@@ -1,9 +1,45 @@
+/**
+ * A pallet spec row set. Every field is optional and every value here is
+ * transcribed from something this repo already states about the product —
+ * its subTitle, its `specs` bullets, or its category's material/treatment
+ * record in productContentGenerator. Nothing is filled in from the CP or
+ * EPAL standards. A fact we do not hold is left undefined, and SpecTable
+ * drops the row rather than printing "N/A" or "Varies".
+ */
+export interface PalletSpec {
+  dimensions?: string;
+  height?: string;
+  entryType?: string;
+  construction?: string;
+  deckBoards?: string;
+  timber?: string;
+  staticLoad?: string;
+  dynamicLoad?: string;
+  rackingLoad?: string;
+  unladenWeight?: string;
+  moistureContent?: string;
+  treatment?: string;
+  marking?: string;
+  standard?: string;
+  applications?: string;
+}
+
 export interface Product {
   id: string;
   name: string;
   subTitle: string;
   img: string;
   specs: string[];
+  /**
+   * Page title for this product, <=60 chars. One distinct query cluster per
+   * page: only /wooden-pallets carries the broad "wooden pallet manufacturer"
+   * head term, so these must not repeat it. Falls back to the generated
+   * "<name> Manufacturer in Mumbai | ..." title when absent.
+   */
+  seoTitle?: string;
+  /** H1 carrying this page's own distinct term, not the shared one. */
+  h1?: string;
+  spec?: PalletSpec;
 }
 
 export interface SubCategory {
@@ -31,33 +67,33 @@ export const productsData: Category[] = [
       {
         title: "Standard Pallets",
         products: [
-          { id: "euro-pallets", name: "Euro Pallets", subTitle: "800 x 1200 mm Standard", img: "/images/products/user_wooden_pallet.webp", specs: ["ISPM-15 Heat Treated", "Load: 1500kg Dynamic", "EPAL Certified", "Standardized Dimensions", "Four-Way Entry"] },
-          { id: "two-way-pallet", name: "Two Way Pallets", subTitle: "Heavy Load Longitudinal", img: "/images/products/two-way-pallets.jpeg", specs: ["Dual Loading Direction", "High Static Support", "Pine or Hardwood", "Custom Load Specs", "Ideal for Racking"] },
-          { id: "four-way-pallet", name: "Four Way Pallets", subTitle: "Uni-directional Entry", img: "/images/products/four-way-pallets.webp", specs: ["All-Side Forklift Entry", "Maximized Storage Flow", "Pine / Rubberwood", "Reinforced Block Design", "Export Ready"] },
-          { id: "hardwood-pallet", name: "Hardwood Pallets", subTitle: "Maximum Structural Strength", img: "/images/products/hardwood-pallets.jpg", specs: ["Dense Jungle Wood", "Heavy Machinery Grade", "Extreme Durability", "Screw-Nail Fastened", "Low Moisture Content"] },
+          { id: "euro-pallets", name: "Euro Pallets", subTitle: "800 × 1200 mm Standard", img: "/images/products/user_wooden_pallet.webp", specs: ["ISPM-15 Heat Treated", "Load: 1500kg Dynamic", "EPAL Certified", "Standardized Dimensions", "Four-Way Entry"], seoTitle: "Euro Pallet (1200×800mm) — EPAL Size & Specs", h1: "Euro Pallet — 1200 × 800 mm", spec: { dimensions: "1200 × 800 mm", entryType: "Four-way entry", timber: "Heat-treated pine / hardwood", dynamicLoad: "1,500 kg", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "EPAL certified · ISPM-15 / IPPC", applications: "Standardised export and warehouse unitisation" } },
+          { id: "two-way-pallet", name: "Two Way Pallets", subTitle: "Heavy Load Longitudinal", img: "/images/products/two-way-pallets.jpeg", specs: ["Dual Loading Direction", "High Static Support", "Pine or Hardwood", "Custom Load Specs", "Ideal for Racking"], seoTitle: "Two-Way Entry Pallets — Sizes & Load Capacity", h1: "Two-Way Entry Pallets — Heavy Load Longitudinal", spec: { entryType: "Two-way entry (longitudinal, dual loading direction)", timber: "Pine or hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "ISPM-15 / IPPC · ISO 9001:2015 · BIS IS:1276", applications: "Warehouse racking and high static-load storage" } },
+          { id: "four-way-pallet", name: "Four Way Pallets", subTitle: "Four-Way Forklift Entry", img: "/images/products/four-way-pallets.webp", specs: ["All-Side Forklift Entry", "Maximized Storage Flow", "Pine / Rubberwood", "Reinforced Block Design", "Export Ready"], seoTitle: "Four-Way Entry Pallets — Sizes & Load Capacity", h1: "Four-Way Entry Pallets — All-Side Forklift Entry", spec: { entryType: "Four-way entry (forklift access on all four sides)", construction: "Reinforced block design", timber: "Pine / rubberwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "ISPM-15 / IPPC · ISO 9001:2015 · BIS IS:1276", applications: "Export cargo and high-turnover warehouse flow" } },
+          { id: "hardwood-pallet", name: "Hardwood Pallets", subTitle: "Maximum Structural Strength", img: "/images/products/hardwood-pallets.jpg", specs: ["Dense Jungle Wood", "Heavy Machinery Grade", "Extreme Durability", "Screw-Nail Fastened", "Low Moisture Content"], seoTitle: "Hardwood Pallets — Heavy Duty, High Load", h1: "Hardwood Pallets — Maximum Structural Strength", spec: { construction: "Screw-nail fastened", timber: "Dense jungle wood (hardwood)", moistureContent: "Low moisture content", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "ISPM-15 / IPPC · ISO 9001:2015 · BIS IS:1276", applications: "Heavy machinery and capital equipment" } },
         ]
       },
       {
         title: "Chemical Pallets (CP Series)",
         products: [
-          { id: "cp1", name: "CP1 Pallet", subTitle: "1000 x 1200 mm", img: "/images/products/user_cp1_pallets.webp", specs: ["Chemical Industry Standard", "Peripheral Deck", "Safe for Bagged Goods", "ISPM-15 Compliant", "Stackable Design"] },
-          { id: "cp2", name: "CP2 Pallet", subTitle: "800 x 1200 mm", img: "/images/products/user_cp2_pallets.webp", specs: ["Euro Standard Size", "Euro-Pallet Variant", "Robust Construction", "Safe Cargo Transit", "Industry Certified"] },
-          { id: "cp3", name: "CP3 Pallet", subTitle: "1140 x 1140 mm", img: "/images/products/user_cp3_pallets.webp", specs: ["Container-Optimized", "Ideal for Drums", "Stable Loading Base", "High Puncture Resistance", "Global Shipping Grade"] },
-          { id: "cp4", name: "CP4 Pallet", subTitle: "1140 x 1140 mm (Peripheral)", img: "/images/products/user_cp4_pallets.webp", specs: ["Bagged Goods Support", "No Sharp Edges", "Smooth Decking", "ISPM-15 Certified", "Refined Wood Finish"] },
-          { id: "cp5", name: "CP5 Pallet", subTitle: "760 x 1140 mm", img: "/images/products/user_cp5_pallets.webp", specs: ["Small Format Bags", "Standard CP Design", "High Unitization", "Treated Timber", "Global Acceptability"] },
-          { id: "cp6", name: "CP6 Pallet", subTitle: "1200 x 1000 mm (Double)", img: "/images/products/user_cp6_pallets.webp", specs: ["Double Deck Design", "Maximum Rigidity", "High Stack Loading", "Chemical Grade", "Export Compliant"] },
-          { id: "cp7", name: "CP7 Pallet", subTitle: "1300 x 1100 mm", img: "/images/products/user_cp7_pallets.webp", specs: ["Extra Wide Base", "Oversized Bags", "Stable Footing", "ISPM-15 Pine", "Precision Sized"] },
-          { id: "cp8", name: "CP8 Pallet", subTitle: "1140 x 1140 mm (Drilled)", img: "/images/products/user_cp8_pallets.webp", specs: ["Drum Discharge Design", "High Strength", "Solid Perimeter", "Chemical Safe", "ISPM-15 HT"] },
-          { id: "cp9", name: "CP9 Pallet", subTitle: "1140 x 1140 mm (Elite)", img: "/images/products/user_cp9_pallets.webp", specs: ["Full Peripheral Base", "Max Stability", "Elite CP Quality", "Stacking Friendly", "International Export"] },
+          { id: "cp1", name: "CP1 Pallet", subTitle: "1000 × 1200 mm", img: "/images/products/user_cp1_pallets.webp", specs: ["Chemical Industry Standard", "Peripheral Deck", "Safe for Bagged Goods", "ISPM-15 Compliant", "Stackable Design"], seoTitle: "CP1 Pallet (1000×1200mm) — Size & Specs", h1: "CP1 Pallet — 1000 × 1200 mm", spec: { dimensions: "1000 × 1200 mm", construction: "Peripheral deck, stackable", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "Bagged chemical goods" } },
+          { id: "cp2", name: "CP2 Pallet", subTitle: "800 × 1200 mm", img: "/images/products/user_cp2_pallets.webp", specs: ["Euro Standard Size", "Euro-Pallet Variant", "Robust Construction", "Safe Cargo Transit", "Industry Certified"], seoTitle: "CP2 Pallet (800×1200mm) — Size & Specs", h1: "CP2 Pallet — Euro-Pallet Variant", spec: { dimensions: "800 × 1200 mm", construction: "Euro-pallet variant, robust construction", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC" } },
+          { id: "cp3", name: "CP3 Pallet", subTitle: "1140 × 1140 mm", img: "/images/products/user_cp3_pallets.webp", specs: ["Container-Optimized", "Ideal for Drums", "Stable Loading Base", "High Puncture Resistance", "Global Shipping Grade"], seoTitle: "CP3 Pallet (1140×1140mm) — Size & Specs", h1: "CP3 Pallet — 1140 × 1140 mm", spec: { dimensions: "1140 × 1140 mm", construction: "Container-optimised, stable loading base", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "Drummed goods and container loads" } },
+          { id: "cp4", name: "CP4 Pallet", subTitle: "1140 × 1140 mm (Peripheral)", img: "/images/products/user_cp4_pallets.webp", specs: ["Bagged Goods Support", "No Sharp Edges", "Smooth Decking", "ISPM-15 Certified", "Refined Wood Finish"], seoTitle: "CP4 Pallet — Size, Specs & Chemical Use", h1: "CP4 Pallet — Smooth Deck for Bagged Goods", spec: { dimensions: "1140 × 1140 mm", construction: "Peripheral deck, smooth decking, no sharp edges", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "Bagged goods" } },
+          { id: "cp5", name: "CP5 Pallet", subTitle: "760 × 1140 mm", img: "/images/products/user_cp5_pallets.webp", specs: ["Small Format Bags", "Standard CP Design", "High Unitization", "Treated Timber", "Global Acceptability"], seoTitle: "CP5 Pallet (760×1140mm) — Size & Specs", h1: "CP5 Pallet — Small-Format Bag Handling", spec: { dimensions: "760 × 1140 mm", construction: "Standard CP design", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "Small-format bags" } },
+          { id: "cp6", name: "CP6 Pallet", subTitle: "1200 × 1000 mm (Double)", img: "/images/products/user_cp6_pallets.webp", specs: ["Double Deck Design", "Maximum Rigidity", "High Stack Loading", "Chemical Grade", "Export Compliant"], seoTitle: "CP6 Pallet (1200×1000mm) — Size & Specs", h1: "CP6 Pallet — Double-Deck Construction", spec: { dimensions: "1200 × 1000 mm", construction: "Double-deck design", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "High stack loading" } },
+          { id: "cp7", name: "CP7 Pallet", subTitle: "1300 × 1100 mm", img: "/images/products/user_cp7_pallets.webp", specs: ["Extra Wide Base", "Oversized Bags", "Stable Footing", "ISPM-15 Pine", "Precision Sized"], seoTitle: "CP7 Pallet (1300×1100mm) — Size & Specs", h1: "CP7 Pallet — Extra-Wide Base", spec: { dimensions: "1300 × 1100 mm", construction: "Extra-wide base", timber: "ISPM-15 pine", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "Oversized bags" } },
+          { id: "cp8", name: "CP8 Pallet", subTitle: "1140 × 1140 mm (Drilled)", img: "/images/products/user_cp8_pallets.webp", specs: ["Drum Discharge Design", "High Strength", "Solid Perimeter", "Chemical Safe", "ISPM-15 HT"], seoTitle: "CP8 Pallet (1140×1140mm) — Size & Specs", h1: "CP8 Pallet — Drum Discharge Design", spec: { dimensions: "1140 × 1140 mm", construction: "Solid perimeter, drilled for drum discharge", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "Drum discharge" } },
+          { id: "cp9", name: "CP9 Pallet", subTitle: "1140 × 1140 mm (Elite)", img: "/images/products/user_cp9_pallets.webp", specs: ["Full Peripheral Base", "Max Stability", "Elite CP Quality", "Stacking Friendly", "International Export"], seoTitle: "CP9 Pallet (1140×1140mm) — Size & Specs", h1: "CP9 Pallet — 1140 × 1140 mm", spec: { dimensions: "1140 × 1140 mm", construction: "Full peripheral base", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "CP series (chemical industry standard) · ISPM-15 / IPPC", applications: "International export, stacked loads" } },
         ]
       },
       {
         title: "Special Pallets",
         products: [
-          { id: "plywood-pallet", name: "Plywood Pallets", subTitle: "Splinter-Free Surface", img: "/images/products/plywood-pallets.webp", specs: ["No ISPM-15 Required", "Lighter Weight", "Hygienic Surface", "Ideal for Pharma", "Smooth Loading Face"] },
-          { id: "reusable-collar", name: "Reusable Collar Pallet", subTitle: "Modular Box System", img: "/images/products/Reusable-Collar-Pallet.jpg", specs: ["Convert Pallet to Box", "Collapsible Design", "Scalable Height", "Sturdy Side Hinges", "Space Saving Return"] },
-          { id: "molded-pallets", name: "Molded Pallets", subTitle: "Pressed Wood Fiber", img: "/images/products/engineered-molded-wood-pallets.jpg", specs: ["Nestable Design", "ISPM-15 Exempt", "Consistent Dimensions", "No Nails or Screws", "Recycled Wood Fiber"] },
-          { id: "collapsible-reusable", name: "Collapsible Reusable Pallets", subTitle: "Eco-Friendly Loop", img: "/images/products/Collapsible-Reusable-Pallets.jpg", specs: ["Foldable Structure", "Long Lifecycle", "Pine / Metal Mix", "Zero Tool Assembly", "Optimized Logistics"] },
+          { id: "plywood-pallet", name: "Plywood Pallets", subTitle: "Splinter-Free Surface", img: "/images/products/plywood-pallets.webp", specs: ["No ISPM-15 Required", "Lighter Weight", "Hygienic Surface", "Ideal for Pharma", "Smooth Loading Face"], seoTitle: "Plywood Pallets — Splinter-Free, Export Grade", h1: "Plywood Pallets — Splinter-Free Surface", spec: { construction: "Smooth, splinter-free loading face", timber: "Plywood", treatment: "ISPM-15 exempt (processed plywood)", standard: "ISPM-15 exempt · ISO 9001:2015", applications: "Pharmaceutical and hygiene-sensitive cargo" } },
+          { id: "reusable-collar", name: "Reusable Collar Pallet", subTitle: "Modular Box System", img: "/images/products/Reusable-Collar-Pallet.jpg", specs: ["Convert Pallet to Box", "Collapsible Design", "Scalable Height", "Sturdy Side Hinges", "Space Saving Return"], seoTitle: "Pallet Collars — Reusable Collar Boxes", h1: "Pallet Collars — Modular Collar Box System", spec: { construction: "Hinged collapsible collars, scalable height", timber: "Heat-treated pine / hardwood", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "ISPM-15 / IPPC · ISO 9001:2015 · BIS IS:1276", applications: "Returnable and reusable box systems" } },
+          { id: "molded-pallets", name: "Molded Pallets", subTitle: "Pressed Wood Fiber", img: "/images/products/engineered-molded-wood-pallets.jpg", specs: ["Nestable Design", "ISPM-15 Exempt", "Consistent Dimensions", "No Nails or Screws", "Recycled Wood Fiber"], seoTitle: "Moulded Pallets — Nestable, One-Piece Design", h1: "Moulded Pallets — Pressed Wood Fibre", spec: { construction: "One-piece nestable moulding, no nails or screws", timber: "Recycled wood fibre", treatment: "ISPM-15 exempt (heat-moulded fibre)", standard: "ISPM-15 exempt · ISO 9001:2015", applications: "Nestable export and return logistics" } },
+          { id: "collapsible-reusable", name: "Collapsible Reusable Pallets", subTitle: "Eco-Friendly Loop", img: "/images/products/Collapsible-Reusable-Pallets.jpg", specs: ["Foldable Structure", "Long Lifecycle", "Pine / Metal Mix", "Zero Tool Assembly", "Optimized Logistics"], seoTitle: "Collapsible Pallet Boxes — Foldable & Reusable", h1: "Collapsible Pallet Boxes — Foldable & Reusable", spec: { construction: "Foldable structure, zero-tool assembly", timber: "Pine / metal mix", treatment: "ISPM-15 heat treatment at 56 °C", marking: "IPPC / ISPM-15 stamp", standard: "ISPM-15 / IPPC · ISO 9001:2015 · BIS IS:1276", applications: "Closed-loop reusable logistics" } },
         ]
       }
     ]
@@ -129,7 +165,7 @@ export const productsData: Category[] = [
       {
         title: "Pressed Wood",
         products: [
-          { id: "press-wood-pallet", name: "Press Wood Pallet", subTitle: "Nestable Engineered", img: "/images/products/press-wood-pallets.jpg", specs: ["Heat Molded Fiber", "Space Saving Nesting", "ISPM-15 Exempt", "Rounded Corners", "100% Bio-Material"] },
+          { id: "press-wood-pallet", name: "Press Wood Pallet", subTitle: "Nestable Engineered", img: "/images/products/press-wood-pallets.jpg", specs: ["Heat Molded Fiber", "Space Saving Nesting", "ISPM-15 Exempt", "Rounded Corners", "100% Bio-Material"], seoTitle: "Press Wood Pallets — Nestable & Export Ready", h1: "Press Wood Pallets — Nestable Engineered Fibre", spec: { construction: "Heat-moulded fibre, nestable, rounded corners", timber: "Moulded wood fibre (100% bio-material)", treatment: "ISPM-15 exempt", standard: "ISPM-15 exempt · ISO 9001:2015 · ECO Certified", applications: "Space-saving export and FMCG logistics" } },
           { id: "hydraulic-molded-pallet", name: "Hydraulic Molded Pallet", subTitle: "High Pressure Core", img: "/images/products/user_molded_pallets.jpg", specs: ["Precision Weight", "Dynamic Stability", "Low Cost Export", "Stacking Friendly", "Eco-Certified"] },
         ]
       }
@@ -270,8 +306,8 @@ export const productsData: Category[] = [
       {
         title: "Timber Types",
         products: [
-          { id: "nz-pine", name: "New Zealand Pine", subTitle: "Softwood Export Grade", img: "/images/products/new-zealand-pine-wood-timber-075.jpg", specs: ["Radiata Pine", "Fast Growth Timber", "Excellent Workability", "Kiln Dried (KD)", "Standard Pallet Wood"] },
-          { id: "jungle-wood", name: "Jungle Wood", subTitle: "Hardwood Density", img: "/images/products/2-6-inches-teak-jungle-wood-plank-anti-slip-waterproof--353.jpg", specs: ["Extreme Hardness", "Local Native Wood", "High Static Load", "Heavy Skid Base", "Naturally Durable"] },
+          { id: "nz-pine", name: "New Zealand Pine", subTitle: "Softwood Export Grade", img: "/images/products/new-zealand-pine-wood-timber-075.jpg", specs: ["Radiata Pine", "Fast Growth Timber", "Excellent Workability", "Kiln Dried (KD)", "Standard Pallet Wood"], seoTitle: "NZ Pine Pallets — Export Grade Softwood", h1: "NZ Pine Pallets — Export-Grade Softwood", spec: { timber: "Radiata pine (New Zealand softwood)", moistureContent: "Kiln dried (KD)", treatment: "Kiln dried", applications: "Standard pallet timber for export packing" } },
+          { id: "jungle-wood", name: "Jungle Wood", subTitle: "Hardwood Density", img: "/images/products/2-6-inches-teak-jungle-wood-plank-anti-slip-waterproof--353.jpg", specs: ["Extreme Hardness", "Local Native Wood", "High Static Load", "Heavy Skid Base", "Naturally Durable"], seoTitle: "Jungle Wood Pallets — Density & Load Capacity", h1: "Jungle Wood Pallets — Hardwood Density", spec: { timber: "Local native hardwood", treatment: "Kiln dried", applications: "Heavy skid bases and high static-load pallets" } },
         ]
       }
     ]
