@@ -79,12 +79,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // The hand-written articles in src/data. They were never submitted before — the
   // sitemap only carried the 7,700 generated doorway stubs that have now been removed.
-  const articleRoutes = getAllMockBlogs().map((blog) => ({
-    url: `${baseUrl}/blog/${blog.slug}`,
-    lastModified: CONTENT_LAST_MODIFIED,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+  //
+  // One article ('post=3883', a leftover WordPress query string) has a slug that a
+  // path segment can't carry: Next hands the route the percent-encoded form, so the
+  // URL 404s. Don't submit a URL we know is dead — the slug needs renaming first.
+  const articleRoutes = getAllMockBlogs()
+    .filter((blog) => encodeURIComponent(blog.slug) === blog.slug)
+    .map((blog) => ({
+      url: `${baseUrl}/blog/${blog.slug}`,
+      lastModified: CONTENT_LAST_MODIFIED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }));
 
   // Dynamic products (from CMS backend if any)
   let productRoutes: any[] = []
