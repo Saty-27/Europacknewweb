@@ -20,6 +20,13 @@ export type FlatSeoRoute =
        * always match a catalog id — when it didn't, the lineup silently vanished.
        */
       catalogCategoryId: string;
+      /**
+       * True when this landing page stands for the whole catalog category, so the
+       * catalog hub can link the category at it. Seaworthy Packing is the exception:
+       * it draws its lineup from Special Services but only covers one of those six
+       * services, so linking "Special Services -> View Products" here would mislead.
+       */
+      representsCategory: boolean;
       image: string;
       features: string[];
     }
@@ -46,6 +53,7 @@ const richRoutes: FlatSeoRoute[] = [
       'Seaworthy packing and seaworthy packaging solutions for export cargo, heavy machinery, VCI protection, pinewood boxes, and ocean freight shipments in Mumbai, Vadodara, Makarpura, Nandesari, Savli GIDC and across India.',
     category: 'Export Packaging',
     catalogCategoryId: 'special-services',
+    representsCategory: false,
     image: '/images/products/user_seaworthy_laminates.jpg',
     features: [
       'Seaworthy export packing for ocean freight',
@@ -65,6 +73,7 @@ const richRoutes: FlatSeoRoute[] = [
       'ISPM-15 wooden pallets manufacturer and supplier for export cargo, warehouse storage, four-way pallets, two-way pallets, CP pallets and custom industrial pallets in Mumbai, Vadodara and across India.',
     category: 'Wooden Pallets',
     catalogCategoryId: 'wooden-pallets',
+    representsCategory: true,
     image: '/images/products/four-way-pallets.webp',
     features: [
       'ISPM-15 heat-treated export pallets',
@@ -83,6 +92,7 @@ const richRoutes: FlatSeoRoute[] = [
       '3-ply to 9-ply corrugated boxes, printed cartons and heavy-duty export cartons for industrial packaging, FMCG, pharma and automotive supply chains.',
     category: 'Corrugated Boxes',
     catalogCategoryId: 'corrugated-cartons',
+    representsCategory: true,
     image: '/images/products/corrugatedBoxes.png',
     features: ['3-ply to 9-ply construction', 'Printed and plain cartons', 'Bulk industrial supply', 'Custom sizes and high BCT strength'],
   },
@@ -96,6 +106,7 @@ const richRoutes: FlatSeoRoute[] = [
       'Industrial vacuum packing, aluminum barrier foil sealing, VCI vacuum packaging and moisture-proof export packing for machinery and electronics.',
     category: 'Vacuum Packing',
     catalogCategoryId: 'vacuum-packaging',
+    representsCategory: true,
     image: '/images/products/user_vacuum_packing.png',
     features: ['Hermetic vacuum sealing', 'Aluminum barrier foil', 'VCI and desiccant protection', 'On-site export packing'],
   },
@@ -109,6 +120,7 @@ const richRoutes: FlatSeoRoute[] = [
       'Container lashing, ratchet belts, steel wire rope, chain lashing and cargo securing systems for export shipments and heavy machinery.',
     category: 'Lashing Materials',
     catalogCategoryId: 'lashing-materials',
+    representsCategory: true,
     image: '/images/products/user_lashing_materials.jpg',
     features: ['Container lashing', 'Ratchet belts and chain lashing', 'ODC cargo securing', 'Port and factory deployment'],
   },
@@ -184,4 +196,22 @@ export function getFlatSeoRoutes() {
 
 export function getFlatSeoRoute(slug: string) {
   return routeBySlug.get(slug) || null;
+}
+
+const richRouteByCategoryId = new Map(
+  richRoutes.flatMap((route) =>
+    route.type === 'rich' && route.representsCategory
+      ? [[route.catalogCategoryId, route] as const]
+      : []
+  )
+);
+
+/**
+ * The landing page that stands for a productsData category, if there is one — e.g.
+ * 'wooden-pallets' -> /wooden-pallets. Most categories have none and return null;
+ * they should not be linked anywhere.
+ */
+export function getCategoryLandingPage(categoryId: string) {
+  const route = richRouteByCategoryId.get(categoryId);
+  return route ? { href: `/${route.slug}`, title: route.title } : null;
 }
