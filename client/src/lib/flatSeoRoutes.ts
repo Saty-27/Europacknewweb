@@ -68,7 +68,11 @@ const richRoutes: FlatSeoRoute[] = [
     slug: 'wooden-pallets',
     contentSlug: 'wooden-pallets',
     title: 'Wooden Pallets Manufacturer',
-    metaTitle: 'Wooden Pallets Manufacturer in Mumbai & Vadodara | ISPM-15 Pallets',
+    // The hub, and the only page on the domain that targets the broad
+    // "wooden pallet manufacturer" head term. Every sub-type page states its
+    // own specific term instead, so they support this page rather than
+    // competing with it. Kept under 60 characters so it does not truncate.
+    metaTitle: 'Wooden Pallet Manufacturer in Mumbai & Vadodara',
     description:
       'ISPM-15 wooden pallets manufacturer and supplier for export cargo, warehouse storage, four-way pallets, two-way pallets, CP pallets and custom industrial pallets in Mumbai, Vadodara and across India.',
     category: 'Wooden Pallets',

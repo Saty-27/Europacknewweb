@@ -575,6 +575,88 @@ function SectionHeading({ label, title }: { label: string; title: string }) {
   );
 }
 
+/**
+ * The wooden pallet hub's index of its 21 sub-type pages.
+ *
+ * Grouped the way a buyer narrows down — by standard, by entry, by material,
+ * by type — rather than by the catalog's own subcategories, which is why NZ
+ * pine, jungle wood and press wood appear here even though they sit in other
+ * catalog categories. Each page states one specific term; this page is the
+ * only one holding the broad head term, and these links are what express
+ * that hierarchy.
+ */
+const PALLET_HUB_GROUPS: { title: string; links: { slug: string; label: string }[] }[] = [
+  {
+    title: 'By standard',
+    links: [
+      { slug: 'euro-pallets', label: 'Euro pallet (1200 × 800 mm)' },
+      { slug: 'cp1-pallets', label: 'CP1 pallet' },
+      { slug: 'cp2-pallets', label: 'CP2 pallet' },
+      { slug: 'cp3-pallets', label: 'CP3 pallet' },
+      { slug: 'cp4-pallets', label: 'CP4 pallet' },
+      { slug: 'cp5-pallets', label: 'CP5 pallet' },
+      { slug: 'cp6-pallets', label: 'CP6 pallet' },
+      { slug: 'cp7-pallets', label: 'CP7 pallet' },
+      { slug: 'cp8-pallets', label: 'CP8 pallet' },
+      { slug: 'cp9-pallets', label: 'CP9 pallet' },
+    ],
+  },
+  {
+    title: 'By entry',
+    links: [
+      { slug: 'two-way-pallet', label: 'Two-way entry pallets' },
+      { slug: 'four-way-pallet', label: 'Four-way entry pallets' },
+    ],
+  },
+  {
+    title: 'By material',
+    links: [
+      { slug: 'hardwood-pallet', label: 'Hardwood pallets' },
+      { slug: 'nz-pine', label: 'NZ pine pallets' },
+      { slug: 'jungle-wood', label: 'Jungle wood pallets' },
+      { slug: 'plywood-pallet', label: 'Plywood pallets' },
+    ],
+  },
+  {
+    title: 'By type',
+    links: [
+      { slug: 'molded-pallets', label: 'Moulded pallets' },
+      { slug: 'press-wood-pallet', label: 'Press wood pallets' },
+      { slug: 'collapsible-reusable', label: 'Collapsible pallet boxes' },
+      { slug: 'reusable-collar', label: 'Pallet collars' },
+    ],
+  },
+];
+
+function PalletHubIndex() {
+  return (
+    <section className="mb-24">
+      <SectionHeading label="Choose a Pallet" title="Every Pallet We Make" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {PALLET_HUB_GROUPS.map((group) => (
+          <div key={group.title} className="bg-slate-50 border border-slate-100 rounded-2xl p-7">
+            <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-[#FF6600] mb-5">
+              {group.title}
+            </h3>
+            <ul className="space-y-2.5 list-none p-0 m-0">
+              {group.links.map((link) => (
+                <li key={link.slug}>
+                  <Link
+                    href={`/${link.slug}`}
+                    className="text-sm font-semibold text-slate-700 hover:text-[#FF6600] no-underline transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // =====================================================
 // MAIN COMPONENT
 // =====================================================
@@ -726,6 +808,8 @@ export default function ProductDetailClient({
             </div>
           </motion.div>
         </section>
+
+        {catalogCategoryId === 'wooden-pallets' && <PalletHubIndex />}
 
         {/* ═══════════════ CATEGORY PRODUCT CARDS SECTION ═══════════════ */}
         {matchedCategory && (

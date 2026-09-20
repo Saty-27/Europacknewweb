@@ -4,6 +4,12 @@ export interface GeneratedProductContent {
   metaTitle: string;
   metaDescription: string;
   h1: string;
+  /**
+   * The descriptor line that used to live inside the <h1> as a nested <span>.
+   * It is returned separately so the page can render it next to the heading
+   * without it being concatenated into the h1's extracted text.
+   */
+  h1Sub: string;
   intro: string;
   overview: string;
   keyFeatures: string[];
@@ -184,7 +190,10 @@ function getMeta(categoryId: string) {
 // ──────────────────────────────────────────────
 
 export function generateProductContent(
-  product: { id: string; name: string; subTitle: string; specs: string[]; img: string },
+  product: {
+    id: string; name: string; subTitle: string; specs: string[]; img: string;
+    seoTitle?: string; h1?: string;
+  },
   category: Category
 ): GeneratedProductContent {
   const meta = getMeta(category.id);
@@ -193,9 +202,15 @@ export function generateProductContent(
   const subTitle = product.subTitle;
 
   // ── META ──
-  const metaTitle = `${productName} Manufacturer in Mumbai | ${categoryName} | Europack India`;
+  // A product may claim its own title and H1. That is how the 22 pallet pages
+  // stop competing with each other: only /wooden-pallets keeps the broad
+  // "wooden pallet manufacturer" phrasing, every sub-type page states its own
+  // term. Products without an override keep the generated title.
+  const metaTitle = product.seoTitle
+    ?? `${productName} Manufacturer in Mumbai | ${categoryName} | Europack India`;
   const metaDescription = `Buy high-quality ${productName} from Europack — India's leading ${categoryName.toLowerCase()} manufacturer in Mumbai. ${subTitle}. ISPM-15 Certified. Get a free quote today.`;
-  const h1 = `${productName} — ${subTitle} | Europack India`;
+  const h1 = product.h1 ?? `${productName} — ${subTitle}`;
+  const h1Sub = subTitle;
 
   // ── INTRO (300-400 words) ──
   const loadInfoIntro = meta.loadRange ? `, processed under strict quality controls and validated for load ratings of ${meta.loadRange}` : `, and processed under strict quality controls to ensure industrial reliability`;
@@ -245,16 +260,22 @@ Our engineering team works closely with clients during the design phase to valid
   ].filter(Boolean) as { key: string; value: string }[];
 
   // ── TECHNICAL DETAILS ──
+  // The four rows that used to sit at the top of this table read the product's
+  // `specs` bullets positionally — specs[0] as "Construction", specs[1] as
+  // "Surface Finish", and so on — so /cp1-pallets claimed an entry type of
+  // "ISPM-15 Compliant" and a surface finish of "Peripheral Deck". The bullets
+  // are an unordered highlight list, not a fixed schema, so they are no longer
+  // labelled. They still render beside this table as "at a glance", and pallet
+  // pages carry a real, per-product spec table (see SpecTable / PalletSpec).
   const technicalDetails = [
-    { key: 'Construction', value: product.specs[0] || 'Standard Industrial Grade' },
-    { key: 'Surface Finish', value: product.specs[1] || 'As specified' },
-    { key: 'Structural Standard', value: product.specs[2] || 'ISO Compliant' },
-    { key: 'Entry Type', value: product.specs[3] || 'As per product design' },
+    { key: 'Material', value: meta.material },
+    meta.loadRange ? { key: 'Load Capacity', value: meta.loadRange } : null,
+    { key: 'Treatment', value: meta.treatment },
     { key: 'Compliance', value: meta.certifications[0] },
     { key: 'Testing', value: 'Load test, dimensional verification, compliance audit' },
     { key: 'Marking', value: 'IPPC / CE / Custom stencil available' },
     { key: 'Packaging of Finished Goods', value: 'Stackable / Bundled per delivery specs' },
-  ];
+  ].filter(Boolean) as { key: string; value: string }[];
 
   // ── APPLICATIONS ──
   const appBank: Record<string, { icon: string; title: string; desc: string }[]> = {
@@ -445,7 +466,7 @@ To get a customized quote for ${productName}, contact our sales team via the enq
   ];
 
   return {
-    metaTitle, metaDescription, h1, intro, overview, keyFeatures, applications,
+    metaTitle, metaDescription, h1, h1Sub, intro, overview, keyFeatures, applications,
     specs, technicalDetails, manufacturingSteps, qualityStandards, customizationOptions,
     comparison: comparisonBase, comparisonLabel: meta.comparisonAlt, whyEuropack,
     deliveryInfo, seoContent, faq, caseStudy, images,
