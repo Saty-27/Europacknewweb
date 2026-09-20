@@ -10,6 +10,7 @@ import { seaworthyBlogs2 } from './mockBlogs-seaworthy-2';
 import { crateBlogs } from './mockBlogs-crates';
 import { shrinkBlogs } from './mockBlogs-shrink';
 import { localBlogs } from './mockBlogs-local';
+import { mockBlogs } from './mockBlogs';
 import type { BlogEntry } from './blogTemplate';
 
 // Merge all blog entries into a single map
@@ -25,6 +26,7 @@ export const allMockBlogs: Record<string, BlogEntry> = {
   ...crateBlogs,
   ...shrinkBlogs,
   ...localBlogs,
+  ...mockBlogs,
 };
 
 // Helper to get a blog by slug

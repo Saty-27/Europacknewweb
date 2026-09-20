@@ -18,7 +18,9 @@ export interface BlogEntry {
   contentBlocks: any[];
   seo: {
     metaTitle: string;
-    metaDescription: string;
+    // Optional: the four original articles in mockBlogs.ts ship a metaTitle only.
+    // Every consumer falls back to the article subtitle.
+    metaDescription?: string;
     keywords?: string[];
     faqs?: { question: string; answer: string }[];
   };

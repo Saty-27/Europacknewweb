@@ -3,8 +3,15 @@ import { fetchAPI } from '@/lib/api'
 import { productsData } from '@/constants/productsData'
 import { getAllProductSlugs } from '@/lib/productContentGenerator'
 import { getFlatSeoRoutes } from '@/lib/flatSeoRoutes'
-import { getAllSeoBlogEntries } from '@/constants/generatedBlogIndex'
+import { getAllMockBlogs } from '@/data/allBlogs'
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage'
+
+// Static routes and hand-written articles don't change on a schedule. Stamping
+// `new Date()` on every entry on every request told Google the whole site changes
+// daily, which wrecks crawl-budget signalling — so they carry a fixed date that is
+// bumped when the content actually changes. Only CMS-backed entries, which have a
+// real updatedAt, get a live date.
+const CONTENT_LAST_MODIFIED = new Date('2026-09-20T00:00:00.000Z')
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://europackindia.com' // Should be your production URL
@@ -58,23 +65,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/company-facts'
   ].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    lastModified: CONTENT_LAST_MODIFIED,
     changeFrequency: 'weekly' as const,
     priority: route === '' ? 1 : 0.8,
   }))
 
   const flatSeoRoutes = getFlatSeoRoutes().map((route) => ({
     url: `${baseUrl}/${route.slug}`,
-    lastModified: new Date(),
+    lastModified: CONTENT_LAST_MODIFIED,
     changeFrequency: 'weekly' as const,
     priority: route.slug === 'seaworthy-packing' ? 0.95 : 0.9,
   }));
 
-  const seoBlogRoutes = getAllSeoBlogEntries().map((blog) => ({
+  // The hand-written articles in src/data. They were never submitted before — the
+  // sitemap only carried the 7,700 generated doorway stubs that have now been removed.
+  const articleRoutes = getAllMockBlogs().map((blog) => ({
     url: `${baseUrl}/blog/${blog.slug}`,
-    lastModified: new Date(),
+    lastModified: CONTENT_LAST_MODIFIED,
     changeFrequency: 'monthly' as const,
-    priority: blog.priority === 'High' ? 0.65 : 0.55,
+    priority: 0.7,
   }));
 
   // Dynamic products (from CMS backend if any)
@@ -112,7 +121,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     ...staticRoutes, 
     ...flatSeoRoutes,
-    ...seoBlogRoutes,
+    ...articleRoutes,
     ...productRoutes, 
     ...blogRoutes
   ]
