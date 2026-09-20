@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 // Components
 import SubPageHero from '@/components/shared/SubPageHero';
@@ -17,7 +17,8 @@ import BlogTrust from '@/components/blog/BlogTrust';
 import BlogFAQ from '@/components/blog/BlogFAQ';
 import BlogNewsletter from '@/components/blog/BlogNewsletter';
 import BlogFinalCTA from '@/components/blog/BlogFinalCTA';
-import { getAllSeoBlogEntries } from '@/constants/generatedBlogIndex';
+import { getAllMockBlogs } from '@/data/allBlogs';
+import { fetchAPI } from '@/lib/api';
 
 const featuredPost = {
   title: 'Wooden Pallet Manufacturer in Mumbai – Types, Prices & Export Guide (2025)',
@@ -30,33 +31,72 @@ const featuredPost = {
   slug: 'wooden-pallet-manufacturer-mumbai'
 };
 
-// Generate allPosts from the SEO blog system
-const allPosts = getAllSeoBlogEntries().map((blog: any) => {
-  let img = '/images/blog/mumbai-packaging.png'; // Premium default
-  if (blog.product === 'Wooden Pallets') img = '/images/blog/wooden-pallets.png';
-  if (blog.product === 'Seaworthy Packing') img = '/images/blog/seaworthy-packing.png';
-  if (blog.product === 'Wooden Boxes') img = '/images/blog/wooden-crates.png';
-  if (blog.product === 'Shrink Wrapping') img = '/images/blog/shrink-wrapping.png';
-  if (blog.product === 'Corrugated Boxes') img = '/images/blog/corrugated-boxes.png';
+type BlogCard = {
+  title: string;
+  category: string;
+  author: string;
+  readTime: string;
+  img: string;
+  slug: string;
+};
 
-  return {
-    title: blog.title,
-    category: blog.product,
-    author: 'Europack Technical Team',
-    date: 'Oct 24, 2024',
-    readTime: '12 min read',
-    img: img,
-    slug: blog.slug,
-  };
-});
+const FALLBACK_IMAGE = '/images/blog/mumbai-packaging.png';
+
+// The hand-written articles in src/data. These used to be buried under 7,700
+// generated location stubs; they are now the whole index.
+const articlePosts: BlogCard[] = getAllMockBlogs().map((blog) => ({
+  title: blog.title,
+  category: blog.category,
+  author: blog.author || 'Europack Technical Team',
+  readTime: `${blog.analytics?.readTime || 10} min read`,
+  img: blog.heroImage || FALLBACK_IMAGE,
+  slug: blog.slug,
+}));
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('All Blogs');
   const [visibleCount, setVisibleCount] = useState(24);
+  const [apiPosts, setApiPosts] = useState<BlogCard[]>([]);
 
-  const filteredPosts = activeCategory === 'All Blogs' 
-    ? allPosts 
-    : allPosts.filter((p: any) => p.category === activeCategory);
+  // Blogs published through the admin CMS, merged in alongside the static articles.
+  useEffect(() => {
+    let cancelled = false;
+    fetchAPI('/blogs?status=published')
+      .then((res) => {
+        if (cancelled || !res?.success || !Array.isArray(res.blogs)) return;
+        setApiPosts(
+          res.blogs.map((blog: any) => ({
+            title: blog.title,
+            category: blog.category || 'Technical',
+            author: blog.author || 'Europack Technical Team',
+            readTime: `${blog.analytics?.readTime || 10} min read`,
+            img: blog.heroImage || FALLBACK_IMAGE,
+            slug: blog.slug,
+          }))
+        );
+      })
+      .catch(() => {
+        /* the static articles are still shown if the CMS is unreachable */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const allPosts = useMemo(() => {
+    const bySlug = new Map<string, BlogCard>();
+    for (const post of [...articlePosts, ...apiPosts]) bySlug.set(post.slug, post);
+    return [...bySlug.values()];
+  }, [apiPosts]);
+
+  const categories = useMemo(
+    () => ['All Blogs', ...new Set(allPosts.map((p) => p.category))],
+    [allPosts]
+  );
+
+  const filteredPosts = activeCategory === 'All Blogs'
+    ? allPosts
+    : allPosts.filter((p) => p.category === activeCategory);
 
   const postsToShow = filteredPosts.slice(0, visibleCount);
 
@@ -72,6 +112,7 @@ export default function BlogPage() {
 
       {/* 3. Category Filter Bar (Sticky) */}
       <BlogFilters 
+        categories={categories}
         activeCategory={activeCategory} 
         setActiveCategory={setActiveCategory} 
       />

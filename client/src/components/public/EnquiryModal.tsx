@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, 
@@ -12,7 +12,8 @@ import {
   CheckCircle2, 
   ArrowRight,
   ShieldCheck,
-  Building2
+  Building2,
+  FileText
 } from 'lucide-react';
 import { fetchAPI } from '../../lib/api';
 import { toast } from 'react-hot-toast';
@@ -29,10 +30,28 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
     email: '',
     company: '',
     phone: '',
-    location: ''
+    location: '',
+    requirement: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Close on Escape, and stop the page behind from scrolling while the modal is up.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +67,7 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
             phone: formData.phone,
             company: formData.company,
             subject: `New Quote Request: ${serviceName}`,
-            message: `Enquiry for ${serviceName}`
+            message: formData.requirement || `Enquiry for ${serviceName}`
           })
         }),
         fetchAPI('/enquiry', {
@@ -60,7 +79,7 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
             company: formData.company,
             location: formData.location || 'India',
             service: serviceName,
-            message: `Enquiry for ${serviceName}`,
+            message: formData.requirement || `Enquiry for ${serviceName}`,
             status: 'New'
           })
         })
@@ -98,7 +117,10 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[5000] flex items-center justify-center p-4">
+        // The overlay scrolls, not the panel: on short viewports the form is taller
+        // than the screen, and centering a non-scrolling overlay clipped the top
+        // (close button included) with no way to reach it.
+        <div className="fixed inset-0 z-[5000] flex items-start justify-center overflow-y-auto overscroll-contain p-4 sm:items-center">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -111,10 +133,18 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative w-full max-w-[600px] bg-white rounded-[40px] shadow-2xl shadow-slate-900/20 overflow-hidden flex flex-col md:flex-row"
+            className="relative my-auto w-full max-w-[600px] bg-white rounded-[40px] shadow-2xl shadow-slate-900/20 overflow-hidden flex flex-col md:flex-row"
           >
+             <button
+               onClick={onClose}
+               aria-label="Close"
+               className="absolute top-6 right-6 w-10 h-10 bg-white/90 text-slate-500 hover:bg-slate-900 hover:text-white rounded-xl flex items-center justify-center transition-all z-20 shadow-sm"
+             >
+                <X size={20} />
+             </button>
+
              {/* Industrial Branding Strip */}
-             <div className="w-full md:w-[200px] bg-slate-900 p-8 flex flex-col justify-between text-white relative overflow-hidden">
+             <div className="w-full shrink-0 md:w-[200px] bg-slate-900 p-8 flex flex-col justify-between text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF6600]/20 blur-[60px] rounded-full -mr-16 -mt-16" />
                 <div className="relative z-10">
                    <div className="w-12 h-12 bg-[#FF6600] rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-orange-900/40 rotate-12">
@@ -137,13 +167,6 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
 
              {/* Form UI */}
              <div className="flex-1 p-8 md:p-12 bg-white">
-                <button 
-                  onClick={onClose}
-                  className="absolute top-6 right-6 w-10 h-10 bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white rounded-xl flex items-center justify-center transition-all z-20"
-                >
-                   <X size={20} />
-                </button>
-
                 <AnimatePresence mode="wait">
                    {!isSuccess ? (
                       <motion.div 
@@ -207,6 +230,17 @@ export default function EnquiryModal({ isOpen, onClose, serviceName = 'General I
                                  placeholder="Project Location / City"
                                  value={formData.location}
                                  onChange={e => setFormData({...formData, location: e.target.value})}
+                               />
+                            </div>
+
+                            <div className="relative group">
+                               <FileText className="absolute left-4 top-5 text-slate-300 group-focus-within:text-[#FF6600] transition-all" size={18} />
+                               <textarea
+                                 rows={3}
+                                 className="w-full bg-slate-50 border-2 border-slate-50 focus:border-[#FF6600]/20 focus:bg-white rounded-2xl pl-12 pr-4 py-4 text-sm font-bold placeholder:text-slate-300 transition-all outline-none resize-none"
+                                 placeholder="Your Requirement (sizes, quantity, timeline...)"
+                                 value={formData.requirement}
+                                 onChange={e => setFormData({...formData, requirement: e.target.value})}
                                />
                             </div>
 

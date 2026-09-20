@@ -12,6 +12,7 @@ import {
 import { productsData, Category } from '../../../constants/productsData';
 import InquiryModal from '@/components/layout/InquiryModal';
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
+import { getCategoryLandingPage } from '@/lib/flatSeoRoutes';
 
 const IconRenderer = ({ name, size = 20, className = "" }: { name: string, size?: number, className?: string }) => {
   const Icon = (LucideIcons as any)[name] || LucideIcons.Package;
@@ -47,17 +48,43 @@ export default function ProductsClient() {
     return () => observer.disconnect();
   }, []);
 
-  // Filter logic
-  const filteredData = productsData.map(cat => ({
-    ...cat,
-    subCategories: cat.subCategories.map(sub => ({
-      ...sub,
-      products: sub.products.filter(p => 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        p.subTitle.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    })).filter(sub => sub.products.length > 0)
-  })).filter(cat => cat.subCategories.length > 0);
+  // Search.
+  //
+  // Matching used to be a single literal substring over product name/subTitle
+  // only, so "wooden pallet" found nothing at all (no product is literally named
+  // that) while "pallet" returned every pallet in the catalog. Now each word in
+  // the query has to appear somewhere in the entry's text, and category titles
+  // count — so "wooden pallet" lands on the Wooden Pallets category itself.
+  const terms = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+  const matches = (...fields: (string | string[] | undefined)[]) => {
+    const haystack = fields.flat().filter(Boolean).join(' ').toLowerCase();
+    return terms.every(term => haystack.includes(term));
+  };
+
+  const filteredData = terms.length === 0
+    ? productsData
+    : productsData
+        .map(cat => {
+          // A category-level hit ("wooden pallets") keeps the whole lineup rather
+          // than only the products that happen to repeat the category name.
+          const categoryMatches = matches(cat.title, cat.desc);
+
+          return {
+            ...cat,
+            categoryMatches,
+            subCategories: cat.subCategories
+              .map(sub => ({
+                ...sub,
+                products: categoryMatches || matches(sub.title)
+                  ? sub.products
+                  : sub.products.filter(p => matches(p.name, p.subTitle, p.specs)),
+              }))
+              .filter(sub => sub.products.length > 0),
+          };
+        })
+        .filter(cat => cat.categoryMatches || cat.subCategories.length > 0)
+        // Categories the query names directly come first.
+        .sort((a, b) => Number(b.categoryMatches) - Number(a.categoryMatches));
 
   return (
     <main className="bg-[#F8FAFC] min-h-screen">
@@ -165,7 +192,9 @@ export default function ProductsClient() {
 
         {/* 3. MAIN CONTENT AREA */}
         <div className="flex-grow space-y-32">
-           {filteredData.map((category) => (
+           {filteredData.map((category) => {
+             const landingPage = getCategoryLandingPage(category.id);
+             return (
              <div key={category.id} id={category.id} className="scroll-mt-40 space-y-16">
                 
                 {/* Category Identity Card */}
@@ -180,9 +209,14 @@ export default function ProductsClient() {
                           <button onClick={openModal} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-[#FF6600] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#E65C00] transition-all shadow-lg shadow-orange-500/20">
                              Get Wholesale Pricing <ArrowRight size={16}/>
                           </button>
-                          <Link href={`/products#${category.id}`} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all no-underline">
-                             View Products <ChevronRight size={16}/>
-                          </Link>
+                          {/* Only rendered when the category has a real landing page —
+                              this used to link to /products#<id>, the anchor the
+                              visitor was already looking at, so it did nothing. */}
+                          {landingPage && (
+                            <Link href={landingPage.href} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all no-underline">
+                               View Products <ChevronRight size={16}/>
+                            </Link>
+                          )}
                        </div>
                    </div>
                    <div className="md:w-7/12 relative min-h-[350px]">
@@ -263,7 +297,30 @@ export default function ProductsClient() {
                   </div>
                 ))}
              </div>
-           ))}
+             );
+           })}
+
+           {filteredData.length === 0 && (
+             <div className="bg-white rounded-[32px] border border-slate-100 p-16 text-center shadow-sm">
+                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 mx-auto mb-6">
+                   <Search size={28} />
+                </div>
+                <h3 className="text-xl font-black text-[#1A1F2C] tracking-tight mb-2">
+                   No products match “{searchQuery}”
+                </h3>
+                <p className="text-slate-500 font-medium mb-8">
+                   Try a broader term, or tell us what you need and we&apos;ll source it.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                   <button onClick={() => setSearchQuery('')} className="px-8 py-4 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all">
+                      Clear Search
+                   </button>
+                   <button onClick={openModal} className="px-8 py-4 bg-[#FF6600] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#E65C00] transition-all shadow-lg shadow-orange-500/20">
+                      Ask Our Engineers
+                   </button>
+                </div>
+             </div>
+           )}
         </div>
       </div>
 

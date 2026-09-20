@@ -581,16 +581,26 @@ function SectionHeading({ label, title }: { label: string; title: string }) {
 export default function ProductDetailClient({
   product,
   allProducts,
+  catalogCategoryId,
 }: {
   product: Product;
   allProducts: Product[];
+  /** Catalog category to draw the "Product Lineup" from, when the caller knows it. */
+  catalogCategoryId?: string;
 }) {
   const content = getContent(product.slug);
-  const matchedCategory = productsData.find(
-    (cat) => cat.title.toLowerCase() === product.category.toLowerCase() ||
-             cat.id.toLowerCase() === product.category.toLowerCase() ||
-             cat.id.toLowerCase() === product.slug.toLowerCase()
-  );
+  // Prefer the caller's explicit id: `product.category` is display copy, so pages
+  // like Seaworthy Packing ("Export Packaging") matched nothing and rendered no
+  // lineup at all, hiding product pages that exist.
+  const matchedCategory =
+    (catalogCategoryId
+      ? productsData.find((cat) => cat.id === catalogCategoryId)
+      : undefined) ??
+    productsData.find(
+      (cat) => cat.title.toLowerCase() === product.category.toLowerCase() ||
+               cat.id.toLowerCase() === product.category.toLowerCase() ||
+               cat.id.toLowerCase() === product.slug.toLowerCase()
+    );
   const [activeImage, setActiveImage] = useState(getImageUrl(product.image));
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
