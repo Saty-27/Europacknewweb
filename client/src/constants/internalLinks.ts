@@ -74,7 +74,7 @@ const woodenPalletsHub: CategoryHub = {
       lead:
         'How the forklift or pallet truck gets underneath. This is usually decided by the warehouse, not by the cargo.',
       links: [
-        { href: '/two-way-pallet', anchor: 'two-way entry', detail: 'forks from two opposite sides, strongest under static racking load' },
+        { href: '/two-way-pallet', anchor: 'two-way entry', detail: 'forks from two opposite sides, high static support for racking' },
         { href: '/four-way-pallet', anchor: 'four-way entry', detail: 'forks from any side, faster to handle in high-turnover bays' },
       ],
     },
@@ -84,10 +84,10 @@ const woodenPalletsHub: CategoryHub = {
         'The timber or metal the deck and stringers are cut from, which sets the load rating, the weight and whether the pallet needs ISPM-15 treatment at all.',
       links: [
         { href: '/hardwood-pallet', anchor: 'hardwood', detail: 'dense jungle timber, screw-nail fastened, for machinery loads' },
-        { href: '/nz-pine', anchor: 'New Zealand pine', detail: 'export-grade softwood, the default for standard sizes' },
+        { href: '/nz-pine', anchor: 'New Zealand pine', detail: 'export-grade softwood, the timber behind most standard sizes' },
         { href: '/jungle-wood', anchor: 'jungle wood', detail: 'high-density Indian hardwood for heavy domestic movements' },
         { href: '/plywood-pallet', anchor: 'plywood decks', detail: 'splinter-free and ISPM-15 exempt, used for pharma cargo' },
-        { href: '/galvanized-pallet', anchor: 'galvanised steel', detail: 'where timber cannot go — washdown areas and long indoor loops' },
+        { href: '/galvanized-pallet', anchor: 'galvanised steel', detail: 'rust-proof, for environments where timber will not last' },
       ],
     },
     {
@@ -96,7 +96,7 @@ const woodenPalletsHub: CategoryHub = {
         'Formats that behave differently in the return leg: they nest, they fold flat, or they turn into a box.',
       links: [
         { href: '/molded-pallets', anchor: 'moulded pallets', detail: 'one-piece pressed fibre, nestable, no nails' },
-        { href: '/press-wood-pallet', anchor: 'press wood', detail: 'engineered and nestable, stacks nine deep empty' },
+        { href: '/press-wood-pallet', anchor: 'press wood', detail: 'engineered and nestable, formed rather than sawn' },
         { href: '/collapsible-reusable', anchor: 'collapsible pallet boxes', detail: 'fold flat for the empty return leg' },
         { href: '/reusable-collar', anchor: 'pallet collars', detail: 'hinged sides that turn a flat pallet into a box' },
       ],
@@ -114,10 +114,10 @@ const corrugatedBoxesHub: CategoryHub = {
       heading: 'By purpose',
       lead: 'Each carton type below has its own page with construction and ply detail.',
       links: [
-        { href: '/printed-corrugated', anchor: 'printed corrugated cartons', detail: 'multi-colour print for retail-facing cargo' },
-        { href: '/mono-cartons', anchor: 'mono cartons', detail: 'lighter single-ply retail packs' },
+        { href: '/printed-corrugated', anchor: 'printed corrugated cartons', detail: 'print-finished cartons for retail-facing cargo' },
+        { href: '/mono-cartons', anchor: 'mono cartons', detail: 'retail-format cartons' },
         { href: '/9ply-heavy-duty', anchor: 'nine-ply heavy duty boxes', detail: 'export-grade cartons for dense loads' },
-        { href: '/jumbo-boxes', anchor: 'jumbo boxes', detail: 'bulk enclosures for large, light cargo' },
+        { href: '/jumbo-boxes', anchor: 'jumbo boxes', detail: 'bulk cargo enclosures' },
         { href: '/corrugated-partitions', anchor: 'corrugated partitions', detail: 'internal dividers that stop contact damage' },
       ],
     },
@@ -137,8 +137,8 @@ const vacuumPackingHub: CategoryHub = {
         { href: '/multilayer-laminated-vci', anchor: 'multilayer VCI laminate with nylon', detail: 'corrosion inhibition inside the vacuum envelope' },
         { href: '/four-layer-film-vacuum', anchor: 'four-layer film sealing', detail: 'the general-purpose export barrier' },
         { href: '/finest-quality-4n-vacuum', anchor: '4N-norms vacuum packing', detail: 'military and industrial specification work' },
-        { href: '/odd-shape-vacuum', anchor: 'vacuum packing for sharp-edged components', detail: 'odd shapes that would puncture a standard bag' },
-        { href: '/rust-prevention-vacuum', anchor: 'vacuum packing against rust and moisture', detail: 'long sea voyages and monsoon storage' },
+        { href: '/odd-shape-vacuum', anchor: 'vacuum packing for sharp-edged components', detail: 'odd shapes and sizes with sharp edges' },
+        { href: '/rust-prevention-vacuum', anchor: 'vacuum packing against rust and moisture', detail: 'prevention of rusting, moisture and product deterioration' },
       ],
     },
   ],
@@ -215,7 +215,7 @@ const palletSubTypes: Record<string, PalletEntry> = {
     tail: ' page.',
     siblingsLead: 'This is the decision most buyers get wrong, so compare it directly against:',
     siblings: [
-      { href: '/four-way-pallet', anchor: 'four-way entry pallets', detail: 'forks from all four sides, at some cost in static strength' },
+      { href: '/four-way-pallet', anchor: 'four-way entry pallets', detail: 'forks from all four sides, more flexible in the warehouse' },
       { href: '/hardwood-pallet', anchor: 'hardwood construction', detail: 'when the static racking load is the binding constraint' },
     ],
   },
@@ -233,7 +233,7 @@ const palletSubTypes: Record<string, PalletEntry> = {
     tail: ' range and the one specified for capital equipment.',
     siblingsLead: 'Where hardwood is more pallet than the load needs, buyers move to:',
     siblings: [
-      { href: '/nz-pine', anchor: 'NZ pine', detail: 'lighter, straighter, and cheaper per unit for standard sizes' },
+      { href: '/nz-pine', anchor: 'NZ pine', detail: 'lighter and more uniform, and easier to heat-treat consistently' },
       { href: '/jungle-wood', anchor: 'jungle-wood stock', detail: 'the domestic hardwood we cut when import timber is not required' },
     ],
   },
@@ -333,7 +333,7 @@ const palletSubTypes: Record<string, PalletEntry> = {
     siblingsLead: 'The two grades it is usually weighed against:',
     siblings: [
       { href: '/hardwood-pallet', anchor: 'hardwood pallets', detail: 'heavier and stiffer, for machinery-grade loads' },
-      { href: '/jungle-wood', anchor: 'jungle wood timber', detail: 'denser, domestically sourced, lower cost per kilogram carried' },
+      { href: '/jungle-wood', anchor: 'jungle wood timber', detail: 'denser, and domestically sourced' },
     ],
   },
   'jungle-wood': {
@@ -378,7 +378,7 @@ const palletSubTypes: Record<string, PalletEntry> = {
     siblingsLead: 'The alternative way to get a collapsible box:',
     siblings: [
       { href: '/collapsible-reusable', anchor: 'one-piece collapsible pallets', detail: 'folds as a unit rather than stacking collars' },
-      { href: '/euro-pallets', anchor: '1200 × 800 mm Euro base', detail: 'the footprint most collar systems are sized to' },
+      { href: '/euro-pallets', anchor: '1200 × 800 mm Euro base', detail: 'the footprint collars are most often sized to' },
     ],
   },
   'galvanized-pallet': {
@@ -386,7 +386,7 @@ const palletSubTypes: Record<string, PalletEntry> = {
     tail: ' would last.',
     siblingsLead: 'Where the environment allows timber, the usual substitutes are:',
     siblings: [
-      { href: '/hardwood-pallet', anchor: 'heavy-duty hardwood', detail: 'comparable load rating at a fraction of the unit cost' },
+      { href: '/hardwood-pallet', anchor: 'heavy-duty hardwood', detail: 'heavy-duty timber where the environment allows it' },
       { href: '/plywood-pallet', anchor: 'hygienic plywood decks', detail: 'when the driver is cleanliness rather than corrosion' },
     ],
   },

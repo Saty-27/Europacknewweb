@@ -21,7 +21,7 @@ const regions: Region[] = [
   {
     heading: 'Mumbai and the wider MMR',
     body:
-      'Our head office is in Vile Parle West, and Mumbai is where most of our pallet volume moves. We deliver into Andheri and Andheri MIDC, BKC and SEEPZ, Goregaon, Malad, Borivali, Dadar, Kurla, Ghatkopar, Vikhroli, Bhandup and Mulund, and northwards into Thane, Wagle Estate, Bhiwandi and Vasai-Virar. For city consignees with narrow access or restricted delivery windows, we schedule pallet drops around the load rather than around our route.',
+      'Our head office is in Vile Parle West. We deliver into Andheri and Andheri MIDC, BKC and SEEPZ, Goregaon, Malad, Borivali, Dadar, Kurla, Ghatkopar, Vikhroli, Bhandup and Mulund, and northwards into Thane, Wagle Estate, Bhiwandi and Vasai-Virar. For city consignees with narrow access or restricted delivery windows, we schedule pallet drops around the load rather than around our route.',
   },
   {
     heading: 'Navi Mumbai and the JNPT corridor',
@@ -31,22 +31,22 @@ const regions: Region[] = [
   {
     heading: 'Vadodara and the Gujarat GIDC belt',
     body:
-      'Gujarat is our second-largest pallet destination. We serve Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli, where the demand skews towards chemical-industry formats — the CP series and drum-handling decks — rather than general-purpose sizes. Bulk orders for the GIDC estates are consolidated so that a single delivery covers a production run.',
+      'We serve Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli. Chemical-industry formats are commonly specified across this belt — the CP series and drum-handling decks rather than general-purpose sizes — and bulk orders for the GIDC estates can be consolidated so that a single delivery covers a production run.',
   },
   {
     heading: 'Pune',
     body:
-      'We supply pallets to Chakan MIDC, Talegaon MIDC, Ranjangaon and the Bhosari / Pimpri-Chinchwad belt. This is automotive and engineering territory, and most enquiries here are for repeat-cycle pallets sized to a specific component rather than to a standard footprint.',
+      'We supply pallets to Chakan MIDC, Talegaon MIDC, Ranjangaon and the Bhosari / Pimpri-Chinchwad belt. This is automotive and engineering territory, and pallets here are often sized to a specific component rather than to a standard footprint.',
   },
   {
     heading: 'Jamshedpur',
     body:
-      'For the Adityapur Industrial Area (AIADA) and the engineering units around it, we supply heavy-duty pallets and skids built for dense metal loads. Deliveries into Jamshedpur are planned in full-truck quantities, since part loads rarely make economic sense at that distance.',
+      'For the Adityapur Industrial Area (AIADA) and the engineering units around it, we supply heavy-duty pallets and skids built for dense metal loads. At that distance full-truck quantities are usually the practical unit, so we plan deliveries around them.',
   },
   {
     heading: 'Hosur',
     body:
-      'In the south we serve SIPCOT Hosur and the TVS Industrial and Logistics Park. Requirements here tend to be scheduled against production lines, so we quote against a call-off pattern rather than a single order quantity.',
+      'In the south we serve SIPCOT Hosur and the TVS Industrial and Logistics Park. Where a requirement is scheduled against a production line, we can quote against a call-off pattern rather than a single order quantity.',
   },
 ];
 
