@@ -64,7 +64,7 @@ const productContent: Record<string, ProductRichContent> = {
 
 Our pallets are used across heavy engineering, automotive, pharmaceutical, and FMCG sectors for safe unitisation of cargo ranging from 500 kg to 5,000 kg. Whether you need standard Euro pallets, 4-way entry block pallets, or completely custom-dimensioned solutions, Europack delivers with precision, speed, and compliance guaranteed.
 
-With Pan India presence across multiple locations, we supply pallets directly to factory floors, warehouses and port yards in Mumbai, Vadodara and across India.`,
+With Pan India presence across multiple locations, we supply pallets directly to factory floors, warehouses, and port yards across the country.`,
     specs: [
       { key: 'Material', value: 'Heat-Treated Pine Wood / Hardwood' },
       { key: 'ISPM-15', value: 'Fully Certified & Stamped' },
