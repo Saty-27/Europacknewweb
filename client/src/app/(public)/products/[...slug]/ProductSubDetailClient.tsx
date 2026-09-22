@@ -16,6 +16,8 @@ import type { GeneratedProductContent } from '../../../../lib/productContentGene
 import { useModal } from '../../../../context/ModalContext';
 import Counter from '../../../../components/common/Counter';
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
+import { getProductFlatSlug } from '@/lib/flatSeoRoutes';
+import SubTypeLinks from '@/components/seo/SubTypeLinks';
 
 // ──────────────────────────────────────────────
 // HELPERS
@@ -612,6 +614,13 @@ export default function ProductSubDetailClient({
           </div>
         </section>
 
+
+        {/* ══════════════════════════════════════
+            SECTION 19b: WHERE THIS SITS IN THE RANGE
+            The link back up to the landing page that owns the head term, plus
+            the formats a buyer would genuinely compare this one against.
+        ══════════════════════════════════════ */}
+        <SubTypeLinks flatSlug={getProductFlatSlug(category.id, product.id)} categoryId={category.id} />
 
         {/* ══════════════════════════════════════
             SECTION 20: LONG SEO CONTENT

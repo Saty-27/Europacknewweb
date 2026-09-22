@@ -12,6 +12,8 @@ import {
 import EnquiryModal from '../../../../components/public/EnquiryModal';
 import { productsData } from '../../../../constants/productsData';
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
+import CategoryHubLinks from '@/components/seo/CategoryHubLinks';
+import AreasWeServe from '@/components/seo/AreasWeServe';
 
 // =====================================================
 // TYPES
@@ -62,7 +64,7 @@ const productContent: Record<string, ProductRichContent> = {
 
 Our pallets are used across heavy engineering, automotive, pharmaceutical, and FMCG sectors for safe unitisation of cargo ranging from 500 kg to 5,000 kg. Whether you need standard Euro pallets, 4-way entry block pallets, or completely custom-dimensioned solutions, Europack delivers with precision, speed, and compliance guaranteed.
 
-With Pan India presence across multiple locations, we supply pallets directly to factory floors, warehouses, and port yards across the country.`,
+With Pan India presence across multiple locations, we supply pallets directly to factory floors, warehouses and port yards in Mumbai, Vadodara and across India.`,
     specs: [
       { key: 'Material', value: 'Heat-Treated Pine Wood / Hardwood' },
       { key: 'ISPM-15', value: 'Fully Certified & Stamped' },
@@ -909,40 +911,11 @@ export default function ProductDetailClient({
             </div>
           </div>
         </section>
-        {/* ═══════════════ SECTION: TYPES OF WOODEN PALLETS (Wooden Pallets Only) ═══════════════ */}
-        {product.slug === 'wooden-pallets' && (
-          <section className="mb-24">
-            <SectionHeading label="Catalog" title="Types of Wooden Pallets" />
-            <p className="text-sm text-slate-500 mb-8 max-w-2xl">
-              There are many types of wooden pallets tailored for specific industrial needs, some of which include:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                "Two Way Pallets",
-                "Four Way Pallets (Non-Reversible & Reversible)",
-                "Euro Pallets",
-                "Pinewood Four Way Pallets",
-                "CP 1 to CP-9 Wooden Pallets",
-                "Ply Wood Pallets",
-                "Plastic Pallets",
-                "Heat Treated & Fumigated Export pallets"
-              ].map((type, i) => (
-                <div key={i} className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-3 hover:border-orange-200 hover:shadow-md transition-all">
-                  <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-[#FF6600] shrink-0">
-                    <CheckCircle2 size={16} />
-                  </div>
-                  <span className="text-sm font-bold text-slate-700">{type}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 p-6 bg-slate-900 rounded-2xl text-white flex items-center gap-4">
-              <Shield className="text-[#FF6600] shrink-0" size={24} />
-              <p className="text-sm font-medium">
-                Before delivery, every unit is strictly tested on various parameters to assure their quality and durability.
-              </p>
-            </div>
-          </section>
-        )}
+        {/* ═══════════════ SECTION: THE RANGE — HUB LINKS DOWN TO SUB-TYPES ═══════════════ */}
+        {/* Was an unlinked chip grid naming the pallet types. The names were right
+            and the links were missing, which is why the sub-type pages were getting
+            almost no internal links from the one page that should feed them. */}
+        <CategoryHubLinks slug={product.slug} />
 
         {/* ═══════════════ SECTION: LASHING MATERIALS SOLUTIONS (Lashing Materials Only) ═══════════════ */}
         {product.slug === 'lashing-materials' && (
@@ -1161,6 +1134,16 @@ export default function ProductDetailClient({
           </div>
         </section>
 
+
+        {/* ═══════════════ SECTION 10: AREAS WE SERVE (Wooden Pallets Only) ═══════════════ */}
+        {/* One section on one page — never a page per location. */}
+        {product.slug === 'wooden-pallets' && (
+          <AreasWeServe
+            productName="Wooden pallets"
+            heading="Where we deliver wooden pallets"
+            intro="Pallets are heavy, low-value-per-cubic-metre freight, so where you are changes what a pallet costs you far more than it changes what it is. These are the six regions we supply most often, and what buyers in each of them typically order."
+          />
+        )}
 
         {/* ═══════════════ SECTION: TECHNICAL PROCEDURE (If available) ═══════════════ */}
         {content.procedure && (

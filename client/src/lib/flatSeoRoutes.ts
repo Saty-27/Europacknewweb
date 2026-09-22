@@ -74,7 +74,11 @@ const richRoutes: FlatSeoRoute[] = [
     // competing with it. Kept under 60 characters so it does not truncate.
     metaTitle: 'Wooden Pallet Manufacturer in Mumbai & Vadodara',
     description:
-      'ISPM-15 wooden pallets manufacturer and supplier for export cargo, warehouse storage, four-way pallets, two-way pallets, CP pallets and custom industrial pallets in Mumbai, Vadodara and across India.',
+      // Kept free of the "in Mumbai, Vadodara and across India" tag: this one string
+      // is serialised into the meta description, og:description, twitter:description
+      // and the RSC payload, so a stock phrase here alone appeared eight times in the
+      // served HTML. The location line now lives once, in the page's overview prose.
+      'ISPM-15 heat-treated wooden pallets — four-way, two-way, CP1 to CP9, hardwood, plywood and custom sizes — with dimensions and load ratings published for every format.',
     category: 'Wooden Pallets',
     catalogCategoryId: 'wooden-pallets',
     representsCategory: true,
