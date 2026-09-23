@@ -15,11 +15,18 @@ import Link from 'next/link';
 interface Region {
   heading: string;
   body: string;
+  /**
+   * Set only where a region has its own page. Two do. A region without one links
+   * nowhere rather than to a placeholder — the whole point of this section is
+   * that it covers the places we serve without minting a URL per place.
+   */
+  href?: string;
 }
 
 const regions: Region[] = [
   {
     heading: 'Mumbai and the wider MMR',
+    href: '/wooden-pallets-manufacturer-in-mumbai',
     body:
       'Our head office is in Vile Parle West. We deliver into Andheri and Andheri MIDC, BKC and SEEPZ, Goregaon, Malad, Borivali, Dadar, Kurla, Ghatkopar, Vikhroli, Bhandup and Mulund, and northwards into Thane, Wagle Estate, Bhiwandi and Vasai-Virar. For city consignees with narrow access or restricted delivery windows, we schedule pallet drops around the load rather than around our route.',
   },
@@ -30,6 +37,7 @@ const regions: Region[] = [
   },
   {
     heading: 'Vadodara and the Gujarat GIDC belt',
+    href: '/wooden-pallets-manufacturer-in-vadodara',
     body:
       'We serve Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli. Chemical-industry formats are commonly specified across this belt — the CP series and drum-handling decks rather than general-purpose sizes — and bulk orders for the GIDC estates can be consolidated so that a single delivery covers a production run.',
   },
@@ -77,7 +85,18 @@ export default function AreasWeServe({
         <div className="space-y-8">
           {regions.map((region) => (
             <div key={region.heading}>
-              <h3 className="text-base font-black text-slate-900 tracking-tight mb-2">{region.heading}</h3>
+              <h3 className="text-base font-black text-slate-900 tracking-tight mb-2">
+                {region.href ? (
+                  <Link
+                    href={region.href}
+                    className="text-slate-900 underline decoration-orange-200 underline-offset-4 hover:text-[#FF6600] hover:decoration-[#FF6600] transition-colors"
+                  >
+                    {region.heading}
+                  </Link>
+                ) : (
+                  region.heading
+                )}
+              </h3>
               <p className="text-sm text-slate-600 leading-relaxed">{region.body}</p>
             </div>
           ))}

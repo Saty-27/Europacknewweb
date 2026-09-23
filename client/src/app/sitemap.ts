@@ -70,6 +70,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }))
 
+  // The two city pages. There are exactly two, they are hand-written, and they
+  // are listed here one by one rather than generated from a list of cities —
+  // deliberately, because a city array with a template behind it is how the
+  // 7,700 doorway URLs came to exist in the first place. Adding a third means
+  // writing a third page, not adding a string.
+  const cityRoutes = [
+    '/wooden-pallets-manufacturer-in-mumbai',
+    '/wooden-pallets-manufacturer-in-vadodara',
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: CONTENT_LAST_MODIFIED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }))
+
   const flatSeoRoutes = getFlatSeoRoutes().map((route) => ({
     url: `${baseUrl}/${route.slug}`,
     lastModified: CONTENT_LAST_MODIFIED,
@@ -126,6 +141,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const routes = [
     ...staticRoutes, 
+    ...cityRoutes,
     ...flatSeoRoutes,
     ...articleRoutes,
     ...productRoutes, 
