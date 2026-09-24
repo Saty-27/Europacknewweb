@@ -41,7 +41,7 @@ const AREA_SERVED = [
 const FAQ = [
   {
     q: 'Where in Mumbai is Europack based?',
-    a: 'Our head office is at 101, M. L. Spaces, Railway Station Road, Vile Parle West, Mumbai 400056. The pallet desk is reachable on +91 98200 90775 or sales@europackindia.in, Monday to Saturday, 9:00 AM to 7:00 PM.',
+    a: 'Our head office is at 101, ML Spaces, Railway Station Rd, near Vile Parle, above Bharat Bank, Navpada, Kamala Nagar, Vile Parle West, Mumbai, Maharashtra 400056. The pallet desk is reachable on +91 98200 90775 or sales@europackindia.in, Monday to Saturday, 9:00 AM to 7:00 PM.',
   },
   {
     q: 'Which areas of Mumbai and the MMR do you deliver wooden pallets to?',
@@ -107,6 +107,7 @@ export default function WoodenPalletsMumbaiPage() {
     <>
       <CityJsonLd
         mode="office"
+        office="mumbai"
         path={PATH}
         name="Europack — Wooden Pallet Manufacturer, Mumbai"
         description={DESCRIPTION}

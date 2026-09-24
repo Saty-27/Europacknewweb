@@ -20,9 +20,11 @@ import {
  * subject matter, and it is why this page shares no sentences with the Mumbai
  * one.
  *
- * Note the schema mode: `serviceArea`, not `office`. Vadodara is a place we
- * deliver into, and the page says so in those words. See CityJsonLd for why no
- * postal address is emitted here.
+ * Schema mode is `office`: G.J. Patel Estate on Harni Dena Road is a real
+ * address, confirmed against the Google Business Profile listing, so this page
+ * emits LocalBusiness with it. It claims a location and nothing more — no
+ * manufacturing capacity, stock holding or headcount is stated here, because
+ * the repo does not state any.
  */
 
 const PATH = '/wooden-pallets-manufacturer-in-vadodara';
@@ -41,8 +43,8 @@ const AREA_SERVED = [
 
 const FAQ = [
   {
-    q: 'Does Europack supply wooden pallets in Vadodara?',
-    a: 'Yes. We supply and deliver into Vadodara and the surrounding GIDC belt — Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli. Our office is in Vile Parle West, Mumbai, on +91 98200 90775 or sales@europackindia.in; Vadodara is a delivery region rather than a second address.',
+    q: 'Where in Vadodara is Europack located?',
+    a: 'Our Vadodara address is G.J. Patel Estate, Plot No. 44/B, Harni Dena Road, NH 48, Dena, Vadodara, Gujarat 390022. From there we cover the surrounding GIDC belt — Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli. The pallet desk is on +91 98200 90775 or sales@europackindia.in, Monday to Saturday, 9:00 AM to 7:00 PM.',
   },
   {
     q: 'Why do Vadodara buyers order CP pallets rather than standard sizes?',
@@ -58,7 +60,7 @@ const FAQ = [
   },
   {
     q: 'Can you consolidate a bulk order across several GIDC units?',
-    a: 'Yes — bulk orders for the GIDC estates can be consolidated so that a single delivery covers a production run rather than arriving piecemeal. At this distance from Mumbai that also tends to be the sensible freight unit.',
+    a: 'Yes — bulk orders for the GIDC estates can be consolidated so that a single delivery covers a production run rather than arriving piecemeal. Where several units under the same group are ordering separately, saying so at quotation usually changes the freight rather than the pallet.',
   },
   {
     q: 'Are pallets delivered to Vadodara ISPM-15 treated?',
@@ -107,9 +109,10 @@ export default function WoodenPalletsVadodaraPage() {
   return (
     <>
       <CityJsonLd
-        mode="serviceArea"
+        mode="office"
+        office="vadodara"
         path={PATH}
-        name="Wooden Pallet Supply in Vadodara — Europack"
+        name="Europack — Wooden Pallet Manufacturer, Vadodara"
         description={DESCRIPTION}
         image={IMAGE}
         areaServed={AREA_SERVED}
@@ -121,10 +124,10 @@ export default function WoodenPalletsVadodaraPage() {
         eyebrow="Vadodara · The GIDC belt"
         h1="Wooden Pallet Manufacturer in Vadodara"
         facts={[
+          { label: 'Vadodara address', value: 'G.J. Patel Estate, Harni Dena Road, NH 48, Dena — 390022' },
           { label: 'Estates served', value: 'Makarpura, Nandesari, Savli, Halol, Padra, Por, Ranoli' },
           { label: 'Dominant standard', value: 'CP series — the chemical industry footprints' },
-          { label: 'Order pattern', value: 'Consolidated bulk against a production run' },
-          { label: 'Ordering office', value: 'Vile Parle West, Mumbai · Mon–Sat' },
+          { label: 'Pallet desk', value: 'Mon–Sat, 9:00 AM – 7:00 PM' },
         ]}
         lead={
           <>
@@ -135,10 +138,10 @@ export default function WoodenPalletsVadodaraPage() {
               is that industry&rsquo;s own standard.
             </p>
             <p>
-              We supply and deliver into the GIDC estates from our Mumbai office — this is a delivery region
-              for us, not a second address. What follows is the CP range with real dimensions, which deck
-              suits drums and which suits bags, and how bulk orders across these estates are usually put
-              together.
+              Our Vadodara address is G.J. Patel Estate, Plot No. 44/B on Harni Dena Road, just off NH 48 at
+              Dena — inside the belt it serves rather than a lead time away from it. What follows is the CP
+              range with real dimensions, which deck suits drums and which suits bags, and how bulk orders
+              across these estates are usually put together.
             </p>
           </>
         }

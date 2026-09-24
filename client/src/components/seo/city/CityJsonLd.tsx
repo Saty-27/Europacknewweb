@@ -11,13 +11,13 @@ const ORG_ID = `${SITE}/#organization`;
  *
  * Two shapes, and the difference is not cosmetic:
  *
- *  - `office` emits LocalBusiness with a real postalAddress. Only Mumbai gets
- *    it, because Vile Parle West is the one address the repo states with a
- *    street, a PIN and three sources agreeing.
- *  - `serviceArea` emits Service + areaServed with no address at all. A city we
- *    deliver into is not a place of business, and a LocalBusiness node with an
- *    address we cannot stand behind is a fabricated location — the precise
- *    thing that gets a local profile suspended.
+ *  - `office` emits LocalBusiness with a real postalAddress, naming which of
+ *    the addresses in OFFICES below it is. Both current city pages use it.
+ *  - `serviceArea` emits Service + areaServed with no address at all, for a
+ *    place we deliver into but do not sit in. Nothing uses it today; it exists
+ *    so the next city page has an honest shape available. A LocalBusiness node
+ *    with an address we cannot stand behind is a fabricated location — the
+ *    precise thing that gets a local profile suspended.
  *
  * Deliberately absent everywhere: geo coordinates (unverified), aggregateRating
  * and review (no review data in the repo), and offers/priceRange (Europack
@@ -30,8 +30,36 @@ export interface CityFaqItem {
   a: string;
 }
 
-export interface CityJsonLdProps {
-  mode: 'office' | 'serviceArea';
+/**
+ * Every address Europack actually occupies, written once, in the form the
+ * Google Business Profile listing states it. A city page may only claim one of
+ * these; it may not pass an address in. The street lines read the way they do
+ * because NAP matching is literal — a tidied-up address is a different address
+ * as far as local search is concerned.
+ */
+const OFFICES = {
+  mumbai: {
+    '@type': 'PostalAddress',
+    streetAddress:
+      '101, ML Spaces, Railway Station Rd, near Vile Parle, above Bharat Bank, Navpada, Kamala Nagar, Vile Parle West',
+    addressLocality: 'Mumbai',
+    addressRegion: 'Maharashtra',
+    postalCode: '400056',
+    addressCountry: 'IN',
+  },
+  vadodara: {
+    '@type': 'PostalAddress',
+    streetAddress: 'G.J. Patel Estate, Plot No. 44/B, Harni Dena Road, NH 48, Dena',
+    addressLocality: 'Vadodara',
+    addressRegion: 'Gujarat',
+    postalCode: '390022',
+    addressCountry: 'IN',
+  },
+} as const;
+
+export type OfficeKey = keyof typeof OFFICES;
+
+interface CityJsonLdBase {
   /** Page path, e.g. /wooden-pallets-manufacturer-in-mumbai */
   path: string;
   /** The business/service name as it should read in results. */
@@ -44,14 +72,17 @@ export interface CityJsonLdProps {
   breadcrumbs: { name: string; path: string }[];
 }
 
-const HEAD_OFFICE = {
-  '@type': 'PostalAddress',
-  streetAddress: '101, M. L. Spaces, Railway Station Road, Vile Parle West',
-  addressLocality: 'Mumbai',
-  addressRegion: 'Maharashtra',
-  postalCode: '400056',
-  addressCountry: 'IN',
-} as const;
+/**
+ * A discriminated union rather than an optional field: `office` without an
+ * address, or an address on a page that only serves an area, are both compile
+ * errors instead of a judgement call at the call site.
+ */
+export type CityJsonLdProps =
+  | (CityJsonLdBase & { mode: 'office'; office: OfficeKey })
+  | (CityJsonLdBase & { mode: 'serviceArea' });
+
+/** The registered office, and the provider on any serviceArea page. */
+const HEAD_OFFICE = OFFICES.mumbai;
 
 const OPENING_HOURS = {
   '@type': 'OpeningHoursSpecification',
@@ -63,21 +94,13 @@ const OPENING_HOURS = {
 const TELEPHONE = '+91-9820090775';
 const EMAIL = 'sales@europackindia.in';
 
-export default function CityJsonLd({
-  mode,
-  path,
-  name,
-  description,
-  image,
-  areaServed,
-  faq,
-  breadcrumbs,
-}: CityJsonLdProps) {
+export default function CityJsonLd(props: CityJsonLdProps) {
+  const { path, name, description, image, areaServed, faq, breadcrumbs } = props;
   const url = `${SITE}${path}`;
   const places = areaServed.map((place) => ({ '@type': 'City', name: place }));
 
   const primary =
-    mode === 'office'
+    props.mode === 'office'
       ? {
           '@context': 'https://schema.org',
           '@type': 'LocalBusiness',
@@ -88,7 +111,7 @@ export default function CityJsonLd({
           image: `${SITE}${image}`,
           telephone: TELEPHONE,
           email: EMAIL,
-          address: HEAD_OFFICE,
+          address: OFFICES[props.office],
           openingHoursSpecification: [OPENING_HOURS],
           parentOrganization: { '@id': ORG_ID },
           areaServed: places,

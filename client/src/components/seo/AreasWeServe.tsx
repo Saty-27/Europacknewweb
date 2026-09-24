@@ -7,9 +7,11 @@ import Link from 'next/link';
  * to do. It is prose in semantic HTML (h2 / h3 / p) rather than a chip grid,
  * because the sentences around a place name are what carry the relevance.
  *
- * Nothing here claims a facility in any city. Europack's head office is in Vile
- * Parle West, Mumbai; everywhere else is phrased as supply and delivery, which
- * is what it is.
+ * Europack occupies two addresses: the head office in Vile Parle West, Mumbai,
+ * and G.J. Patel Estate in Vadodara. Those two have their own pages, linked
+ * from their headings below. Every other region here is phrased as supply and
+ * delivery, which is what it is — no section of this file may claim a facility
+ * that is not one of the two.
  */
 
 interface Region {
