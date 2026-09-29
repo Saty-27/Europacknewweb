@@ -209,12 +209,12 @@ export default function ProductsClient() {
                           <button onClick={openModal} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-[#FF6600] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#E65C00] transition-all shadow-lg shadow-orange-500/20">
                              Get Wholesale Pricing <ArrowRight size={16}/>
                           </button>
-                          {/* Only rendered when the category has a real landing page —
-                              this used to link to /products#<id>, the anchor the
-                              visitor was already looking at, so it did nothing. */}
+                          {/* Every category now has a landing page. This used to link
+                              to /products#<id> — the anchor the visitor was already
+                              looking at — so the button did nothing on all 23. */}
                           {landingPage && (
                             <Link href={landingPage.href} className="w-full sm:w-fit flex items-center justify-center gap-3 px-8 py-4 bg-white border border-slate-200 text-slate-500 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-[#FF6600] hover:text-[#FF6600] transition-all no-underline">
-                               View Products <ChevronRight size={16}/>
+                               View Details <ChevronRight size={16}/>
                             </Link>
                           )}
                        </div>

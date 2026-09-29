@@ -14,6 +14,7 @@ import { productsData } from '../../../../constants/productsData';
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
 import CategoryHubLinks from '@/components/seo/CategoryHubLinks';
 import AreasWeServe from '@/components/seo/AreasWeServe';
+import { categoryLandingContent } from '@/constants/categoryLandingContent';
 
 // =====================================================
 // TYPES
@@ -542,7 +543,7 @@ From heavy ODC machinery to pharmaceutical-grade corrugated boxes, every Europac
 };
 
 function getContent(slug: string) {
-  return productContent[slug] || productContent['default'];
+  return productContent[slug] || categoryLandingContent[slug] || productContent['default'];
 }
 
 const productImageMap: Record<string, string> = {
