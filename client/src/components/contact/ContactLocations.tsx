@@ -24,7 +24,7 @@ const factories = [
   {
     name: 'Industrial Node',
     location: 'Vadodara, Gujarat',
-    address: 'G.J. Patel Estate, Vadodara, Gujarat 390010',
+    address: 'G.J. Patel Estate, Plot No. 42/B, Harni Dena Road, Dena Chokadi, NH 48, Vadodara, Gujarat 390022',
     gst: '24AAAFE1305L2ZW',
     bg: '/images/about/shipment.png'
   }

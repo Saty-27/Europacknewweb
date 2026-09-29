@@ -31,7 +31,7 @@ export default function ServiceDetailClient({ service }: { service: ServiceData 
             className="space-y-8"
           >
             <h1 className="text-5xl md:text-7xl font-black text-[#1A1F2C] tracking-tighter leading-[1.1]">
-              {service.name.split(' ').map((word, i, arr) => 
+              {(service.h1 ?? service.name).split(' ').map((word, i, arr) => 
                 i === arr.length - 1 ? <span key={i} className="text-[#FF6600]">{word}</span> : word + ' '
               )}
             </h1>
@@ -150,6 +150,44 @@ export default function ServiceDetailClient({ service }: { service: ServiceData 
           </motion.div>
 
         </div>
+
+        {/* Body sections and FAQ. Without these a service page rendered ~300
+            words — a hero, two descriptions and two bullet lists — which is not
+            enough to compete for a commercial service term. */}
+        {service.sections && service.sections.length > 0 && (
+          <section className="max-w-4xl mt-24 space-y-10">
+            {service.sections.map((sec) => (
+              <div key={sec.heading}>
+                <h2 className="text-2xl lg:text-3xl font-black text-[#1A1F2C] tracking-tighter mb-3">{sec.heading}</h2>
+                <p className="text-slate-600 leading-relaxed">{sec.body}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {service.faqs && service.faqs.length > 0 && (
+          <section className="max-w-4xl mt-20">
+            <h2 className="text-2xl lg:text-3xl font-black text-[#1A1F2C] tracking-tighter mb-8">
+              Frequently asked questions
+            </h2>
+            <div className="space-y-3">
+              {service.faqs.map((f) => (
+                <details
+                  key={f.question}
+                  className="group bg-slate-50 rounded-2xl border border-slate-100 [&_summary::-webkit-details-marker]:hidden"
+                >
+                  <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none">
+                    <h3 className="font-black text-slate-900 text-sm pr-4 m-0">{f.question}</h3>
+                    <span aria-hidden="true" className="text-[#FF6600] shrink-0 text-lg font-black leading-none transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <div className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                    {f.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );

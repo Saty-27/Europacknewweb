@@ -119,6 +119,50 @@ export default async function RootLayout({
                   }],
                   "inLanguage": "en-US"
                 },
+{
+                  // The head office as a place of business, on every page.
+                  //
+                  // It was previously declared only on the two city pages, i.e.
+                  // 2 of 187. Competitors ranking for the local terms carry a
+                  // LocalBusiness node site-wide, and there is no reason not to:
+                  // the address is real, verified against the company's own card
+                  // and its Google Business Profile listing.
+                  //
+                  // The @id is stable and site-wide, and the Mumbai city page
+                  // reuses this exact @id rather than minting a second node, so
+                  // the two describe one entity instead of competing.
+                  "@type": "LocalBusiness",
+                  "@id": "https://europackindia.com/#localbusiness",
+                  "name": "Europack",
+                  "url": "https://europackindia.com/",
+                  "image": "https://europackindia.com/images/logo/logo.png",
+                  "telephone": "+91-9820090775",
+                  "email": "sales@europackindia.in",
+                  "parentOrganization": { "@id": "https://europackindia.com/#organization" },
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "101, ML Spaces, Railway Station Rd, near Vile Parle, above Bharat Bank, Navpada, Kamala Nagar, Vile Parle West",
+                    "addressLocality": "Mumbai",
+                    "addressRegion": "Maharashtra",
+                    "postalCode": "400056",
+                    "addressCountry": "IN"
+                  },
+                  "openingHoursSpecification": [{
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                    "opens": "09:00",
+                    "closes": "19:00"
+                  }],
+                  "areaServed": [
+                    { "@type": "City", "name": "Mumbai" },
+                    { "@type": "City", "name": "Navi Mumbai" },
+                    { "@type": "City", "name": "Thane" },
+                    { "@type": "City", "name": "Bhiwandi" },
+                    { "@type": "City", "name": "Pune" },
+                    { "@type": "City", "name": "Nashik" },
+                    { "@type": "City", "name": "Vadodara" }
+                  ]
+                },
                 {
                   "@type": "Organization",
                   "@id": "https://europackindia.com/#organization",
@@ -146,7 +190,76 @@ export default async function RootLayout({
                     "contactType": "sales",
                     "areaServed": "IN",
                     "availableLanguage": ["English", "Hindi"]
-                  }
+                  },
+                  "email": "sales@europackindia.in",
+                  // Head office, in the form the Google Business Profile listing
+                  // states it. NAP matching is literal, so this string is kept
+                  // identical to the one in CityJsonLd and the footer.
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "101, ML Spaces, Railway Station Rd, near Vile Parle, above Bharat Bank, Navpada, Kamala Nagar, Vile Parle West",
+                    "addressLocality": "Mumbai",
+                    "addressRegion": "Maharashtra",
+                    "postalCode": "400056",
+                    "addressCountry": "IN"
+                  },
+                  // The four manufacturing sites, transcribed from the company's
+                  // own card. These say where Europack operates — they are what
+                  // lets a search engine resolve the business to four real places
+                  // instead of one. Deliberately Place nodes under the one
+                  // Organization, never separate LocalBusiness entities: a factory
+                  // is not a branch that takes walk-in customers, and minting a
+                  // storefront per site is how local profiles get suspended.
+                  "location": [
+                    {
+                      "@type": "Place",
+                      "name": "Europack Factory 1 — Mumbai",
+                      "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "3rd Lane, Gulabshah Estate",
+                        "addressLocality": "Mumbai",
+                        "addressRegion": "Maharashtra",
+                        "postalCode": "400070",
+                        "addressCountry": "IN"
+                      }
+                    },
+                    {
+                      "@type": "Place",
+                      "name": "Europack Factory 2 — Bhiwandi",
+                      "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "Gala No. A-11/1-4, Shakti Industrial Complex, Vadu Navghar, Kaman, Vasai Road",
+                        "addressLocality": "Bhiwandi",
+                        "addressRegion": "Maharashtra",
+                        "postalCode": "421302",
+                        "addressCountry": "IN"
+                      }
+                    },
+                    {
+                      "@type": "Place",
+                      "name": "Europack Factory 3 — Jamshedpur",
+                      "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "Krishnapur, near Soma Puff Metal, Adityapur Industrial Area, Phase 1, Plot No. 10, Adityapur",
+                        "addressLocality": "Jamshedpur",
+                        "addressRegion": "Jharkhand",
+                        "postalCode": "381014",
+                        "addressCountry": "IN"
+                      }
+                    },
+                    {
+                      "@type": "Place",
+                      "name": "Europack Factory 4 — Vadodara",
+                      "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "G.J. Patel Estate, Plot No. 42/B, Harni Dena Road, Dena Chokadi, NH 48",
+                        "addressLocality": "Vadodara",
+                        "addressRegion": "Gujarat",
+                        "postalCode": "390022",
+                        "addressCountry": "IN"
+                      }
+                    }
+                  ]
                 }
               ]
             })

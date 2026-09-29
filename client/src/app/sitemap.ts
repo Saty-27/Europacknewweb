@@ -3,6 +3,7 @@ import { fetchAPI } from '@/lib/api'
 import { productsData } from '@/constants/productsData'
 import { getAllProductSlugs } from '@/lib/productContentGenerator'
 import { getFlatSeoRoutes } from '@/lib/flatSeoRoutes'
+import { servicesData } from '@/data/servicesData'
 import { getAllMockBlogs } from '@/data/allBlogs'
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage'
 
@@ -70,6 +71,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }))
 
+  // The two city pages. There are exactly two, they are hand-written, and they
+  // are listed here one by one rather than generated from a list of cities —
+  // deliberately, because a city array with a template behind it is how the
+  // 7,700 doorway URLs came to exist in the first place. Adding a third means
+  // writing a third page, not adding a string.
+  const cityRoutes = [
+    '/wooden-pallets-manufacturer-in-mumbai',
+    '/wooden-pallets-manufacturer-in-vadodara',
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: CONTENT_LAST_MODIFIED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }))
+
+  // The nine service pages. They were never submitted — and until the params
+  // bug in /services/[slug] was fixed they all returned 404, so nothing would
+  // have been gained by submitting them anyway. Fumigation, ISPM-15 heat
+  // treatment, palletization and on-site packing are commercial services with
+  // real search demand that the site was entirely invisible for.
+  const serviceRoutes = servicesData.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: CONTENT_LAST_MODIFIED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }))
+
   const flatSeoRoutes = getFlatSeoRoutes().map((route) => ({
     url: `${baseUrl}/${route.slug}`,
     lastModified: CONTENT_LAST_MODIFIED,
@@ -126,6 +154,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const routes = [
     ...staticRoutes, 
+    ...cityRoutes,
+    ...serviceRoutes,
     ...flatSeoRoutes,
     ...articleRoutes,
     ...productRoutes, 

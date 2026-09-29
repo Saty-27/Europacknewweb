@@ -141,7 +141,15 @@ export default function Header() {
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[85px] lg:h-[100px]">
 
-            <div className="flex-1 flex items-center justify-start">
+            {/*
+              grow/shrink-0/basis-auto, not flex-1. flex-1 is `flex: 1 1 0%` — a
+              zero basis that is free to shrink — so this column was the only
+              thing in the row that could give, and opening the search collapsed
+              it to 6px while the 218px logo carried on overflowing across HOME.
+              basis-auto floors it at the logo's own width; grow still balances
+              the row so the nav stays centred.
+            */}
+            <div className="grow shrink-0 basis-auto flex items-center justify-start">
               <Link href="/" className="inline-flex items-center shrink-0 group">
                 <img 
                   src="/images/logo/EuropackLogo.png" 
@@ -152,7 +160,7 @@ export default function Header() {
             </div>
 
             {/* Center Section: Navigation Menu */}
-            <div className="hidden xl:flex flex-none items-center justify-center gap-8">
+            <div className="hidden xl:flex flex-none items-center justify-center gap-6">
               {navItems.map((item) => (
                 <div
                   key={item.name}
@@ -208,11 +216,22 @@ export default function Header() {
             </div>
 
             {/* Right Section: Search & CTA */}
-            <div className="hidden xl:flex flex-1 items-center justify-end gap-3">
+            <div className="hidden xl:flex grow shrink-0 basis-auto items-center justify-end gap-3">
               <div className="flex items-center relative pr-4 border-r border-slate-200" ref={searchRef}>
                  {isSearchOpen ? (
                    <div className="relative">
-                     <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: 260, opacity: 1 }} className="flex items-center bg-[#f8f9fa] rounded-full border border-slate-200 overflow-hidden px-3 py-1.5 shadow-sm">
+                     {/*
+                       Width comes from Tailwind, not from the animation. A fixed
+                       260px here cost the row 226px it did not have at xl; the
+                       reveal is now opacity + scaleX so the width can stay
+                       responsive.
+                     */}
+                     <motion.div
+                       initial={{ opacity: 0, scaleX: 0.7 }}
+                       animate={{ opacity: 1, scaleX: 1 }}
+                       transition={{ duration: 0.2, ease: 'easeOut' }}
+                       style={{ transformOrigin: 'right center' }}
+                       className="flex items-center bg-[#f8f9fa] rounded-full border border-slate-200 overflow-hidden px-3 py-1.5 shadow-sm w-[180px] 2xl:w-[200px]">
                         <Search size={16} strokeWidth={1.5} className="text-[#FF6600] shrink-0"/>
                         <input 
                           type="text" 
@@ -280,17 +299,25 @@ export default function Header() {
                      </AnimatePresence>
                    </div>
                  ) : (
-                   <button onClick={() => setIsSearchOpen(true)} className="flex items-center justify-center hover:text-[#FF6600] transition-colors text-slate-600 p-2">
+                   <button onClick={() => setIsSearchOpen(true)} aria-label="Search products" className="flex items-center justify-center hover:text-[#FF6600] transition-colors text-slate-600 p-2">
                       <Search size={18} strokeWidth={1.5} />
                    </button>
                  )}
               </div>
 
+              {/*
+                Below 2xl the row cannot hold the logo, five nav items, an open
+                search field and both buttons at once — it overflowed by 100px.
+                Brochure is the one item here that is duplicated (footer and the
+                mobile menu both carry it), so it stands down while the search is
+                open and comes back when it closes. Nothing is permanently lost,
+                and REQUEST QUOTE — the actual conversion — never moves.
+              */}
               <a 
                 href="/Europack-Brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all duration-300 border border-slate-200 group whitespace-nowrap"
+                className={`${isSearchOpen ? 'hidden 2xl:flex' : 'flex'} items-center gap-2 bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-slate-100 transition-all duration-300 border border-slate-200 group whitespace-nowrap`}
               >
                 BROCHURE <FileDown size={14} strokeWidth={2.5} className="group-hover:scale-110 transition-transform" />
               </a>

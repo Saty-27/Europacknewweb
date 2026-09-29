@@ -25,13 +25,30 @@ export interface GeneratedProductContent {
   deliveryInfo: { title: string; desc: string }[];
   seoContent: string;
   faq: { q: string; a: string }[];
-  caseStudy: { client: string; result: string; detail: string };
+  /** Only set where a real, attributable outcome exists. Never generated. */
+  caseStudy?: { client: string; result: string; detail: string };
   images: string[];
 }
 
 // ──────────────────────────────────────────────
 // CATEGORY-AWARE DATA BANKS
 // ──────────────────────────────────────────────
+
+/**
+ * Per category, the ordinary word a buyer uses for the thing. Keeps the copy
+ * readable without restating the full product name in every sentence.
+ */
+const SHORT_NOUNS: Record<string, string> = {
+  'wooden-pallets': 'pallet', 'metal-pallets': 'pallet', 'paper-pallets': 'pallet',
+  'plastic-pallets': 'pallet', 'molded-pallets': 'pallet', 'wooden-skids': 'skid',
+  'wooden-boxes': 'box', 'plywood-boxes': 'box', 'corrugated-cartons': 'carton',
+  'packaging-materials': 'material', 'packaging-laminates': 'laminate',
+  'plywood-wood-material': 'board', 'packaging-hardware': 'fitting',
+  'lashing-materials': 'lashing', 'antirust-treatment': 'treatment',
+  'heavy-engineering-packaging': 'packing', 'vacuum-packaging': 'pack',
+  'stretch-wrapping': 'wrap', 'dunnage-bag': 'bag', 'special-cases': 'case',
+  'special-services': 'service',
+};
 
 const categoryMeta: Record<string, {
   material: string; loadRange: string; treatment: string; certifications: string[];
@@ -201,6 +218,22 @@ export function generateProductContent(
   const categoryName = category.title;
   const subTitle = product.subTitle;
 
+  /**
+   * The word the page uses INSTEAD of the product name after first mention.
+   *
+   * The old template pushed `${productName}` into 23 slots, which on
+   * /export-plastic-pallet produced the exact phrase 49 times in 2,186 words —
+   * 6.7% density, against a natural 0.5-1.5%. It also read as machine-written,
+   * because a singular product name was being substituted into sentences built
+   * for plurals ("Export Plastic Pallet are..." appeared seven times).
+   *
+   * So the name is now stated where a human would state it — heading, opening
+   * sentence, a few questions — and everywhere else this noun carries the
+   * sentence.
+   */
+  const shortNoun = SHORT_NOUNS[category.id] ?? 'unit';
+  const shortPlural = shortNoun.endsWith('s') ? shortNoun : `${shortNoun}s`;
+
   // ── META ──
   // A product may claim its own title and H1. That is how the 22 pallet pages
   // stop competing with each other: only /wooden-pallets keeps the broad
@@ -214,23 +247,19 @@ export function generateProductContent(
 
   // ── INTRO (300-400 words) ──
   const loadInfoIntro = meta.loadRange ? `, processed under strict quality controls and validated for load ratings of ${meta.loadRange}` : `, and processed under strict quality controls to ensure industrial reliability`;
-  const intro = `Europack Industries is India's most trusted manufacturer of ${productName} for industrial export and heavy-duty logistics applications. Our ${productName.toLowerCase()} are engineered to the highest structural and compliance standards — making them the preferred choice for exporters, manufacturers, EPC contractors, and freight forwarders across Mumbai, Pune, Ahmedabad, Jamshedpur, Chennai, and pan-India.
+  const intro = `Europack manufactures ${productName} for export cargo and heavy-duty industrial logistics. Each ${shortNoun} is built from ${meta.material}${loadInfoIntro}, and every unit is dimensionally verified and inspected against its compliance paperwork before it leaves the floor.
 
-With 33+ years of hands-on experience in industrial packaging engineering, Europack has developed an in-depth understanding of the exact challenges faced by B2B buyers sourcing ${categoryName.toLowerCase()} for critical freight. Whether you need ${productName.toLowerCase()} for domestic warehousing, export-ready containers, or specialized ODC (Out-of-Dimension Cargo) shipments, our manufacturing team has the technical depth and production capacity to deliver exactly what your project demands.
+Production runs across four sites — Mumbai, Bhiwandi, Vadodara and Jamshedpur — which is what puts the Maharashtra and Gujarat industrial belts, and the JNPT export corridor, within short delivery of a plant rather than a freight quote. Buyers in Pune, Nashik and the wider MMR order from the same lines.
 
-Our ${productName.toLowerCase()} are manufactured from ${meta.material}${loadInfoIntro}. Every unit undergoes multi-stage inspection including dimensional verification, structural stress testing, and compliance documentation before dispatch from our facility.
-
-As a registered ${meta.treatment} facility, we are fully equipped to supply ${product.specs[0] || 'certified'} ${productName.toLowerCase()} that meet international shipping standards. Our product range covers all major sub-types and size variations, with full customization capability to match your specific cargo dimensions, weight, and destination compliance requirements.
-
-Whether you are sourcing ${productName.toLowerCase()} for the first time or looking to switch to a more reliable supplier with better SLA adherence and proactive technical support, Europack stands ready to serve. We respond to all enquiries within 24 business hours with a detailed technical proposal and preliminary cost estimate — no obligations, no delays.`;
+Sizes are not fixed. Tell us the cargo — weight, dimensions, stacking pattern, forklift type and destination — and the ${shortNoun} is specified to it rather than the other way round.`
 
   // ── OVERVIEW (200 words) ──
   const loadInfoOverview = meta.loadRange ? `Designed for load ratings of ${meta.loadRange}, the` : `The`;
-  const overview = `The ${productName} by Europack is engineered specifically for ${meta.industryPrimary} applications, where structural integrity, compliance, and precision are non-negotiable. Built from ${meta.material} and carrying ${meta.certifications.slice(0, 2).join(' and ')} certifications, this product represents the highest benchmark in Indian industrial packaging manufacturing.
+  const overview = `${loadInfoOverview} ${shortNoun} is engineered for ${meta.industryPrimary.toLowerCase()} work, where structural integrity and clean compliance paperwork decide whether a shipment moves. It is built from ${meta.material} and carries ${meta.certifications.slice(0, 2).join(' and ')}.
 
-${loadInfoOverview} ${productName.toLowerCase()} integrates ${product.specs.slice(0, 3).join(', ')} to ensure absolute cargo safety throughout the supply chain — from factory floor to final destination, regardless of transport mode or transit duration.
+It combines ${product.specs.slice(0, 3).join(', ')}, which is what keeps the load intact across the whole journey rather than only at the point it was packed.
 
-Our engineering team works closely with clients during the design phase to validate compatibility with forklift entry, crane lifting, container stacking, and customs documentation requirements, ensuring a truly turnkey packaging solution.`;
+Before anything is cut, our engineers check the design against forklift entry, crane lifting points, container stacking and the customs documentation the destination will ask for.`
 
   // ── KEY FEATURES ──
   const keyFeatures = [
@@ -253,7 +282,7 @@ Our engineering team works closely with clients during the design phase to valid
     { key: 'Treatment', value: meta.treatment },
     { key: 'Certification', value: meta.certifications.join(', ') },
     { key: 'MOQ', value: 'Contact for category-specific MOQ' },
-    { key: 'Lead Time', value: '3–10 Working Days' },
+    { key: 'Lead Time', value: '3–10 working days (standard configurations)' },
     { key: 'Delivery', value: 'Pan-India + Port Delivery' },
     { key: 'Customization', value: 'Available — Dimensions, Treatment, Marking' },
     { key: 'Quality Assurance', value: 'ISO 9001:2015 — 100% Inspection' },
@@ -388,62 +417,54 @@ Our engineering team works closely with clients during the design phase to valid
     { title: 'Direct Port Dispatch', desc: 'Coordinated delivery to JNPT, Mundra, Chennai, Vizag, and Kolkata ports, working directly with your CHA/freight forwarder.' },
   ];
 
-  // ── SEO CONTENT (500-800 words) ──
-  const seoContent = `Europack Industries is a leading ${productName} manufacturer and supplier in Mumbai, India, serving industrial clients across all major sectors including heavy engineering, automotive, pharmaceutical, chemical, defense, and FMCG. Our ${productName.toLowerCase()} are manufactured at our ISO 9001:2015 certified production facility and are supplied to 3,000+ clients across India and exported to clients in over 40 countries worldwide.
+  // ── CLOSING PROSE ──
+  // This block used to run ~700 words and ended with
+  // `${meta.keywords.join(' | ')} — Keywords That Reflect Our Expertise`,
+  // i.e. the target keyword list printed on the page as visible copy. That is
+  // keyword stuffing in the plainest sense Google's spam policy describes, and
+  // on a template rendering ~115 pages it is also scaled-content abuse. It is
+  // the single likeliest reason these pages rank for "Europack <product>" but
+  // not for the product term on its own: the brand query has no competition,
+  // the generic one does.
+  //
+  // What replaces it says only things the repo can stand behind — the four
+  // sites are the ones on the company's own card, and no client count, country
+  // count, headcount or floor area is asserted here.
+  const seoContent = `Europack has manufactured industrial packaging since 1992, and ${shortPlural} of this type are a core line rather than a sideline. The ${shortNoun} is made to ${meta.certifications[0]}, from ${meta.material}.
 
-${productName} — Technical Excellence at Scale
+Where it is made matters more than it sounds. ${shortPlural.charAt(0).toUpperCase() + shortPlural.slice(1)} are bulky, low-value-per-cubic-metre freight, so delivered cost turns on distance and road access far more than on the unit price. Our Bhiwandi site sits inside Mumbai's logistics belt with direct road access to JNPT, which is what makes same-week delivery to a Pune, Nashik or Navi Mumbai plant — or straight to the port for a stuffing date — a routine order rather than an expedite.
 
-The demand for high-quality ${productName.toLowerCase()} in India has grown significantly over the past decade, driven by the rapid expansion of India's export economy, the growth of e-commerce logistics, and the increasing complexity of industrial supply chains. As a pioneer in the industrial packaging manufacturing sector, Europack has continuously invested in technology, certification infrastructure, and engineering talent to stay ahead of these market demands.
+The specification is the part worth getting right. ${meta.certifications[0]} compliance is table stakes; the questions that actually change the ${shortNoun} are how the load sits on it, how it is lifted, how high it stacks and what the destination's customs will inspect. Send us the cargo details and we will come back with a specification and a landed price, usually within one business day.`
 
-Our ${productName.toLowerCase()} are engineered to meet the exact requirements of modern B2B buyers — combining ${meta.certifications[0]} compliance, ${meta.material} construction, and load ratings of ${meta.loadRange} in a product that is designed for consistent, repeatable performance across thousands of shipment cycles.
-
-${productName} Manufacturer in Mumbai — Why Location Matters
-
-Mumbai's strategic location as India's largest port city makes it the ideal base for industrial packaging manufacturing. Our primary facility in Bhiwandi (Mumbai's logistics hub) gives us unmatched connectivity to JNPT (India's largest container port), enabling us to deliver ${productName.toLowerCase()} directly to the port for even the most time-critical export shipments.
-
-Our proximity to Mumbai also means that clients in Pune, Nashik, Aurangabad, Ahmednagar, and the wider Maharashtra industrial belt can access our ${productName.toLowerCase()} with minimal lead times and competitive freight costs.
-
-Why Choose Europack for ${productName}
-
-When sourcing ${productName.toLowerCase()} for your industrial or export operations, the choice of supplier directly impacts your cargo safety, customs compliance, and overall supply chain reliability. Europack brings three critical advantages that set us apart from the competition:
-
-1. Engineering Expertise: Our in-house packaging engineers work with clients during the design phase to validate every ${productName.toLowerCase()} specification against your actual cargo requirements — weight, dimensions, stacking configuration, forklift type, and export destination.
-
-2. Certified Manufacturing: As a ${meta.certifications[0]} certified manufacturer, we provide all required compliance documentation with every shipment — eliminating paperwork delays at customs checkpoints.
-
-3. Production Reliability: With over 2,500 employees spanning across multiple locations within India and covering over 2.3 lakh sq. mt. of work space, we maintain consistent on-time delivery performance globally with manufacturing units and warehouses in Germany, Ireland and UAE.
-
-${meta.keywords.join(' | ')} — Keywords That Reflect Our Expertise
-
-Clients searching for ${meta.keywords[0]} and related industrial packaging solutions will find that Europack consistently delivers the highest product quality at competitive prices, backed by engineering support that is unmatched in the market.
-
-To get a customized quote for ${productName}, contact our sales team via the enquiry form on this page, call our Mumbai office, or WhatsApp us your cargo specifications. We typically respond with a preliminary proposal within 24 business hours.`;
-
-  // ── FAQ (12 questions) ──
+  // ── FAQ ──
+  // Was twelve questions, every one opening with the full product name and most
+  // answers repeating it again — roughly twenty of the page's forty-nine
+  // occurrences came from this block alone. Now eight, with the name in three
+  // of them, which is how a buyer would actually write the question.
+  //
+  // Lead time is stated once here and matches the specs table. The two used to
+  // disagree: the table said 3-10 working days while the FAQ said 3-5 for
+  // standard and 7-12 for custom.
   const faq = [
-    { q: `What is the load capacity of ${productName}?`, a: `Our ${productName.toLowerCase()} support load ranges of ${meta.loadRange}. Custom configurations for higher load requirements are available on request — contact our engineering team with your exact specifications.` },
-    { q: `Is your ${productName} ${meta.certifications[0]} certified?`, a: `Yes. Every ${productName.toLowerCase()} we manufacture is ${meta.certifications[0]} certified. We provide full compliance documentation including certificates, treatment records, and test reports with every shipment.` },
-    { q: `Can I get custom-sized ${productName}?`, a: `Absolutely. Custom sizing is one of our core capabilities. Provide your cargo dimensions, weight, stacking requirements, and transport mode, and our engineering team will design the optimal ${productName.toLowerCase()} configuration.` },
-    { q: `What is the minimum order quantity for ${productName}?`, a: `MOQ varies by product configuration. Standard sizes typically start from 50–100 units. Custom designs may have higher MOQs. Contact us for a project-specific quote with no obligations.` },
-    { q: `How long does it take to manufacture and deliver ${productName}?`, a: `Standard sizes are ready in 3–5 working days from order confirmation. Custom-engineered ${productName.toLowerCase()} typically require 7–12 working days. We accommodate urgent orders with priority production where capacity allows.` },
-    { q: `Do you deliver ${productName} to ports?`, a: `Yes. We deliver directly to all major Indian ports including JNPT (Mumbai), Mundra (Gujarat), Chennai, Vizag, and Kolkata ports, coordinating with your CHA and freight forwarder for seamless logistics.` },
-    { q: `What materials are used to manufacture ${productName}?`, a: `Our ${productName.toLowerCase()} are manufactured from ${meta.material}. Material grade selection is based on your specific load capacity, transit duration, and destination compliance requirements.` },
-    { q: `Can you supply ${productName} in bulk volumes?`, a: `Yes. We supply bulk volumes for manufacturing plants, OEMs, and freight forwarders. Volume discounts are available for long-term supply agreements. Contact our commercial team for bulk pricing.` },
-    { q: `What quality testing is done on ${productName}?`, a: `Every batch undergoes multi-stage QC including dimensional verification, structural load testing, compliance inspection, and documentation audit. We provide test reports upon request for any shipment.` },
-    { q: `Do you provide engineering support for ${productName} selection?`, a: `Yes. Our in-house packaging engineers provide free technical consultations to help you select the right ${productName.toLowerCase()} configuration for your specific cargo, transit route, and regulatory requirements.` },
-    { q: `Does Europack provide on-site packing services with ${productName}?`, a: `Yes. Our mobile packing teams can deploy to your factory or warehouse for on-site packing, lashing, and documentation services anywhere in India. Contact us to discuss a site-specific proposal.` },
-    { q: `How do I get a quote for ${productName}?`, a: `Submit an enquiry through this page, WhatsApp your cargo specifications to our team, or call our Mumbai office. We respond with a detailed preliminary quote within 24 business hours — no commitments required.` },
+    { q: `What load will ${productName} take?`, a: meta.loadRange
+        ? `The standard range is ${meta.loadRange}. Higher ratings are a design question rather than a catalogue one — send us the load and how it sits, and we will tell you what it needs.`
+        : `Load rating depends entirely on configuration for this type. Send us the cargo weight and how it is distributed and we will specify against it.` },
+    { q: `Is it ${meta.certifications[0]} certified?`, a: `Yes. Compliance documentation — certificates, treatment records and test reports — ships with the consignment, because the paperwork arriving late is what actually holds cargo at a checkpoint.` },
+    { q: 'Can I get a custom size?', a: `Yes, and it is the normal case rather than a special order. Give us the cargo dimensions, weight, stacking requirement and transport mode, and the ${shortNoun} is built to those.` },
+    { q: 'What is the minimum order?', a: 'It varies by configuration and we would rather quote your actual quantity than publish a number that is wrong for most orders. Tell us what you need and we will confirm.' },
+    { q: 'How long does it take?', a: 'Standard configurations run 3–10 working days from order confirmation. A custom design adds to that depending on tooling. Where capacity allows we will take urgent work — say so when you enquire rather than after.' },
+    { q: 'Do you deliver to Pune, Nashik or the port?', a: `Yes. We supply across the Mumbai metropolitan region, Pune, Nashik and the Gujarat GIDC belt, and deliver direct to JNPT, Mundra, Chennai, Vizag and Kolkata, working to your CHA's timeline. For an export order, send us the stuffing date rather than a required-by date.` },
+    { q: `What is ${productName} made from?`, a: `${meta.material}. Which grade you get depends on the load, how long it is in transit and what the destination requires — it is not a single fixed recipe.` },
+    { q: 'Can you help choose the right specification?', a: `Yes, at no cost. Our packaging engineers will go through the cargo, the route and the destination's requirements with you before anything is quoted. Getting this wrong is more expensive than the ${shortNoun}.` },
   ];
 
-  // ── CASE STUDY ──
-  const caseStudies = [
-    { client: 'Heavy Machinery Exporter, Pune', result: 'Zero customs rejections for 3 consecutive years', detail: `A leading turbine OEM switched to Europack ${productName.toLowerCase()} and eliminated all phytosanitary rejections at Australian and European ports, saving approximately ₹18 lakhs annually in re-export costs and transit delays.` },
-    { client: 'Chemical Manufacturer, Vadodara', result: '40% reduction in transit damage claims', detail: `By upgrading to Europack's ${productName.toLowerCase()} with custom load configurations, a major chemical exporter reduced in-transit cargo damage from 5.8% to under 0.5% across all export shipments.` },
-    { client: 'Pharmaceutical Company, Ahmedabad', result: '100% compliance across 25 countries', detail: `Europack supplied certified ${productName.toLowerCase()} for international pharmaceutical distribution, achieving zero regulatory rejections across 25 destination countries over 18 months of supply.` },
-    { client: 'Automotive OEM, Chennai', result: '30% logistics cost reduction', detail: `By optimizing ${productName.toLowerCase()} dimensions to match container stacking configurations, Europack helped a Tier-1 automotive supplier achieve 30% higher container utilization, directly reducing per-unit freight costs.` },
-  ];
-
-  const caseStudy = caseStudies[Math.abs(product.id.charCodeAt(0) - 97) % caseStudies.length];
+  // The generated "case study" is gone. It assigned one of four write-ups by
+  // `product.id.charCodeAt(0) % 4`, so the same claim — "saving approximately
+  // ₹18 lakhs annually", "damage from 5.8% to under 0.5%", "zero rejections
+  // across 25 countries" — appeared on roughly thirty different product pages
+  // with the product name swapped. Nothing in the repo supports any of those
+  // figures, and they were attributed to unnamed but identifiable-sounding
+  // clients. It rendered nowhere, so removing it changes no page.
 
   // ── IMAGES ──
   const imagePool = [
@@ -469,7 +490,7 @@ To get a customized quote for ${productName}, contact our sales team via the enq
     metaTitle, metaDescription, h1, h1Sub, intro, overview, keyFeatures, applications,
     specs, technicalDetails, manufacturingSteps, qualityStandards, customizationOptions,
     comparison: comparisonBase, comparisonLabel: meta.comparisonAlt, whyEuropack,
-    deliveryInfo, seoContent, faq, caseStudy, images,
+    deliveryInfo, seoContent, faq, images,
   };
 }
 

@@ -16,6 +16,8 @@ import type { GeneratedProductContent } from '../../../../lib/productContentGene
 import { useModal } from '../../../../context/ModalContext';
 import Counter from '../../../../components/common/Counter';
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage';
+import { getProductFlatSlug } from '@/lib/flatSeoRoutes';
+import SubTypeLinks from '@/components/seo/SubTypeLinks';
 
 // ──────────────────────────────────────────────
 // HELPERS
@@ -284,7 +286,7 @@ export default function ProductSubDetailClient({
             SECTION 4: INTRO PARAGRAPH (Full)
         ══════════════════════════════════════ */}
         <section className="mb-16">
-          <SectionHeading label="Product Introduction" title={`About ${product.name}`} />
+          <SectionHeading label="Product Introduction" title="About this product" />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 bg-slate-50 rounded-3xl p-8 lg:p-10 border border-slate-100 space-y-4">
               {content.intro.split('\n\n').map((para, i) => (
@@ -353,7 +355,7 @@ export default function ProductSubDetailClient({
             <div className="h-1 w-12 bg-[#FF6600]" />
             <div>
               <p className="text-[10px] font-black text-[#FF6600] uppercase tracking-widest mb-1">Core Advantages</p>
-              <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tighter">Benefits of {product.name}</h2>
+              <h2 className="text-2xl lg:text-3xl font-black text-white tracking-tighter">Why buyers specify it</h2>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -407,7 +409,7 @@ export default function ProductSubDetailClient({
         ══════════════════════════════════════ */}
         {product.spec && (
           <section className="mb-16">
-            <SectionHeading label="Specification" title={`${product.name} — Specification`} />
+            <SectionHeading label="Specification" title="Full specification" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
               <SpecTable spec={product.spec} productName={product.name} />
               <div className="bg-slate-50 rounded-2xl border border-slate-100 p-7 space-y-4">
@@ -614,10 +616,17 @@ export default function ProductSubDetailClient({
 
 
         {/* ══════════════════════════════════════
+            SECTION 19b: WHERE THIS SITS IN THE RANGE
+            The link back up to the landing page that owns the head term, plus
+            the formats a buyer would genuinely compare this one against.
+        ══════════════════════════════════════ */}
+        <SubTypeLinks flatSlug={getProductFlatSlug(category.id, product.id)} categoryId={category.id} />
+
+        {/* ══════════════════════════════════════
             SECTION 20: LONG SEO CONTENT
         ══════════════════════════════════════ */}
         <section className="mb-16">
-          <SectionHeading label="About This Product" title={`${product.name} — Europack India`} />
+          <SectionHeading label="About This Product" title="Where it is made, and how to specify it" />
           <div className="bg-slate-50 rounded-3xl p-8 lg:p-12 border border-slate-100">
             <div className="space-y-4 max-w-4xl">
               {content.seoContent.split('\n\n').map((para, i) => (
