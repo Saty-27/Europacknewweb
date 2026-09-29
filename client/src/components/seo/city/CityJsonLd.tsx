@@ -49,7 +49,7 @@ const OFFICES = {
   },
   vadodara: {
     '@type': 'PostalAddress',
-    streetAddress: 'G.J. Patel Estate, Plot No. 44/B, Harni Dena Road, NH 48, Dena',
+    streetAddress: 'G.J. Patel Estate, Plot No. 42/B, Harni Dena Road, Dena Chokadi, NH 48',
     addressLocality: 'Vadodara',
     addressRegion: 'Gujarat',
     postalCode: '390022',

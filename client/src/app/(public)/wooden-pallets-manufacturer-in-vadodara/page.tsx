@@ -44,7 +44,7 @@ const AREA_SERVED = [
 const FAQ = [
   {
     q: 'Where in Vadodara is Europack located?',
-    a: 'Our Vadodara address is G.J. Patel Estate, Plot No. 44/B, Harni Dena Road, NH 48, Dena, Vadodara, Gujarat 390022. From there we cover the surrounding GIDC belt — Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli. The pallet desk is on +91 98200 90775 or sales@europackindia.in, Monday to Saturday, 9:00 AM to 7:00 PM.',
+    a: 'Our Vadodara address is G.J. Patel Estate, Plot No. 42/B, Harni Dena Road, Dena Chokadi, NH 48, Vadodara, Gujarat 390022. From there we cover the surrounding GIDC belt — Makarpura, Nandesari, Savli, Halol, Padra, Por and Ranoli. The pallet desk is on +91 98200 90775 or sales@europackindia.in, Monday to Saturday, 9:00 AM to 7:00 PM.',
   },
   {
     q: 'Why do Vadodara buyers order CP pallets rather than standard sizes?',
@@ -124,7 +124,7 @@ export default function WoodenPalletsVadodaraPage() {
         eyebrow="Vadodara · The GIDC belt"
         h1="Wooden Pallet Manufacturer in Vadodara"
         facts={[
-          { label: 'Vadodara address', value: 'G.J. Patel Estate, Harni Dena Road, NH 48, Dena — 390022' },
+          { label: 'Vadodara address', value: 'G.J. Patel Estate, Harni Dena Road, Dena Chokadi, NH 48 — 390022' },
           { label: 'Estates served', value: 'Makarpura, Nandesari, Savli, Halol, Padra, Por, Ranoli' },
           { label: 'Dominant standard', value: 'CP series — the chemical industry footprints' },
           { label: 'Pallet desk', value: 'Mon–Sat, 9:00 AM – 7:00 PM' },
@@ -138,8 +138,8 @@ export default function WoodenPalletsVadodaraPage() {
               is that industry&rsquo;s own standard.
             </p>
             <p>
-              Our Vadodara address is G.J. Patel Estate, Plot No. 44/B on Harni Dena Road, just off NH 48 at
-              Dena — inside the belt it serves rather than a lead time away from it. What follows is the CP
+              Our Vadodara address is G.J. Patel Estate, Plot No. 42/B on Harni Dena Road, just off NH 48 at
+              Dena Chokadi — inside the belt it serves rather than a lead time away from it. What follows is the CP
               range with real dimensions, which deck suits drums and which suits bags, and how bulk orders
               across these estates are usually put together.
             </p>
