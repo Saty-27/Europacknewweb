@@ -3,6 +3,7 @@ import { fetchAPI } from '@/lib/api'
 import { productsData } from '@/constants/productsData'
 import { getAllProductSlugs } from '@/lib/productContentGenerator'
 import { getFlatSeoRoutes } from '@/lib/flatSeoRoutes'
+import { servicesData } from '@/data/servicesData'
 import { getAllMockBlogs } from '@/data/allBlogs'
 import { getCatalogProductPath } from '@/components/products/CatalogProductRoutePage'
 
@@ -85,6 +86,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }))
 
+  // The nine service pages. They were never submitted — and until the params
+  // bug in /services/[slug] was fixed they all returned 404, so nothing would
+  // have been gained by submitting them anyway. Fumigation, ISPM-15 heat
+  // treatment, palletization and on-site packing are commercial services with
+  // real search demand that the site was entirely invisible for.
+  const serviceRoutes = servicesData.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    lastModified: CONTENT_LAST_MODIFIED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }))
+
   const flatSeoRoutes = getFlatSeoRoutes().map((route) => ({
     url: `${baseUrl}/${route.slug}`,
     lastModified: CONTENT_LAST_MODIFIED,
@@ -142,6 +155,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
     ...staticRoutes, 
     ...cityRoutes,
+    ...serviceRoutes,
     ...flatSeoRoutes,
     ...articleRoutes,
     ...productRoutes, 
