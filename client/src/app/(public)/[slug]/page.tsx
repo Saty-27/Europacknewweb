@@ -7,10 +7,29 @@ import FlatSeoRoutePage, { buildFlatSeoMetadata } from '@/components/seo/FlatSeo
 import { getFlatSeoRoutes, getFlatSeoRoute } from '@/lib/flatSeoRoutes';
 import ProductDetailClient from '../products/[...slug]/ProductDetailClient';
 
-// CMS product helper
+/**
+ * `revalidate: 0` here made every unknown URL return 500 instead of 404.
+ *
+ * This route is statically generated — generateStaticParams enumerates the flat
+ * SEO routes — so an uncached fetch inside it flips the page from static to
+ * dynamic at request time, which Next treats as an error rather than letting it
+ * fall through to notFound(). The visible symptom was that any URL not in the
+ * catalog answered 500.
+ *
+ * That was worse than an ugly error page. The site removed 7,700 doorway URLs,
+ * and a search engine reads 500 as "broken, come back later" and keeps the URL
+ * queued, where 404 means "gone" and it gets dropped. Every deleted doorway was
+ * telling Google to retry it.
+ *
+ * A short revalidate keeps the fetch cacheable, so the route stays static, an
+ * unknown slug reaches notFound() and answers 404. CMS product edits still
+ * appear within the window.
+ */
+const CMS_REVALIDATE = 300;
+
 async function getCmsProduct(slug: string) {
   try {
-    const res = await fetchAPI(`/products/slug/${slug}`, { next: { revalidate: 0 } });
+    const res = await fetchAPI(`/products/slug/${slug}`, { next: { revalidate: CMS_REVALIDATE } });
     return res.success ? res.data : null;
   } catch {
     return null;
@@ -19,7 +38,7 @@ async function getCmsProduct(slug: string) {
 
 async function getAllCmsProducts() {
   try {
-    const res = await fetchAPI('/products', { next: { revalidate: 0 } });
+    const res = await fetchAPI('/products', { next: { revalidate: CMS_REVALIDATE } });
     return res.success ? res.data : [];
   } catch {
     return [];
