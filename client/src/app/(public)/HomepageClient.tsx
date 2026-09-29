@@ -24,8 +24,8 @@ function Hero({ onOpenModal }: { onOpenModal: () => void }) {
       {/* Background Layer: Final High-Fidelity Banner */}
       <div className="absolute inset-0">
         <Image
-          src="/images/home/hero_banner_final.png"
-          alt="Industrial Export Packaging Scene"
+          src="/images/banners/banner_main.png"
+          alt="Europack packing team wrapping a long steel section in aluminium barrier foil beside a loading truck"
           fill
           priority
           className="w-full h-full object-cover opacity-70 scale-105 group-hover:scale-110 transition-transform duration-[10s] ease-linear"
