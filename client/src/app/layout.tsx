@@ -94,6 +94,29 @@ export default async function RootLayout({
             />
           </>
         )}
+        {/*
+          Microsoft Clarity — heatmaps and session replay. The ?ref=bwt on the
+          tag URL is what links this project to Bing Webmaster Tools, so the
+          Clarity data shows up there alongside the search reports.
+
+          Loaded the same way as gtag above, i.e. unconditionally. Note that the
+          cookie banner writes a `cookie-consent` value to localStorage and
+          nothing currently reads it, so neither this nor Google Analytics is
+          actually gated by it. Clarity records session replays, which is a
+          bigger ask than page views — if that banner is ever meant to mean
+          something, this is the first script that should respect it.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "ypu737axe5");
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
