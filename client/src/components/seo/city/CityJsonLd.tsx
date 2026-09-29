@@ -104,7 +104,11 @@ export default function CityJsonLd(props: CityJsonLdProps) {
       ? {
           '@context': 'https://schema.org',
           '@type': 'LocalBusiness',
-          '@id': `${url}#business`,
+          // Mumbai is the head office, already declared site-wide in the root
+          // layout. Reusing that @id makes this the same entity described in
+          // more detail on its own page, rather than a second business competing
+          // with it. Any other office gets its own page-scoped id.
+          '@id': props.office === 'mumbai' ? `${SITE}/#localbusiness` : `${url}#business`,
           name,
           description,
           url,

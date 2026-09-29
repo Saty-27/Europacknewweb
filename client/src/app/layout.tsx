@@ -119,6 +119,50 @@ export default async function RootLayout({
                   }],
                   "inLanguage": "en-US"
                 },
+{
+                  // The head office as a place of business, on every page.
+                  //
+                  // It was previously declared only on the two city pages, i.e.
+                  // 2 of 187. Competitors ranking for the local terms carry a
+                  // LocalBusiness node site-wide, and there is no reason not to:
+                  // the address is real, verified against the company's own card
+                  // and its Google Business Profile listing.
+                  //
+                  // The @id is stable and site-wide, and the Mumbai city page
+                  // reuses this exact @id rather than minting a second node, so
+                  // the two describe one entity instead of competing.
+                  "@type": "LocalBusiness",
+                  "@id": "https://europackindia.com/#localbusiness",
+                  "name": "Europack",
+                  "url": "https://europackindia.com/",
+                  "image": "https://europackindia.com/images/logo/logo.png",
+                  "telephone": "+91-9820090775",
+                  "email": "sales@europackindia.in",
+                  "parentOrganization": { "@id": "https://europackindia.com/#organization" },
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "101, ML Spaces, Railway Station Rd, near Vile Parle, above Bharat Bank, Navpada, Kamala Nagar, Vile Parle West",
+                    "addressLocality": "Mumbai",
+                    "addressRegion": "Maharashtra",
+                    "postalCode": "400056",
+                    "addressCountry": "IN"
+                  },
+                  "openingHoursSpecification": [{
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                    "opens": "09:00",
+                    "closes": "19:00"
+                  }],
+                  "areaServed": [
+                    { "@type": "City", "name": "Mumbai" },
+                    { "@type": "City", "name": "Navi Mumbai" },
+                    { "@type": "City", "name": "Thane" },
+                    { "@type": "City", "name": "Bhiwandi" },
+                    { "@type": "City", "name": "Pune" },
+                    { "@type": "City", "name": "Nashik" },
+                    { "@type": "City", "name": "Vadodara" }
+                  ]
+                },
                 {
                   "@type": "Organization",
                   "@id": "https://europackindia.com/#organization",
